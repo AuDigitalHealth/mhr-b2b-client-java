@@ -24,30 +24,30 @@ import org.junit.Test;
 
 public class ReubenArchitectTest {
 
-  private DoesPCEHRExistClient client;
+    private DoesPCEHRExistClient client;
 
-  @Before
-  public final void setUp() throws Exception {
-    AllTests_Reuben.setUp();
-    client = new DoesPCEHRExistClient(
-      AllTests_Reuben.getSslSocketFactory(),
-      AllTests_Reuben.getCertificate(),
-      AllTests_Reuben.getPrivateKey(),
-      Endpoints.ACCENTURE_DOES_PCEHR_EXIST,
-      Logging.DOES_PCEHR_EXIST
-    );
-  }
+    @Before
+    public final void setUp() throws Exception {
+        AllTests_Reuben.setUp();
+        client = new DoesPCEHRExistClient(
+                AllTests_Reuben.getSslSocketFactory(),
+                AllTests_Reuben.getCertificate(),
+                AllTests_Reuben.getPrivateKey(),
+                Endpoints.ACCENTURE_DOES_PCEHR_EXIST,
+                Logging.DOES_PCEHR_EXIST
+        );
+    }
 
-  @After
-  public final void tearDown() throws Exception {
-    AllTests_Reuben.tearDown();
-    client = null;
-  }
+    @After
+    public final void tearDown() throws Exception {
+        AllTests_Reuben.tearDown();
+        client = null;
+    }
 
-  @Test
-  public void test_030() throws Exception {
-    DoesPCEHRExistResponse response = client.doesPCEHRExist(AllTests_Reuben.getDefaultRequest());
-    Assert.assertEquals(true, response.isPCEHRExists());
-    Assert.assertEquals(DoesPCEHRExistResponse.AccessCodeRequired.ACCESS_GRANTED, response.getAccessCodeRequired());
-  }
+    @Test
+    public void test_030() throws Exception {
+        DoesPCEHRExistResponse response = client.doesPCEHRExist(AllTests_Reuben.getDefaultRequest());
+        Assert.assertTrue(response.isPCEHRExists());
+        Assert.assertEquals(DoesPCEHRExistResponse.AccessCodeRequired.ACCESS_GRANTED, response.getAccessCodeRequired());
+    }
 }

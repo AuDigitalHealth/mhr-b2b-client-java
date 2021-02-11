@@ -5,11 +5,11 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  RegisterSuite.class,
-  RecordAccessSuite.class,
-  DocumentExchangeSuite.class,
-  ViewSuite.class,
-  TemplateSuite.class
+        RegisterSuite.class,
+        RecordAccessSuite.class,
+        DocumentExchangeSuite.class,
+        ViewSuite.class,
+        TemplateSuite.class
 })
 
 public class TestSuite {

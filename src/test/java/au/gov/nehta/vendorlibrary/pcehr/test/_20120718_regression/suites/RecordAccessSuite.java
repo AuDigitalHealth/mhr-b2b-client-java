@@ -7,8 +7,8 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  GainPCEHRAccessClientTest.class,
-  DoesPCHERExistClientTest.class
+        GainPCEHRAccessClientTest.class,
+        DoesPCHERExistClientTest.class
 })
 
 public class RecordAccessSuite {

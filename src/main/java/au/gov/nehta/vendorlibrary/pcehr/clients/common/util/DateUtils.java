@@ -22,10 +22,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.Holder;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -97,7 +94,7 @@ public final class DateUtils {
      */
     public static String toUtcDate(final String dateTime) {
 
-        //Validate.notNull(dateTime, "'dateTime' must be specified.");
+        // Validate.notNull(dateTime, "'dateTime' must be specified.");
 
         // Split the date string by timezone (if present).
         String[] dateTimeComponents = dateTime.split("[+|-]");
@@ -105,11 +102,16 @@ public final class DateUtils {
 
         if (dateTimeComponents != null && dateTimeComponents.length > 0) {
 
-
             // Retrieve the parse pattern.
             DateParsePatterns dateParsePattern = DateParsePatterns.findByMatchPatternLength(dateTimeComponents[0]);
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateParsePattern.getPatternValue());
-            LocalDateTime localTime = LocalDateTime.parse(dateTimeComponents[0], dateTimeFormatter);
+            LocalDateTime localTime;
+            // Stop an exception if there isn't time included in the provided date string.
+            if (dateParsePattern == DateParsePatterns.YEAR_MONTH_DAY) {
+                localTime = LocalDate.parse(dateTimeComponents[0], dateTimeFormatter).atStartOfDay();
+            } else {
+                localTime = LocalDateTime.parse(dateTimeComponents[0], dateTimeFormatter);
+            }
 
             // Process string.
 
@@ -169,9 +171,10 @@ public final class DateUtils {
             int mid = timeZone.length() / 2;
 
             int hoursOffset = Integer.parseInt(String.format("%s%s", operator, timeZone.substring(0, mid)));
-            int minsOffset = Integer.parseInt(timeZone.substring(mid));
+            // Java time requires minutes offset to be same sign as hours offset for call to ZoneOffSet.ofHoursMinutes().
+            int minsOffset = Integer.parseInt(String.format("%s%s", operator, timeZone.substring(mid)));
 
-            if (minsOffset / HALF_HOUR == 1) {
+            if (Math.abs(minsOffset) / HALF_HOUR == 1) {
                 halfHour.value = true;
             }
             return ZoneId.of(ZoneOffset.ofHoursMinutes(hoursOffset, minsOffset).getId());

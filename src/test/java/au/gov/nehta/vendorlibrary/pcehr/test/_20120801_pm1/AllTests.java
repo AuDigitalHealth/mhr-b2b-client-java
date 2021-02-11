@@ -30,69 +30,69 @@ import java.security.cert.X509Certificate;
 
 public class AllTests {
 
-  private static SSLSocketFactory sslSocketFactory;
-  private static X509Certificate certificate;
-  private static PrivateKey privateKey;
-  private static PCEHRHeader defaultRequest;
+    private static SSLSocketFactory sslSocketFactory;
+    private static X509Certificate certificate;
+    private static PrivateKey privateKey;
+    private static PCEHRHeader defaultRequest;
 
-  @BeforeClass
-  public static void setUp() throws Exception {
+    @BeforeClass
+    public static void setUp() throws Exception {
 
-    HttpsURLConnection.setDefaultHostnameVerifier(
-      new HostnameVerifier() {
-        public boolean verify(String s, SSLSession sslSession) {
-          return true;
-        }
-      }
-    );
+        HttpsURLConnection.setDefaultHostnameVerifier(
+                new HostnameVerifier() {
+                    public boolean verify(String s, SSLSession sslSession) {
+                        return true;
+                    }
+                }
+        );
 
-    defaultRequest = MessageComponents.createRequest(
-      MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166668209", null, "Anthony TUCKER", false),
-      "8003608500011184",
-      MessageComponents.createProductType("NEHTA", "testHarness", "1.0", "Windows 7 - Java"),
-      PCEHRHeader.ClientSystemType.CIS,
-      MessageComponents.createAccessingOrganisation("8003628233352432", "2", null)
-    );
+        defaultRequest = MessageComponents.createRequest(
+                MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166668209", null, "Anthony TUCKER", false),
+                "8003608500011184",
+                MessageComponents.createProductType("NEHTA", "testHarness", "1.0", "Windows 7 - Java"),
+                PCEHRHeader.ClientSystemType.CIS,
+                MessageComponents.createAccessingOrganisation("8003628233352432", "2", null)
+        );
 
-    sslSocketFactory = SecurityUtil.getSslSocketFactory(SecurityConstants.ALIAS_8003628233352432);
+        sslSocketFactory = SecurityUtil.getSslSocketFactory(SecurityConstants.ALIAS_8003628233352432);
 
-    certificate = SecurityUtil.getCertificate(SecurityConstants.ALIAS_8003628233352432);
+        certificate = SecurityUtil.getCertificate(SecurityConstants.ALIAS_8003628233352432);
 
-    privateKey = SecurityUtil.getPrivateKey(
-      SecurityConstants.PRIVATE_KEY_STORE_TYPE,
-      SecurityConstants.PRIVATE_KEY_PASSWORD,
-      SecurityConstants.PRIVATE_KEY_STORE_PATH,
-      SecurityConstants.ALIAS_8003628233352432
-    );
+        privateKey = SecurityUtil.getPrivateKey(
+                SecurityConstants.PRIVATE_KEY_STORE_TYPE,
+                SecurityConstants.PRIVATE_KEY_PASSWORD,
+                SecurityConstants.PRIVATE_KEY_STORE_PATH,
+                SecurityConstants.ALIAS_8003628233352432
+        );
 
-    // For testing purposes.
-    //System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
+        // For testing purposes.
+        //System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
 
-    // Sets the newly created sslsocketfactory as the default for all instances OF the HttpsURLConnection class.
-    //HttpsURLConnection.setDefaultSSLSocketFactory(sslSocketFactory);
-  }
+        // Sets the newly created sslsocketfactory as the default for all instances OF the HttpsURLConnection class.
+        //HttpsURLConnection.setDefaultSSLSocketFactory(sslSocketFactory);
+    }
 
-  @AfterClass
-  public static void tearDown() {
-    defaultRequest = null;
-    sslSocketFactory = null;
-    certificate = null;
-    privateKey = null;
-  }
+    @AfterClass
+    public static void tearDown() {
+        defaultRequest = null;
+        sslSocketFactory = null;
+        certificate = null;
+        privateKey = null;
+    }
 
-  public static PCEHRHeader getDefaultRequest() {
-    return defaultRequest;
-  }
+    public static PCEHRHeader getDefaultRequest() {
+        return defaultRequest;
+    }
 
-  public static SSLSocketFactory getSslSocketFactory() {
-    return sslSocketFactory;
-  }
+    public static SSLSocketFactory getSslSocketFactory() {
+        return sslSocketFactory;
+    }
 
-  public static X509Certificate getCertificate() {
-    return certificate;
-  }
+    public static X509Certificate getCertificate() {
+        return certificate;
+    }
 
-  public static PrivateKey getPrivateKey() {
-    return privateKey;
-  }
+    public static PrivateKey getPrivateKey() {
+        return privateKey;
+    }
 }

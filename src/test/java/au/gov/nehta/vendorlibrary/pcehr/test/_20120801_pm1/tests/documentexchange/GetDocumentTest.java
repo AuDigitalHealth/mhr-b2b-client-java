@@ -14,41 +14,41 @@ import org.junit.Test;
 
 public class GetDocumentTest {
 
-  private GetDocumentClient client;
+    private GetDocumentClient client;
 
-  @Before
-  public final void setUp() throws Exception {
-    AllTests.setUp();
-    client = new GetDocumentClient(
-      AllTests.getSslSocketFactory(),
-      AllTests.getCertificate(),
-      AllTests.getPrivateKey(),
-      Endpoints.PM1_GET_DOCUMENT,
-      Logging.GET_DOCUMENT
-    );
-  }
+    @Before
+    public final void setUp() throws Exception {
+        AllTests.setUp();
+        client = new GetDocumentClient(
+                AllTests.getSslSocketFactory(),
+                AllTests.getCertificate(),
+                AllTests.getPrivateKey(),
+                Endpoints.PM1_GET_DOCUMENT,
+                Logging.GET_DOCUMENT
+        );
+    }
 
-  @After
-  public final void tearDown() throws Exception {
-    AllTests.tearDown();
-    client = null;
-  }
+    @After
+    public final void tearDown() throws Exception {
+        AllTests.tearDown();
+        client = null;
+    }
 
-  @Test
-  public void test_060() throws Exception {
-    UploadDocumentClientTest uploadDocumentClientTest = new UploadDocumentClientTest();
-    UploadDocumentClientTest.initialSetup();
-    uploadDocumentClientTest.setUp();
-    uploadDocumentClientTest.test_040();
-    String currentId = uploadDocumentClientTest.getCurrentId().value;
-    RetrieveDocumentSetRequest.DocumentRequest docRequest = new RetrieveDocumentSetRequest.DocumentRequest();
-    docRequest.setDocumentUniqueId(currentId);
-    docRequest.setRepositoryUniqueId("1.2.36.1.2001.1007.10");
-    RetrieveDocumentSetResponse response = client.retrieveDocument(AllTests.getDefaultRequest(), docRequest);
-    Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getRegistryResponse().getStatus());
-    Assert.assertEquals("application/zip", response.getDocumentResponses().get(0).getMimeType());
-    Assert.assertEquals(currentId, response.getDocumentResponses().get(0).getDocumentUniqueId());
-    Assert.assertEquals("1.2.36.1.2001.1007.10", response.getDocumentResponses().get(0).getRepositoryUniqueId());
-    Assert.assertNotNull(response.getDocumentResponses().get(0).getDocument());
-  }
+    @Test
+    public void test_060() throws Exception {
+        UploadDocumentClientTest uploadDocumentClientTest = new UploadDocumentClientTest();
+        UploadDocumentClientTest.initialSetup();
+        uploadDocumentClientTest.setUp();
+        uploadDocumentClientTest.test_040();
+        String currentId = uploadDocumentClientTest.getCurrentId().value;
+        RetrieveDocumentSetRequest.DocumentRequest docRequest = new RetrieveDocumentSetRequest.DocumentRequest();
+        docRequest.setDocumentUniqueId(currentId);
+        docRequest.setRepositoryUniqueId("1.2.36.1.2001.1007.10");
+        RetrieveDocumentSetResponse response = client.retrieveDocument(AllTests.getDefaultRequest(), docRequest);
+        Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getRegistryResponse().getStatus());
+        Assert.assertEquals("application/zip", response.getDocumentResponses().get(0).getMimeType());
+        Assert.assertEquals(currentId, response.getDocumentResponses().get(0).getDocumentUniqueId());
+        Assert.assertEquals("1.2.36.1.2001.1007.10", response.getDocumentResponses().get(0).getRepositoryUniqueId());
+        Assert.assertNotNull(response.getDocumentResponses().get(0).getDocument());
+    }
 }

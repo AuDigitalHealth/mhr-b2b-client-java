@@ -26,30 +26,30 @@ import org.junit.Test;
 
 public class GetRepresentativeListClientTest {
 
-  private GetRepresentativeListClient client;
+    private GetRepresentativeListClient client;
 
-  @Before
-  public final void setUp() throws Exception {
-    AllTests.setUp();
-    System.setProperty( "javax.net.debug", "all" );
-    client = new GetRepresentativeListClient(
-      AllTests.getSslSocketFactory(),
-      AllTests.getCertificate(),
-      AllTests.getPrivateKey(),
-      Endpoints.REGRESSION_GET_REPRESENTATIVE_LIST,
-      Logging.GET_REPRESENTATIVE_LIST
-    );
-  }
+    @Before
+    public final void setUp() throws Exception {
+        AllTests.setUp();
+        System.setProperty("javax.net.debug", "all");
+        client = new GetRepresentativeListClient(
+                AllTests.getSslSocketFactory(),
+                AllTests.getCertificate(),
+                AllTests.getPrivateKey(),
+                Endpoints.REGRESSION_GET_REPRESENTATIVE_LIST,
+                Logging.GET_REPRESENTATIVE_LIST
+        );
+    }
 
-  @After
-  public final void tearDown() throws Exception {
-    AllTests.tearDown();
-    client = null;
-  }
+    @After
+    public final void tearDown() throws Exception {
+        AllTests.tearDown();
+        client = null;
+    }
 
-  @Test
-  public void test_010() throws Exception {
-    GetRepresentativeListResponse response = client.getRepresentativeList(AllTests.getDefaultRequest());
-    Assert.assertEquals("PCEHR_SUCCESS", response.getResponseStatus().getCode());
-  }
+    @Test
+    public void test_010() throws Exception {
+        GetRepresentativeListResponse response = client.getRepresentativeList(AllTests.getDefaultRequest());
+        Assert.assertEquals("PCEHR_SUCCESS", response.getResponseStatus().getCode());
+    }
 }

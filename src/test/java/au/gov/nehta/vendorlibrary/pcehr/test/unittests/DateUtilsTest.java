@@ -14,11 +14,7 @@ package au.gov.nehta.vendorlibrary.pcehr.test.unittests;
  */
 
 import au.gov.nehta.vendorlibrary.pcehr.clients.common.util.DateUtils;
-import org.junit.Assert;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +29,7 @@ public class DateUtilsTest {
 
     @Before
     public void setUp() throws Exception {
-        validDateTimes = new HashMap<String, String>();
+        validDateTimes = new HashMap<>();
         validDateTimes.put(
                 "20120825090000.1234+02",
                 "20120825070000"
@@ -74,31 +70,31 @@ public class DateUtilsTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void test_BadTimeZoneTooLong() throws Exception {
+    public void test_BadTimeZoneTooLong() throws IllegalArgumentException {
         String badTooLongTimeZone = "20120825090000.1234+020035";
         DateUtils.toUtcDate(badTooLongTimeZone);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void test_BadTooShortTimeZone() throws Exception {
+    public void test_BadTooShortTimeZone() throws IllegalArgumentException {
         String badTooShortTimeZone = "20120825090000.1234+6";
         DateUtils.toUtcDate(badTooShortTimeZone);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void test_BadWrongTimeZone() throws Exception {
+    public void test_BadWrongTimeZone() throws IllegalArgumentException {
         String badWrongTimeZone = "20120825090000.1234+103";
         DateUtils.toUtcDate(badWrongTimeZone);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void test_BadInvalidMillisecond() throws Exception {
+    public void test_BadInvalidMillisecond() throws IllegalArgumentException {
         String badInvalidMillisecond = "2012082509.1234+1030";
-        String result = DateUtils.toUtcDate(badInvalidMillisecond);
+        DateUtils.toUtcDate(badInvalidMillisecond);
     }
 
     @Test
-    public void testToUtcDate_ValidDateTime() throws Exception {
+    public void testToUtcDate_ValidDateTime() {
         for (Map.Entry<String, String> entry : validDateTimes.entrySet()) {
             System.out.println(entry.getKey());
             String result = DateUtils.toUtcDate(entry.getKey());

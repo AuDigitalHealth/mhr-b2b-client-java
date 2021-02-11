@@ -17,60 +17,58 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.math.BigInteger;
-
 public class RegisterPCEHRClientTest {
 
-  private RegisterPCEHRClient client;
+    private RegisterPCEHRClient client;
 
-  @Before
-  public final void setUp() throws Exception {
-    AllTests.setUp();
-    client = new RegisterPCEHRClient(
-      AllTests.getSslSocketFactory(),
-      AllTests.getCertificate(),
-      AllTests.getPrivateKey(),
-      Endpoints.REGRESSION_REGISTER_PCEHR,
- //     Endpoints.SVT_UPLOAD_DOCUMENT+Endpoints.REGISTER_PCEHR,
-      Logging.REGISTER_PCEHR
-    );
-  }
+    @Before
+    public final void setUp() throws Exception {
+        AllTests.setUp();
+        client = new RegisterPCEHRClient(
+                AllTests.getSslSocketFactory(),
+                AllTests.getCertificate(),
+                AllTests.getPrivateKey(),
+                Endpoints.REGRESSION_REGISTER_PCEHR,
+                //     Endpoints.SVT_UPLOAD_DOCUMENT+Endpoints.REGISTER_PCEHR,
+                Logging.REGISTER_PCEHR
+        );
+    }
 
-  @After
-  public final void tearDown() throws Exception {
-    AllTests.tearDown();
-    client = null;
-  }
+    @After
+    public final void tearDown() throws Exception {
+        AllTests.tearDown();
+        client = null;
+    }
 
-  @Test
-  public void test_010() throws Exception {
+    @Test
+    public void test_010() throws Exception {
 
-    // This test registers a PCEHR with an IHI.
-    RegisterPCEHR registrationDetails = new RegisterPCEHR();
-    RegisterPCEHR.Assertions assertions = new RegisterPCEHR.Assertions();
-IvcCorrespondence ivc = new IvcCorrespondence();
-ivc.setChannel( IVCCorrespondeceChannelCode.email.getCode() );
-ContactDetailsType details = new ContactDetailsType();
-details.setEmailAddress( "test@test.com" );
-ivc.setContactDetails( details  );
-    //    assertions.setIdentityVerifiedByProvider(true);
+        // This test registers a PCEHR with an IHI.
+        RegisterPCEHR registrationDetails = new RegisterPCEHR();
+        RegisterPCEHR.Assertions assertions = new RegisterPCEHR.Assertions();
+        IvcCorrespondence ivc = new IvcCorrespondence();
+        ivc.setChannel(IVCCorrespondeceChannelCode.email.getCode());
+        ContactDetailsType details = new ContactDetailsType();
+        details.setEmailAddress("test@test.com");
+        ivc.setContactDetails(details);
+        //    assertions.setIdentityVerifiedByProvider(true);
 //    assertions.setMedicareConsent(true);
 //    assertions.setIVCCommunicationMethod("email");
 //    assertions.setVersionOfTermsAndConditionsAgreed(BigInteger.valueOf(1));
-    assertions.setIvcCorrespondence( ivc  );
-    assertions.setAcceptedTermsAndConditions(true);
-    //assertions.setRepresentativeDeclaration(true);
-    Identity id = new Identity();
-    EvidenceOfIdentity ev = new EvidenceOfIdentity();
-    ev.setType( "passport" );
-    id.setEvidenceOfIdentity( ev  );
-    id.setIndigenousStatus( IndigenousStatusCode.indigenousStatus1.getCode() );
-    assertions.setIdentity( id  );
-    
-    //TODO:this
-    registrationDetails.setAssertions(assertions);
+        assertions.setIvcCorrespondence(ivc);
+        assertions.setAcceptedTermsAndConditions(true);
+        //assertions.setRepresentativeDeclaration(true);
+        Identity id = new Identity();
+        EvidenceOfIdentity ev = new EvidenceOfIdentity();
+        ev.setType("passport");
+        id.setEvidenceOfIdentity(ev);
+        id.setIndigenousStatus(IndigenousStatusCode.indigenousStatus1.getCode());
+        assertions.setIdentity(id);
 
-    RegisterPCEHRResponse response = client.registerPCEHR(AllTests.getDefaultRequest(), registrationDetails);
-    Assert.assertEquals("PCEHR_SUCCESS", response.getResponseStatus().getCode());
-  }
+        //TODO:this
+        registrationDetails.setAssertions(assertions);
+
+        RegisterPCEHRResponse response = client.registerPCEHR(AllTests.getDefaultRequest(), registrationDetails);
+        Assert.assertEquals("PCEHR_SUCCESS", response.getResponseStatus().getCode());
+    }
 }

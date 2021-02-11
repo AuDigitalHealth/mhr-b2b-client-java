@@ -19,39 +19,39 @@ import java.io.File;
 
 public class UploadDocumentMetadataClientTest {
 
-  private UploadDocumentMetadataClient client;
+    private UploadDocumentMetadataClient client;
 
-  @Before
-  public final void setUp() throws Exception {
-    client = new UploadDocumentMetadataClient(
-      AllTests.getSslSocketFactory(),
-      AllTests.getCertificate(),
-      AllTests.getPrivateKey(),
-      Endpoints.REGRESSION_UPLOAD_DOCUMENT_METADATA,
-      Logging.UPLOAD_DOCUMENT_METADATA
-    );
-  }
+    @Before
+    public final void setUp() throws Exception {
+        client = new UploadDocumentMetadataClient(
+                AllTests.getSslSocketFactory(),
+                AllTests.getCertificate(),
+                AllTests.getPrivateKey(),
+                Endpoints.REGRESSION_UPLOAD_DOCUMENT_METADATA,
+                Logging.UPLOAD_DOCUMENT_METADATA
+        );
+    }
 
-  @After
-  public final void tearDown() throws Exception {
-    AllTests.tearDown();
-    client = null;
-  }
+    @After
+    public final void tearDown() throws Exception {
+        AllTests.tearDown();
+        client = null;
+    }
 
-  @Test
-  public void test_011() throws Exception {
+    @Test
+    public void test_011() throws Exception {
 
-    byte[] packageContent = FileUtils.loadFile(new File("./src/test/resources/TestFiles/Phil/Completed Packages - Phil/SHS10/CDA.zip"));
+        byte[] packageContent = FileUtils.loadFile(new File("./src/test/resources/TestFiles/Phil/Completed Packages - Phil/SHS10/CDA.zip"));
 
-    RegistryResponseType response = client.uploadDocumentMetadata(
-      AllTests.getDefaultRequest(),
-      packageContent,
-      "1.2.36.1.2001.1007.10",
-      HealthcareFacilityTypeCodes.HOSPITALS.getCodedValue(),
-      PracticeSettingTypeCodes.HOSPITAL.getCodedValue(),
-      FormatCodes.DISCHARGE_SUMMARY_3A.getCodedValue()
-    );
+        RegistryResponseType response = client.uploadDocumentMetadata(
+                AllTests.getDefaultRequest(),
+                packageContent,
+                "1.2.36.1.2001.1007.10",
+                HealthcareFacilityTypeCodes.HOSPITALS.getCodedValue(),
+                PracticeSettingTypeCodes.HOSPITAL.getCodedValue(),
+                FormatCodes.DISCHARGE_SUMMARY_3A.getCodedValue()
+        );
 
-    Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-  }
+        Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
+    }
 }

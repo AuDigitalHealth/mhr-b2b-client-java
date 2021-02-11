@@ -10,10 +10,10 @@ import au.gov.nehta.vendorlibrary.pcehr.test._20120718_regression.tests.view.Get
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  GetDocumentListClientTest.class,
-  GetAuditViewClientTest.class,
-  GetChangeHistoryViewClientTest.class,
-  GetRepresentativeListClientTest.class
+        GetDocumentListClientTest.class,
+        GetAuditViewClientTest.class,
+        GetChangeHistoryViewClientTest.class,
+        GetRepresentativeListClientTest.class
 })
 
 public class ViewSuite {

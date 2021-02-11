@@ -20,7 +20,7 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  RegisterPCEHRClientTest.class
+        RegisterPCEHRClientTest.class
 })
 
 public class RegisterSuite {

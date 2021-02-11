@@ -10,10 +10,10 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  UploadDocumentClientTest.class,
-  UploadDocumentMetadataClientTest.class,
-  RemoveDocumentTest.class,
-  GetDocumentTest.class
+        UploadDocumentClientTest.class,
+        UploadDocumentMetadataClientTest.class,
+        RemoveDocumentTest.class,
+        GetDocumentTest.class
 })
 
 public class DocumentExchangeSuite {

@@ -13,29 +13,29 @@ import org.junit.Test;
 
 public class GetChangeHistoryViewClientTest {
 
-  private GetChangeHistoryViewClient client;
+    private GetChangeHistoryViewClient client;
 
-  @Before
-  public final void setUp() throws Exception {
-    AllTests.setUp();
-    client = new GetChangeHistoryViewClient(
-      AllTests.getSslSocketFactory(),
-      AllTests.getCertificate(),
-      AllTests.getPrivateKey(),
-      Endpoints.REGRESSION_GET_CHANGE_HISTORY_VIEW,
-      Logging.GET_CHANGE_HISTORY_VIEW
-    );
-  }
+    @Before
+    public final void setUp() throws Exception {
+        AllTests.setUp();
+        client = new GetChangeHistoryViewClient(
+                AllTests.getSslSocketFactory(),
+                AllTests.getCertificate(),
+                AllTests.getPrivateKey(),
+                Endpoints.REGRESSION_GET_CHANGE_HISTORY_VIEW,
+                Logging.GET_CHANGE_HISTORY_VIEW
+        );
+    }
 
-  @After
-  public final void tearDown() throws Exception {
-    AllTests.tearDown();
-    client = null;
-  }
+    @After
+    public final void tearDown() throws Exception {
+        AllTests.tearDown();
+        client = null;
+    }
 
-  @Test
-  public void test_100() throws Exception {
-    GetChangeHistoryViewResponse response = client.getChangeHistoryView(AllTests.getDefaultRequest(), "2.25.269016203286022974372968221446807081525.1343175045853");
-    Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getAdhocQueryResponse().getStatus());
-  }
+    @Test
+    public void test_100() throws Exception {
+        GetChangeHistoryViewResponse response = client.getChangeHistoryView(AllTests.getDefaultRequest(), "2.25.269016203286022974372968221446807081525.1343175045853");
+        Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getAdhocQueryResponse().getStatus());
+    }
 }

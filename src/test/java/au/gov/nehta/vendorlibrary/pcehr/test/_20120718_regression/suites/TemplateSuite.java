@@ -21,8 +21,8 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-  GetTemplateClientTest.class,
-  SearchTemplateClientTest.class
+        GetTemplateClientTest.class,
+        SearchTemplateClientTest.class
 })
 
 public class TemplateSuite {
