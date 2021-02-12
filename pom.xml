@@ -80,20 +80,15 @@
             <artifactId>webservices-rt</artifactId>
             <version>@metro.version@</version>
         </dependency>
-        <!-- Initially for testing. Final location will be Maven repo -->
         <dependency>
             <groupId>au.gov.nehta</groupId>
             <artifactId>pcehr-compiled-wsdl</artifactId>
-            <version>1.1.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/src/main/resources/lib/pcehr-compiled-wsdl-1.1.0-SNAPSHOT.jar</systemPath>
+            <version>1.1.0</version>
         </dependency>
         <dependency>
             <groupId>au.gov.nehta</groupId>
             <artifactId>smi-common-utils</artifactId>
-            <version>1.2.1-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/src/main/resources/lib/smi-common-utils-1.2.1-SNAPSHOT.jar</systemPath>
+            <version>1.2.1</version>
         </dependency>
         <!-- For test scope -->
         <dependency>
