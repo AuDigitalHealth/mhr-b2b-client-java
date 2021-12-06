@@ -72,6 +72,11 @@ public class SecurityUtil {
         return "8003628233352432";
     }
 
+    public static String getHPIOMatchingCertificate(String keyAlias){
+        //"general.8003628233352432.id.electronichealth.net.au"
+        return keyAlias.substring(8, 24);
+    }
+
     public static X509Certificate getCertificate(String keyAlias) throws GeneralSecurityException {
         return KeystoreUtil.getSigningCertificate(
                 SecurityConstants.PRIVATE_KEY_STORE_TYPE,

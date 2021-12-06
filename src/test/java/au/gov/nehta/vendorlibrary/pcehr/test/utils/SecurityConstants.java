@@ -20,6 +20,10 @@ public final class SecurityConstants {
     public static final String ALIAS_8003627500001540 = "general.8003627500001540.id.electronichealth.net.au";//expired
     public static final String ALIAS_8003628233352432 = "general.8003628233352432.id.electronichealth.net.au";
 
+    // CURRENT - SVT
+    public static final String ALIAS_8003628233368594 =  "general.8003628233368594.id.electronichealth.net.au";
+    public static final String ALIAS_8003629900035144 =  "general.8003629900035144.id.electronichealth.net.au";
+
     public static final String ALIAS_8003629900024122 = "general.8003629900024122.id.electronichealth.net.au";
     public static final String ALIAS_LATEST_WORKING = ALIAS_8003629900024122;
 

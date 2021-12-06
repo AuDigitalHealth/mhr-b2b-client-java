@@ -108,6 +108,9 @@ public final class Endpoints {
     public static final String SVT_UPLOAD_DOCUMENT = SVT + UPLOAD_DOCUMENT;
     public static final String SVT_GET_VIEW = SVT + GET_VIEW;
 
+    // PRODUCTION
+    public static final String ACCENTURE_PROD_HOST = "https://services.ehealth.gov.au";
+    public static final String ACCENTURE_PROD_DOES_PCEHR_EXIST = ACCENTURE_PROD_HOST + DOES_PCEHR_EXIST;
 
     private Endpoints() {
     }
