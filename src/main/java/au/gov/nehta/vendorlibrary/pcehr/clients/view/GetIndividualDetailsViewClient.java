@@ -17,7 +17,7 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 
 import org.apache.commons.lang3.Validate;
 
@@ -29,7 +29,7 @@ import au.net.electronichealth.ns.pcehr.svc.getindividualdetailsview._2.GetIndiv
 import au.net.electronichealth.ns.pcehr.svc.getindividualdetailsview._2.GetIndividualDetailsViewService;
 import au.net.electronichealth.ns.pcehr.svc.getindividualdetailsview._2.StandardErrorMsg;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.Signature;
+import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.SignatureContainerType;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.getindividualdetailsview._2.GetIndividualDetailsViewResponse;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.getrepresentativelist._1.GetRepresentativeListResponse;
 
@@ -112,7 +112,7 @@ public class GetIndividualDetailsViewClient extends Client<GetIndividualDetailsV
         // Response holder variables.
 
         Holder<GetIndividualDetailsViewResponse> responseHolder = new Holder<>();
-        Holder<Signature> signatureHolder = null;
+        Holder<SignatureContainerType> signatureHolder = null;
 
         // Attempt to call the doesPCEHRExist operation, storing response message values in the supplied holders.
         getPort().getIndividualDetailsView(

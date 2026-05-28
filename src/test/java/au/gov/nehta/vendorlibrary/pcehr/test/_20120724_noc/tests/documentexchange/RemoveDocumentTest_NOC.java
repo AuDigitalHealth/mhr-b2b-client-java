@@ -20,7 +20,7 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 import java.io.File;
 import java.util.Date;
 
@@ -73,10 +73,10 @@ public class RemoveDocumentTest_NOC {
 
         PCEHRHeader request = MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                         "8003603459803467",
                         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        "CIS",
                         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
                 );
 
@@ -97,7 +97,7 @@ public class RemoveDocumentTest_NOC {
         // Write out to file for debug purposes.
         PackagingUtility.writeZip(subset, "./src/test/resources/TestFiles/Generated/out_" + new Date().getTime() + ".zip");
 
-        RemoveDocumentResponse removeResponse = client.removeDocument(request, currentId.value, RemoveDocument.DocumentRemovalReason.WITHDRAWN);
+        RemoveDocumentResponse removeResponse = client.removeDocument(request, currentId.value, RemoveDocumentClient.DocumentRemovalReason.WITHDRAWN);
 
         Assert.assertEquals("PCEHR_SUCCESS", removeResponse.getResponseStatus().getCode());
     }
@@ -106,28 +106,28 @@ public class RemoveDocumentTest_NOC {
     public void test_036() throws Exception {
         PCEHRHeader request = MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                         "8003606792133153",
                         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        "CIS",
                         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
                 );
 
-        RemoveDocumentResponse response = client.removeDocument(request, "1.3.16.1.38818.1690000000000000", RemoveDocument.DocumentRemovalReason.WITHDRAWN);
+        RemoveDocumentResponse response = client.removeDocument(request, "1.3.16.1.38818.1690000000000000", RemoveDocumentClient.DocumentRemovalReason.WITHDRAWN);
     }
 
     @Test(expected = StandardErrorMsg.class)
     public void test_037() throws Exception {
         PCEHRHeader request = MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                         "8003606792133153",
                         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        "CIS",
                         MessageComponents.createAccessingOrganisation("8000627500003640", "Medicare305", null)
                 );
         try {
-            RemoveDocumentResponse response = client.removeDocument(request, "1.3.16.1.38818.125555433322", RemoveDocument.DocumentRemovalReason.WITHDRAWN);
+            RemoveDocumentResponse response = client.removeDocument(request, "1.3.16.1.38818.125555433322", RemoveDocumentClient.DocumentRemovalReason.WITHDRAWN);
         } catch (StandardErrorMsg e) {
             Assert.assertEquals("badParam", e.getFaultInfo().getErrorCode().value());
             Assert.assertEquals("PCEHR_ERROR_0505 - Invalid HPI-O", e.getFaultInfo().getMessage());

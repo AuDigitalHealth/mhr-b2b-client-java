@@ -19,8 +19,8 @@ import au.gov.nehta.vendorlibrary.pcehr.clients.documentexchange.GetDocumentClie
 import au.gov.nehta.vendorlibrary.pcehr.test._20120820_ptc.AllTests;
 import au.gov.nehta.vendorlibrary.pcehr.test.utils.Endpoints;
 import au.gov.nehta.vendorlibrary.pcehr.test.utils.Logging;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetResponse;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetRequestType;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -56,14 +56,14 @@ public class TestGetDocument {
     uploadDocumentClientTest.setUp();
     uploadDocumentClientTest.test_UploadDocument_139();
     String currentId = uploadDocumentClientTest.getCurrentId().value;
-    RetrieveDocumentSetRequest.DocumentRequest docRequest = new RetrieveDocumentSetRequest.DocumentRequest();
+    RetrieveDocumentSetRequestType.DocumentRequest docRequest = new RetrieveDocumentSetRequestType.DocumentRequest();
     docRequest.setDocumentUniqueId(currentId);
     docRequest.setRepositoryUniqueId("1.2.36.1.2001.1007.10.8003640002000050");
-    RetrieveDocumentSetResponse response = client.retrieveDocument(AllTests.getDefaultRequest(), docRequest);
+    RetrieveDocumentSetResponseType response = client.retrieveDocument(AllTests.getDefaultRequest(), docRequest);
     Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getRegistryResponse().getStatus());
-    Assert.assertEquals("application/zip", response.getDocumentResponses().get(0).getMimeType());
-    Assert.assertEquals(currentId, response.getDocumentResponses().get(0).getDocumentUniqueId());
-    Assert.assertEquals("1.2.36.1.2001.1007.10.8003640002000050", response.getDocumentResponses().get(0).getRepositoryUniqueId());
-    Assert.assertNotNull(response.getDocumentResponses().get(0).getDocument());
+    Assert.assertEquals("application/zip", response.getDocumentResponse().get(0).getMimeType());
+    Assert.assertEquals(currentId, response.getDocumentResponse().get(0).getDocumentUniqueId());
+    Assert.assertEquals("1.2.36.1.2001.1007.10.8003640002000050", response.getDocumentResponse().get(0).getRepositoryUniqueId());
+    Assert.assertNotNull(response.getDocumentResponse().get(0).getDocument());
   }
 }

@@ -47,10 +47,10 @@ public class AllTests {
     );
 
     defaultRequest = MessageComponents.createRequest(
-      MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166668209", null, "Anthony TUCKER", false),
+      MessageComponents.createUser("HPII", "8003619166668209", null, "Anthony TUCKER", false),
       "8003601008083417",
       MessageComponents.createProductType("NEHTA", "testHarness", "1.0", "Windows 7 - Java"),
-      PCEHRHeader.ClientSystemType.CIS,
+      "CIS",
       MessageComponents.createAccessingOrganisation("8003627500001433", "2", null)
     );
 

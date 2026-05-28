@@ -25,6 +25,7 @@ import au.gov.nehta.vendorlibrary.pcehr.clients.common.util.FileUtils;
 import au.gov.nehta.vendorlibrary.pcehr.clients.documentexchange.GetDocumentClient;
 import au.gov.nehta.vendorlibrary.pcehr.clients.documentexchange.RemoveDocumentClient;
 import au.gov.nehta.vendorlibrary.pcehr.clients.documentexchange.UploadDocumentClient;
+import au.gov.nehta.vendorlibrary.pcehr.sample.common.constants.SampleValues;
 import au.gov.nehta.vendorlibrary.pcehr.sample.common.util.MessageComponents;
 import au.gov.nehta.vendorlibrary.pcehr.test.utils.Endpoints;
 import au.gov.nehta.vendorlibrary.pcehr.test.utils.Logging;
@@ -35,7 +36,7 @@ import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHe
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.removedocument._1.RemoveDocument;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.removedocument._1.RemoveDocumentResponse;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetResponse;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
 import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryError;
 import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
 import org.junit.*;
@@ -53,7 +54,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -106,10 +107,10 @@ public class VendorEnd2End {
 
         request = MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Dr. Todd Bagshaw", false),
+                        MessageComponents.createUser(SampleValues.USER_ID_TYPE, "8003619166674595", null, "Dr. Todd Bagshaw", false),
                         "8003602348687602",
                         MessageComponents.createProductType("NeHTA", "testHarness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        SampleValues.CLIENT_SYSTEM_TYPE_CIS,
                         MessageComponents.createAccessingOrganisation("8003620000020052", "Bay Hill Hospital", null)
                 );
 
@@ -174,7 +175,7 @@ public class VendorEnd2End {
         );
 
         Assert.assertNotNull(response);
-        List<RegistryError> errors = response.getRegistryErrorList().getRegistryErrors();
+        List<RegistryError> errors = response.getRegistryErrorList().getRegistryError();
         for (RegistryError error : errors) {
             System.out.println(error.getErrorCode() + " " + error.getCodeContext());
         }
@@ -185,7 +186,7 @@ public class VendorEnd2End {
         RetrieveDocumentSetRequest.DocumentRequest docRequest = new RetrieveDocumentSetRequest.DocumentRequest();
         docRequest.setDocumentUniqueId("2.25.185129349660311728472975437732097334");
         docRequest.setRepositoryUniqueId("1.2.36.1.2001.1007.10");
-        RetrieveDocumentSetResponse response = getDocumentClient.retrieveDocument(request, docRequest);
+        RetrieveDocumentSetResponseType response = getDocumentClient.retrieveDocument(request, docRequest);
         System.out.println();
     }
 
@@ -283,6 +284,6 @@ public class VendorEnd2End {
                 false
         );
 
-        return removeClient.removeDocument(commonHeader, docId, RemoveDocument.DocumentRemovalReason.WITHDRAWN);
+        return removeClient.removeDocument(commonHeader, docId, RemoveDocumentClient.DocumentRemovalReason.WITHDRAWN);
     }
 }

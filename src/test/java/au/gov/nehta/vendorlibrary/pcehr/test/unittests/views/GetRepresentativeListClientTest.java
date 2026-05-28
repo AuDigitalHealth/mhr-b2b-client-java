@@ -62,18 +62,18 @@ public class GetRepresentativeListClientTest {
         GetRepresentativeListResponse response = client.getRepresentativeList(
 //      MessageComponents.createRequest
 //        (
-//          MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Anthony TUCKER", false),
+//          MessageComponents.createUser("HPII", "8003619166674595", null, "Anthony TUCKER", false),
 //         "8003602348687602",
 //          MessageComponents.createProductType("NEHTA", "testHarness", "1.0", "Windows 7 - Java"),
-//          PCEHRHeader.ClientSystemType.CIS,
+//          "CIS",
 //          MessageComponents.createAccessingOrganisation("8003628233352432", "2", null)
 //        )
 
                 MessageComponents.createRequest(
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166668209", null, "Anthony TUCKER", false),
+                        MessageComponents.createUser("HPII", "8003619166668209", null, "Anthony TUCKER", false),
                         "8003608500011184",
                         MessageComponents.createProductType("NEHTA", "testHarness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        "CIS",
                         MessageComponents.createAccessingOrganisation("8003628233352432", "2", null)
                 )
 

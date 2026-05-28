@@ -1,0 +1,18 @@
+# Copyright 2012 NEHTA; Copyright 2021-2026 ADHA. Apache-2.0 - see LICENSE.txt.
+#
+# Copy to local.properties beside the JVM working directory (gitignored).
+# Reserved for future integration-test configuration (see CONTRIBUTING.md).
+# Do not commit populated values.
+
+# Example placeholders — align with your ADHA registration pack when wiring tests.
+
+# MHR_KEYSTORE_TYPE=PKCS12
+# MHR_KEYSTORE_PATH=./certs/<your-ra-folder>/fac_sign.p12
+# MHR_KEYSTORE_PASSWORD=
+# MHR_KEY_PASSWORD=
+
+# MHR_TRUSTSTORE_TYPE=JKS
+# MHR_TRUSTSTORE_PATH=./src/test/resources/truststore.jks
+# MHR_TRUSTSTORE_PASSWORD=
+
+# MHR_PCEHR_ENDPOINT_BASE=https://b2b.example.health.gov.au

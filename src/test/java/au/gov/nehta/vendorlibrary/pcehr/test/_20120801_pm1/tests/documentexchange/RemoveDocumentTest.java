@@ -41,7 +41,7 @@ public class RemoveDocumentTest {
         uploadDocumentClientTest.test_040();
         String currentId = uploadDocumentClientTest.getCurrentId().value;
         uploadDocumentClientTest.tearDown();
-        RemoveDocumentResponse response = client.removeDocument(AllTests.getDefaultRequest(), currentId, RemoveDocument.DocumentRemovalReason.WITHDRAWN);
+        RemoveDocumentResponse response = client.removeDocument(AllTests.getDefaultRequest(), currentId, RemoveDocumentClient.DocumentRemovalReason.WITHDRAWN);
         Assert.assertEquals("PCEHR_SUCCESS", response.getResponseStatus().getCode());
     }
 }

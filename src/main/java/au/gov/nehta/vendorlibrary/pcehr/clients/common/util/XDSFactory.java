@@ -18,9 +18,9 @@ import au.gov.nehta.vendorlibrary.pcehr.clients.common.type.CodedValue;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.ClassificationType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.ExternalIdentifierType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.InternationalStringType;
-import oasis.names.tc.ebxml_regrep.xsd.rim._3.LocalizedString;
-import oasis.names.tc.ebxml_regrep.xsd.rim._3.Slot;
-import oasis.names.tc.ebxml_regrep.xsd.rim._3.ValueList;
+import oasis.names.tc.ebxml_regrep.xsd.rim._3.LocalizedStringType;
+import oasis.names.tc.ebxml_regrep.xsd.rim._3.SlotType1;
+import oasis.names.tc.ebxml_regrep.xsd.rim._3.ValueListType;
 import org.apache.commons.lang3.Validate;
 
 import java.util.ArrayList;
@@ -45,16 +45,16 @@ public final class XDSFactory {
      * @param values   One or more {@link String} values.
      * @return An instance of a {@link Slot}.
      */
-    public static Slot createSlot(String slotName, String... values) {
+    public static SlotType1 createSlot(String slotName, String... values) {
         Validate.notEmpty(slotName, "'slotName' must be specified.");
         Validate.isTrue(values.length > 0, "'values' must contain at least one value.");
 
-        Slot slot = new Slot();
+        SlotType1 slot = new SlotType1();
         slot.setName(slotName);
 
-        ValueList valueList = new ValueList();
+        ValueListType valueList = new ValueListType();
         for (String value : values) {
-            valueList.getValues().add(value);
+            valueList.getValue().add(value);
         }
         slot.setValueList(valueList);
 
@@ -68,15 +68,15 @@ public final class XDSFactory {
      * @param values   One or more {@link String} values.
      * @return An instance of a {@link Slot}.
      */
-    public static Slot createSingleValuedSlot(String slotName, String... values) {
+    public static SlotType1 createSingleValuedSlot(String slotName, String... values) {
         Validate.notEmpty(slotName, "'slotName' must be specified.");
         Validate.isTrue(values.length == 1, "'values' must contain at least one value.");
 
-        Slot slot = new Slot();
+        SlotType1 slot = new SlotType1();
         slot.setName(slotName);
 
-        ValueList valueList = new ValueList();
-        valueList.getValues().add("'" + values[0] + "'");
+        ValueListType valueList = new ValueListType();
+        valueList.getValue().add("'" + values[0] + "'");
         slot.setValueList(valueList);
 
         return slot;
@@ -90,16 +90,16 @@ public final class XDSFactory {
      * @param values   One or more {@link String} values.
      * @return An instance of a {@link Slot}.
      */
-    public static Slot createQuerySlot(String slotName, String... values) {
+    public static SlotType1 createQuerySlot(String slotName, String... values) {
         Validate.notEmpty(slotName, "'slotName' must be specified.");
         Validate.isTrue(values.length > 0, "'values' must contain at least one value.");
 
-        Slot slot = new Slot();
+        SlotType1 slot = new SlotType1();
         slot.setName(slotName);
 
-        ValueList valueList = new ValueList();
+        ValueListType valueList = new ValueListType();
         for (String value : values) {
-            valueList.getValues().add("('" + value + "')");
+            valueList.getValue().add("('" + value + "')");
         }
         slot.setValueList(valueList);
 
@@ -114,22 +114,22 @@ public final class XDSFactory {
      * @param values   One or more {@link CodedValue} values.
      * @return A list of zero or two {@link Slot}s.
      */
-    public static List<Slot> createQuerySlots(String slotName, CodedValue... values) {
+    public static List<SlotType1> createQuerySlots(String slotName, CodedValue... values) {
         Validate.notEmpty(slotName, "'slotName' must be specified.");
         Validate.isTrue(values.length > 0, "'values' must contain at least one value.");
 
-        List<Slot> slots = new ArrayList<>();
+        List<SlotType1> slots = new ArrayList<>();
         if (values.length > 0) {
-            Slot valueSlot = new Slot();
+            SlotType1 valueSlot = new SlotType1();
             valueSlot.setName(slotName);
 
             // Slot codeSystemSlot = new Slot();
             // codeSystemSlot.setName(slotName + "Scheme");
 
-            ValueList valueList = new ValueList();
+            ValueListType valueList = new ValueListType();
             //ValueList codeSystemList = new ValueList();
             for (CodedValue value : values) {
-                valueList.getValues().add("('" + value.getValue() + "^^" + value.getCodeSystem() + "')");
+                valueList.getValue().add("('" + value.getValue() + "^^" + value.getCodeSystem() + "')");
                 // codeSystemList.getValues().add("('" + value.getCodeSystem() + "')");
             }
 
@@ -151,7 +151,7 @@ public final class XDSFactory {
      * @param values   One or more {@link String} values.
      * @return An instance of a {@link Slot}.
      */
-    public static Slot createQuerySlot(String slotName, Collection<String> values) {
+    public static SlotType1 createQuerySlot(String slotName, Collection<String> values) {
         return createQuerySlot(slotName, values.toArray(new String[values.size()]));
     }
 
@@ -163,7 +163,7 @@ public final class XDSFactory {
      * @param values   One or more {@link CodedValue} values.
      * @return An instance of a {@link Slot}.
      */
-    public static List<Slot> createQuerySlots(String slotName, Collection<CodedValue> values) {
+    public static List<SlotType1> createQuerySlots(String slotName, Collection<CodedValue> values) {
         return createQuerySlots(slotName, values.toArray(new CodedValue[values.size()]));
     }
 
@@ -176,11 +176,11 @@ public final class XDSFactory {
     public static InternationalStringType createInternationalString(String value) {
         Validate.notEmpty(value, "'value' must be specified.");
 
-        LocalizedString ls = new LocalizedString();
+        LocalizedStringType ls = new LocalizedStringType();
         ls.setValue(value);
 
         InternationalStringType is = new InternationalStringType();
-        is.getLocalizedStrings().add(ls);
+        is.getLocalizedString().add(ls);
         return is;
     }
 

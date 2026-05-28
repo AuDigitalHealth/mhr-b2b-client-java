@@ -20,12 +20,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.ws.Holder;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.ws.Holder;
 
 import oasis.names.tc.ebxml_regrep.xsd.lcm._3.SubmitObjectsRequest;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
-import oasis.names.tc.ebxml_regrep.xsd.query._3.ResponseOption;
+import oasis.names.tc.ebxml_regrep.xsd.query._3.ResponseOptionType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.AdhocQueryType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.AssociationType1;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.ClassificationType;
@@ -33,11 +33,11 @@ import oasis.names.tc.ebxml_regrep.xsd.rim._3.ExternalIdentifierType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.ExtrinsicObjectType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.IdentifiableType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.InternationalStringType;
-import oasis.names.tc.ebxml_regrep.xsd.rim._3.LocalizedString;
+import oasis.names.tc.ebxml_regrep.xsd.rim._3.LocalizedStringType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.ObjectFactory;
-import oasis.names.tc.ebxml_regrep.xsd.rim._3.RegistryObjectList;
+import oasis.names.tc.ebxml_regrep.xsd.rim._3.RegistryObjectListType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.RegistryPackageType;
-import oasis.names.tc.ebxml_regrep.xsd.rim._3.Slot;
+import oasis.names.tc.ebxml_regrep.xsd.rim._3.SlotType1;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -92,7 +92,7 @@ public final class XDSMapper {
         SubmitObjectsRequest sor = new SubmitObjectsRequest();
 
         // RegistryObjectsList
-        RegistryObjectList rol = new RegistryObjectList();
+        RegistryObjectListType rol = new RegistryObjectListType();
         sor.setRegistryObjectList(rol);
 
         Holder<Integer> idClCounter = new Holder<>(0);
@@ -101,11 +101,11 @@ public final class XDSMapper {
 
         // XDSDocumentEntry
         ExtrinsicObjectType xdsDocumentEntry = toXDSDocumentEntry(commonHeader, documentMetadata, idClCounter, idEiCounter);
-        rol.getIdentifiables().add(new ObjectFactory().createExtrinsicObject(xdsDocumentEntry));
+        rol.getIdentifiable().add(new ObjectFactory().createExtrinsicObject(xdsDocumentEntry));
 
         // XDSSubmissionSet
         RegistryPackageType xdsSubmissionSet = toXDSSubmissionSet(submissionMetadata, documentMetadata, idClCounter, idEiCounter);
-        rol.getIdentifiables().add(new ObjectFactory().createRegistryPackage(xdsSubmissionSet));
+        rol.getIdentifiable().add(new ObjectFactory().createRegistryPackage(xdsSubmissionSet));
 
         // Classify the RegistryType as an XDSSubmissionSet.
         ClassificationType classification = new ClassificationType();
@@ -113,7 +113,7 @@ public final class XDSMapper {
         classification.setClassificationNode(XDSConstants.XDS_SUBMISSION_SET_UUID);
         classification.setObjectType(XDSConstants.OBJECT_TYPE_CLASSIFICATION);
         classification.setId(XDSFactory.toClassificationIdString(++idClCounter.value));
-        rol.getIdentifiables().add(new ObjectFactory().createClassification(classification));
+        rol.getIdentifiable().add(new ObjectFactory().createClassification(classification));
 
         // Association (HasMember)
         AssociationType1 association = new AssociationType1();
@@ -122,8 +122,8 @@ public final class XDSMapper {
         association.setObjectType(XDSConstants.OBJECT_TYPE_ASSOCIATION);
         association.setSourceObject(xdsSubmissionSet.getId());
         association.setTargetObject(xdsDocumentEntry.getId());
-        association.getSlots().add(XDSFactory.createSlot(XDSConstants.SUBMISSION_SET_STATUS_SLOT, "Original"));
-        rol.getIdentifiables().add(new ObjectFactory().createAssociation(association));
+        association.getSlot().add(XDSFactory.createSlot(XDSConstants.SUBMISSION_SET_STATUS_SLOT, "Original"));
+        rol.getIdentifiable().add(new ObjectFactory().createAssociation(association));
 
         // Associate (Replaces)
         if (StringUtils.isNotBlank(replacesDocumentId)) {
@@ -134,7 +134,7 @@ public final class XDSMapper {
             association.setSourceObject(xdsDocumentEntry.getId());
             association.setTargetObject(replacesDocumentId);
             association.setName(XDSFactory.createInternationalString(XDSConstants.ASSOCIATION_TYPE_REPLACES_NAME));
-            rol.getIdentifiables().add(new ObjectFactory().createAssociation(association));
+            rol.getIdentifiable().add(new ObjectFactory().createAssociation(association));
         }
 
         return sor;
@@ -170,37 +170,37 @@ public final class XDSMapper {
 
         // documentMetadata.documentCreationTime -> XDSDocumentEntry.creationTime
         if (documentMetadata.getCreationTime() != null) {
-            xo.getSlots().add(
+            xo.getSlot().add(
                     XDSFactory.createSlot(XDSConstants.CREATION_TIME_SLOT,
                             documentMetadata.getCreationTime()));
         }
 
         // documentMetadata.languageCode -> language code
-        xo.getSlots().add(XDSFactory.createSlot(XDSConstants.LANGUAGE_CODE_SLOT, documentMetadata.getLanguageCode()));
+        xo.getSlot().add(XDSFactory.createSlot(XDSConstants.LANGUAGE_CODE_SLOT, documentMetadata.getLanguageCode()));
 
         if (documentMetadata.getRepositoryUniqueId() != null) {
-            xo.getSlots().add(
+            xo.getSlot().add(
                     XDSFactory.createSlot(XDSConstants.REPOSITORY_UNIQUE_ID, documentMetadata.getRepositoryUniqueId())
             );
         }
 
         // documentMetadata.serviceStartTime -> XDSDocumentEntry.serviceStartTime
         if (documentMetadata.getServiceStartTime() != null) {
-            xo.getSlots().add(
+            xo.getSlot().add(
                     XDSFactory.createSlot(XDSConstants.SERVICE_START_TIME_SLOT,
                             documentMetadata.getServiceStartTime()));
         }
 
         // documentMetadata.serviceStopTime -> XDSDocumentEntry.serviceStopTime
         if (documentMetadata.getServiceStopTime() != null) {
-            xo.getSlots().add(
+            xo.getSlot().add(
                     XDSFactory.createSlot(XDSConstants.SERVICE_STOP_TIME_SLOT,
                             documentMetadata.getServiceStopTime()));
         }
 
         // documentMetadata.sourcePatientId -> XDSDocumentEntry.sourcePatientId
         if (StringUtils.isNotBlank(documentMetadata.getSourcePatientId().toString())) {
-            xo.getSlots().add(
+            xo.getSlot().add(
                     XDSFactory.createSlot(XDSConstants.SOURCE_PATIENT_ID_SLOT, documentMetadata.getSourcePatientId().toString()));
         }
 
@@ -212,14 +212,14 @@ public final class XDSMapper {
         // documentMetadata.documentHash -> XDSDocumentEntry.hash
         byte[] documentHash = documentMetadata.getDocumentHash();
         if (documentHash != null && documentHash.length > 0) {
-            xo.getSlots().add(
+            xo.getSlot().add(
                     XDSFactory.createSlot(XDSConstants.HASH_SLOT,
                             Base64.encodeBase64String(documentHash)));
         }
 
         // documentMetadata.documentSize -> XDSDocumentEntry.size
         if (documentMetadata.getDocumentSize() != null) {
-            xo.getSlots().add(
+            xo.getSlot().add(
                     XDSFactory.createSlot(XDSConstants.SIZE_SLOT, documentMetadata.getDocumentSize().toString())
             );
         }
@@ -232,24 +232,24 @@ public final class XDSMapper {
                     XDSConstants.XDS_DOCUMENT_ENTRY_AUTHOR_UUID, documentMetadata.getEntryUuid(), "",
                     ++idClCounter.value);
             if (StringUtils.isNotBlank(documentMetadata.getAuthorInstitution().toString())) {
-                classification.getSlots().add(
+                classification.getSlot().add(
                         XDSFactory.createSlot(XDSConstants.AUTHOR_INSTITUTION_SLOT,
                                 documentMetadata.getAuthorInstitution().toString()));
             }
             if (StringUtils.isNotBlank(documentMetadata.getAuthorPerson().toString())) {
-                classification.getSlots().add(
+                classification.getSlot().add(
                         XDSFactory.createSlot(XDSConstants.AUTHOR_PERSON_SLOT,
                                 documentMetadata.getAuthorPerson().toString()));
             }
 
             //author specialty
             if (StringUtils.isNotBlank(documentMetadata.getAuthorSpecialty())) {
-                classification.getSlots().add(
+                classification.getSlot().add(
                         XDSFactory.createSlot(XDSConstants.AUTHOR_SPECIALITY_SLOT,
                                 documentMetadata.getAuthorSpecialty()));
             }
 
-            xo.getClassifications().add(classification);
+            xo.getClassification().add(classification);
         }
 
         // documentMetadata.documentType -> XDSDocumentEntry.classCode
@@ -257,7 +257,7 @@ public final class XDSMapper {
             ClassificationType classification = XDSFactory.createClassification(
                     XDSConstants.XDS_DOCUMENT_ENTRY_CLASS_CODE_UUID, documentMetadata.getEntryUuid(),
                     documentMetadata.getDocumentClass().getValue(), ++idClCounter.value);
-            classification.getSlots().add(
+            classification.getSlot().add(
                     XDSFactory.createSlot(XDSConstants.CODING_SCHEME_SLOT,
                             documentMetadata.getDocumentClass().getCodeSystem()));
             if (StringUtils.isNotBlank(documentMetadata.getDocumentClass().getDisplayName())) {
@@ -266,7 +266,7 @@ public final class XDSMapper {
                         // 14-10-2012 change to type code from class code to align with C#
                         .getDocumentType().getDisplayName()));
             }
-            xo.getClassifications().add(classification);
+            xo.getClassification().add(classification);
         }
 
         // documentMetadata.confidentialityCode -> XDSDocumentEntry.confidentialityCode
@@ -274,11 +274,11 @@ public final class XDSMapper {
         ClassificationType classification = XDSFactory.createClassification(
                 XDSConstants.XDS_DOCUMENT_ENTRY_CONFIDENTIALITY_CODE_UUID,
                 documentMetadata.getEntryUuid(), "1.3.6.1.4.1.21367.2006.7.101", ++idClCounter.value);
-        classification.getSlots().add(XDSFactory.createSlot(
+        classification.getSlot().add(XDSFactory.createSlot(
                 XDSConstants.CODING_SCHEME_SLOT,
                 documentMetadata.getConfidentialityCode().getCodedValue().getCodeSystem()));
         classification.setName(XDSFactory.createInternationalString(documentMetadata.getConfidentialityCode().getCodedValue().getDisplayName()));
-        xo.getClassifications().add(classification);
+        xo.getClassification().add(classification);
 
 
         // TODO: template id is not officially documented
@@ -289,10 +289,10 @@ public final class XDSMapper {
                     documentMetadata.getEntryUuid(),
                     documentMetadata.getFormatCode().getValue(),
                     ++idClCounter.value);
-            classification.getSlots().add(
+            classification.getSlot().add(
                     XDSFactory.createSlot(XDSConstants.CODING_SCHEME_SLOT, documentMetadata.getFormatCode().getCodeSystem()));
             classification.setName(XDSFactory.createInternationalString(documentMetadata.getFormatCode().getDisplayName()));
-            xo.getClassifications().add(classification);
+            xo.getClassification().add(classification);
         }
 
         // documentMetadata.healthcareFacilityType -> XDSDocumentEntry.healthcareFacilityTypeCode
@@ -300,13 +300,13 @@ public final class XDSMapper {
             classification = XDSFactory.createClassification(
                     XDSConstants.XDS_DOCUMENT_ENTRY_HEALTHCARE_FACILITY_TYPE_CODE_UUID,
                     documentMetadata.getEntryUuid(), documentMetadata.getHealthcareFacilityType().getValue(), ++idClCounter.value);
-            classification.getSlots().add(
+            classification.getSlot().add(
                     XDSFactory.createSlot(XDSConstants.CODING_SCHEME_SLOT,
                             documentMetadata.getHealthcareFacilityType().getCodeSystem()));
             if (StringUtils.isNotBlank(documentMetadata.getHealthcareFacilityType().getDisplayName())) {
                 classification.setName(XDSFactory.createInternationalString(documentMetadata.getHealthcareFacilityType().getDisplayName()));
             }
-            xo.getClassifications().add(classification);
+            xo.getClassification().add(classification);
         }
 
         // documentMetadata.practiceSettingType -> XDSDocumentEntry.practiceSettingCode
@@ -314,13 +314,13 @@ public final class XDSMapper {
             classification = XDSFactory.createClassification(
                     XDSConstants.XDS_DOCUMENT_ENTRY_PRACTICE_SETTING_CODE_UUID,
                     documentMetadata.getEntryUuid(), documentMetadata.getPracticeSetting().getValue(), ++idClCounter.value);
-            classification.getSlots().add(
+            classification.getSlot().add(
                     XDSFactory.createSlot(XDSConstants.CODING_SCHEME_SLOT,
                             documentMetadata.getPracticeSetting().getCodeSystem()));
             if (StringUtils.isNotBlank(documentMetadata.getPracticeSetting().getDisplayName())) {
                 classification.setName(XDSFactory.createInternationalString(documentMetadata.getPracticeSetting().getDisplayName()));
             }
-            xo.getClassifications().add(classification);
+            xo.getClassification().add(classification);
         }
 
         // documentMetadata.patientId -> XDSDocumentEntry.patientId
@@ -328,7 +328,7 @@ public final class XDSMapper {
             ExternalIdentifierType externalId = XDSFactory.createExternalIdentifier(
                     XDSConstants.XDS_DOCUMENT_ENTRY_PATIENT_ID_UUID, documentMetadata.getEntryUuid(),
                     "XDSDocumentEntry.patientId", documentMetadata.getPatientId().toString(), ++idEiCounter.value);
-            xo.getExternalIdentifiers().add(externalId);
+            xo.getExternalIdentifier().add(externalId);
         }
 
         // documentMetadata.documentId -> XDSDocumentEntry.uniqueId
@@ -336,7 +336,7 @@ public final class XDSMapper {
             ExternalIdentifierType externalId = XDSFactory.createExternalIdentifier(
                     XDSConstants.XDS_DOCUMENT_ENTRY_UNIQUE_ID_UUID, documentMetadata.getEntryUuid(),
                     "XDSDocumentEntry.uniqueId", documentMetadata.getUniqueId(), ++idEiCounter.value);
-            xo.getExternalIdentifiers().add(externalId);
+            xo.getExternalIdentifier().add(externalId);
         }
 
         // documentMetadata.keyword -> XDSDocumentEntry.eventCodeList
@@ -347,10 +347,10 @@ public final class XDSMapper {
                 classification = XDSFactory.createClassification(
                         XDSConstants.XDS_DOCUMENT_ENTRY_EVENT_CODE_LIST_UUID, documentMetadata.getEntryUuid(),
                         keyword, ++idClCounter.value);
-                classification.getSlots().add(
+                classification.getSlot().add(
                         XDSFactory.createSlot(XDSConstants.CODING_SCHEME_SLOT, "NA"));
                 classification.setName(XDSFactory.createInternationalString(keyword));
-                xo.getClassifications().add(classification);
+                xo.getClassification().add(classification);
             }
         }
 
@@ -359,13 +359,13 @@ public final class XDSMapper {
             classification = XDSFactory.createClassification(
                     XDSConstants.XDS_DOCUMENT_ENTRY_TYPE_CODE_UUID, documentMetadata.getEntryUuid(),
                     documentMetadata.getDocumentType().getValue(), ++idClCounter.value);
-            classification.getSlots().add(
+            classification.getSlot().add(
                     XDSFactory.createSlot(XDSConstants.CODING_SCHEME_SLOT,
                             documentMetadata.getDocumentClass().getCodeSystem()));
             if (StringUtils.isNotBlank(documentMetadata.getDocumentType().getDisplayName())) {
                 classification.setName(XDSFactory.createInternationalString(documentMetadata.getDocumentType().getDisplayName()));
             }
-            xo.getClassifications().add(classification);
+            xo.getClassification().add(classification);
         }
 
         return xo;
@@ -393,7 +393,7 @@ public final class XDSMapper {
 
         // submissionMetadata.submissionTime -> XDSSubmissionSet.submissionTime
         if (submissionMetadata.getSubmissionTime() != null) {
-            rp.getSlots().add(
+            rp.getSlot().add(
                     XDSFactory.createSlot(XDSConstants.SUBMISSION_TIME_SLOT,
                             toDateTimeString(submissionMetadata.getSubmissionTime())));
         }
@@ -411,22 +411,22 @@ public final class XDSMapper {
                     XDSConstants.XDS_SUBMISSION_SET_AUTHOR_UUID, submissionMetadata.getEntryUuid(), "",
                     ++idClCounter.value);
             if (StringUtils.isNotBlank(documentMetadata.getAuthorInstitution().toString())) {
-                classification.getSlots().add(
+                classification.getSlot().add(
                         XDSFactory.createSlot(XDSConstants.AUTHOR_INSTITUTION_SLOT,
                                 documentMetadata.getAuthorInstitution().toString()));
             }
             if (StringUtils.isNotBlank(documentMetadata.getAuthorPerson().toString())) {
-                classification.getSlots().add(
+                classification.getSlot().add(
                         XDSFactory.createSlot(XDSConstants.AUTHOR_PERSON_SLOT,
                                 documentMetadata.getAuthorPerson().toString()));
             }
             //author specialty
             if (StringUtils.isNotBlank(documentMetadata.getAuthorSpecialty())) {
-                classification.getSlots().add(XDSFactory.createSlot(
+                classification.getSlot().add(XDSFactory.createSlot(
                         XDSConstants.AUTHOR_SPECIALITY_SLOT, documentMetadata.getAuthorSpecialty()));
             }
 
-            rp.getClassifications().add(classification);
+            rp.getClassification().add(classification);
         }
 
         // documentMetadata.documentType -> XDSSubmissionSet.contentTypeCode
@@ -437,12 +437,12 @@ public final class XDSMapper {
                     documentMetadata.getDocumentClass().getValue(),
                     ++idClCounter.value
             );
-            classification.getSlots().add(XDSFactory.createSlot(XDSConstants.CODING_SCHEME_SLOT, documentMetadata.getDocumentClass().getCodeSystem()));
+            classification.getSlot().add(XDSFactory.createSlot(XDSConstants.CODING_SCHEME_SLOT, documentMetadata.getDocumentClass().getCodeSystem()));
             if (StringUtils.isNotBlank(documentMetadata.getDocumentClass().getDisplayName())) {
                 //change from class code to type code to align with C#
                 classification.setName(XDSFactory.createInternationalString(documentMetadata.getDocumentType().getDisplayName()));
             }
-            rp.getClassifications().add(classification);
+            rp.getClassification().add(classification);
         }
 
         // documentMetadata.uniqueId -> XDSSubmissionSet.uniqueId
@@ -450,7 +450,7 @@ public final class XDSMapper {
             ExternalIdentifierType externalId = XDSFactory.createExternalIdentifier(
                     XDSConstants.XDS_SUBMISSION_SET_UNIQUE_ID_UUID, submissionMetadata.getEntryUuid(),
                     "XDSSubmissionSet.uniqueId", documentMetadata.getUniqueId(), ++idEiCounter.value);
-            rp.getExternalIdentifiers().add(externalId);
+            rp.getExternalIdentifier().add(externalId);
         }
 
         // documentMetadata.authorOrganisation -> XDSSubmissionSet.sourceId
@@ -459,7 +459,7 @@ public final class XDSMapper {
             ExternalIdentifierType externalId = XDSFactory.createExternalIdentifier(
                     XDSConstants.XDS_SUBMISSION_SET_SOURCE_ID_UUID, submissionMetadata.getEntryUuid(),
                     "XDSSubmissionSet.sourceId", documentMetadata.getAuthorInstitution().getOrganisationIdentifier(), ++idEiCounter.value);
-            rp.getExternalIdentifiers().add(externalId);
+            rp.getExternalIdentifier().add(externalId);
         }
 
         // documentMetadata.patientId -> XDSSubmissionSet.patientId
@@ -467,7 +467,7 @@ public final class XDSMapper {
             ExternalIdentifierType externalId = XDSFactory.createExternalIdentifier(
                     XDSConstants.XDS_SUBMISSION_SET_PATIENT_ID_UUID, submissionMetadata.getEntryUuid(),
                     "XDSSubmissionSet.patientId", documentMetadata.getPatientId().toString(), ++idEiCounter.value);
-            rp.getExternalIdentifiers().add(externalId);
+            rp.getExternalIdentifier().add(externalId);
         }
         return rp;
     }
@@ -488,7 +488,7 @@ public final class XDSMapper {
 
         AdhocQueryRequest request = new AdhocQueryRequest();
 
-        ResponseOption responseOption = new ResponseOption();
+        ResponseOptionType responseOption = new ResponseOptionType();
         responseOption.setReturnComposedObjects(Boolean.TRUE);
         responseOption.setReturnType("LeafClass");
         request.setResponseOption(responseOption);
@@ -499,7 +499,7 @@ public final class XDSMapper {
 
         // commonHeader.IHINumber -> $XDSDocumentEntryPatientId(R)
         if (StringUtils.isNotBlank(commonHeader.getIhiNumber())) {
-            query.getSlots().add(
+            query.getSlot().add(
                     XDSFactory.createSingleValuedSlot(XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_PATIENT_ID,
                             String.format("%s%s", commonHeader.getIhiNumber(), XDSConstants.IHI_SUFFIX)));
         }
@@ -513,49 +513,49 @@ public final class XDSMapper {
                 authors.add(author.toXCNFormatString());
             }
 
-            query.getSlots().add(
+            query.getSlot().add(
                     XDSFactory.createQuerySlot(XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_AUTHOR_PERSON,
                             authors));
         }
 
         // queryParams.documentTypeCodes -> $XDSDocumentEntryTypeCode(O,M)
         if (queryParams.hasDocumentTypes()) {
-            query.getSlots().addAll(
+            query.getSlot().addAll(
                     XDSFactory.createQuerySlots(XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_TYPE_CODE,
                             queryParams.getDocumentTypes()));
         }
 
         // queryParams.documentTypeCodes -> $XDSDocumentEntryClassCode(O,M)
         if (queryParams.hasDocumentClasses()) {
-            query.getSlots().addAll(
+            query.getSlot().addAll(
                     XDSFactory.createQuerySlots(XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_CLASS_CODE,
                             queryParams.getDocumentClasses()));
         }
 
         // queryParams.templateIds -> $XDSDocumentEntryFormatCode(O,M)
         if (queryParams.hasTemplateIds()) {
-            query.getSlots().addAll(
+            query.getSlot().addAll(
                     XDSFactory.createQuerySlots(XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_FORMAT_CODE,
                             queryParams.getTemplateIds()));
         }
 
         // queryParams.documentCreationTimeFrom -> $XDSDocumentEntryCreationTimeFrom(O)
         if (queryParams.getDocumentCreationTimeFrom() != null) {
-            query.getSlots().add(
+            query.getSlot().add(
                     XDSFactory.createSlot(XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_CREATION_TIME_FROM,
                             queryParams.getDocumentCreationTimeFrom()));
         }
 
         // queryParams.documentCreationTimeTo -> $XDSDocumentEntryCreationTimeTo(O)
         if (queryParams.getDocumentCreationTimeTo() != null) {
-            query.getSlots().add(
+            query.getSlot().add(
                     XDSFactory.createSlot(XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_CREATION_TIME_TO,
                             queryParams.getDocumentCreationTimeTo()));
         }
 
         // queryParams.serviceStartTimeFrom -> $XDSDocumentEntryServiceStartTimeFrom(O)
         if (queryParams.getServiceStartTimeFrom() != null) {
-            query.getSlots().add(
+            query.getSlot().add(
                     XDSFactory.createSlot(
                             XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_SERVICE_START_TIME_FROM,
                             queryParams.getServiceStartTimeFrom()));
@@ -563,14 +563,14 @@ public final class XDSMapper {
 
         // queryParams.serviceStartTimeTo -> $XDSDocumentEntryServiceStartTimeTo(O)
         if (queryParams.getServiceStartTimeTo() != null) {
-            query.getSlots().add(
+            query.getSlot().add(
                     XDSFactory.createSlot(XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_SERVICE_START_TIME_TO,
                             queryParams.getServiceStartTimeTo()));
         }
 
         // queryParams.serviceStopTimeFrom -> $XDSDocumentEntryServiceStopTimeFrom(O)
         if (queryParams.getServiceStopTimeFrom() != null) {
-            query.getSlots().add(
+            query.getSlot().add(
                     XDSFactory.createSlot(
                             XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_SERVICE_STOP_TIME_FROM,
                             queryParams.getServiceStopTimeFrom()));
@@ -578,14 +578,14 @@ public final class XDSMapper {
 
         // queryParams.serviceStopTimeTo -> $XDSDocumentEntryServiceStopTimeTo(O)
         if (queryParams.getServiceStopTimeTo() != null) {
-            query.getSlots().add(
+            query.getSlot().add(
                     XDSFactory.createSlot(XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_SERVICE_STOP_TIME_TO,
                             queryParams.getServiceStopTimeTo()));
         }
 
         // queryParams.healthcareFacilityTypes -> $XDSDocumentEntryHealthcareFacilityTypeCode(O,M)
         if (queryParams.hasHealthcareFacilityTypes()) {
-            query.getSlots().addAll(
+            query.getSlot().addAll(
                     XDSFactory.createQuerySlots(
                             XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_HEALTHCARE_FACILITY_TYPE_CODE,
                             queryParams.getHealthcareFacilityTypes()));
@@ -593,14 +593,14 @@ public final class XDSMapper {
 
         // queryParams.clinicalSpecialties -> $XDSDocumentEntryPracticeSettingCode(O,M)
         if (queryParams.hasClinicalSpecialties()) {
-            query.getSlots().addAll(
+            query.getSlot().addAll(
                     XDSFactory.createQuerySlots(XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_PRACTICE_SETTING_CODE,
                             queryParams.getClinicalSpecialties()));
         }
 
         // queryParams.keywords -> $XDSDocumentEntryEventCodeList(O,M)
         if (queryParams.hasKeywords()) {
-            query.getSlots().add(
+            query.getSlot().add(
                     XDSFactory.createQuerySlot(XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_EVENT_CODE_LIST,
                             queryParams.getKeywords()));
         }
@@ -611,7 +611,7 @@ public final class XDSMapper {
             for (DocumentStatus status : queryParams.getStatuses()) {
                 statusCodes.add(status.getCode());
             }
-            query.getSlots().add(
+            query.getSlot().add(
                     XDSFactory.createQuerySlot(XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_STATUS,
                             statusCodes));
         }
@@ -636,7 +636,7 @@ public final class XDSMapper {
         AdhocQueryType query = queryRequest.getAdhocQuery();
 
         // commonHeader.ihiNumber -> $XDSDocumentEntryPatientId(R)
-        String patientId = getQuerySlotValue(query.getSlots(),
+        String patientId = getQuerySlotValue(query.getSlot(),
                 XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_PATIENT_ID);
         Validate.notEmpty(
                 patientId,
@@ -654,7 +654,7 @@ public final class XDSMapper {
         }
 
         // queryParams.authorIndividuals -> $XDSDocumentEntryAuthorPerson(O,M)
-        List<String> authorIndividuals = getQuerySlotValues(query.getSlots(),
+        List<String> authorIndividuals = getQuerySlotValues(query.getSlot(),
                 XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_AUTHOR_PERSON);
         if (!authorIndividuals.isEmpty()) {
             for (String a : authorIndividuals) {
@@ -664,84 +664,84 @@ public final class XDSMapper {
         }
 
         // queryParams.documentTypes -> $XDSDocumentEntryClassCode(O,M)
-        List<CodedValue> documentTypeCodes = getQuerySlotCodedValues(query.getSlots(),
+        List<CodedValue> documentTypeCodes = getQuerySlotCodedValues(query.getSlot(),
                 XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_CLASS_CODE);
         if (!documentTypeCodes.isEmpty()) {
             queryParams.getDocumentTypes().addAll(documentTypeCodes);
         }
 
         // queryParams.templateIds -> $XDSDocumentEntryFormatCode(O,M)
-        List<CodedValue> templateIds = getQuerySlotCodedValues(query.getSlots(),
+        List<CodedValue> templateIds = getQuerySlotCodedValues(query.getSlot(),
                 XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_FORMAT_CODE);
         if (!templateIds.isEmpty()) {
             queryParams.getTemplateIds().addAll(templateIds);
         }
 
         // queryParams.documentCreationTimeFrom -> $XDSDocumentEntryCreationTimeFrom(O)
-        String documentCreationTimeFrom = getQuerySlotDateTimeValue(query.getSlots(),
+        String documentCreationTimeFrom = getQuerySlotDateTimeValue(query.getSlot(),
                 XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_CREATION_TIME_FROM);
         if (documentCreationTimeFrom != null) {
             queryParams.setDocumentCreationTimeFrom(documentCreationTimeFrom);
         }
 
         // queryParams.documentCreationTimeTo -> $XDSDocumentEntryCreationTimeTo(O)
-        String documentCreationTimeTo = getQuerySlotDateTimeValue(query.getSlots(),
+        String documentCreationTimeTo = getQuerySlotDateTimeValue(query.getSlot(),
                 XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_CREATION_TIME_TO);
         if (documentCreationTimeTo != null) {
             queryParams.setDocumentCreationTimeTo(documentCreationTimeTo);
         }
 
         // queryParams.serviceStartTimeFrom -> $XDSDocumentEntryServiceStartTimeFrom(O)
-        String serviceStartTimeFrom = getQuerySlotDateTimeValue(query.getSlots(),
+        String serviceStartTimeFrom = getQuerySlotDateTimeValue(query.getSlot(),
                 XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_SERVICE_START_TIME_FROM);
         if (serviceStartTimeFrom != null) {
             queryParams.setServiceStartTimeFrom(serviceStartTimeFrom);
         }
 
         // queryParams.serviceStartTimeTo -> $XDSDocumentEntryServiceStartTimeTo(O)
-        String serviceStartTimeTo = getQuerySlotDateTimeValue(query.getSlots(),
+        String serviceStartTimeTo = getQuerySlotDateTimeValue(query.getSlot(),
                 XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_SERVICE_START_TIME_TO);
         if (serviceStartTimeTo != null) {
             queryParams.setServiceStartTimeTo(serviceStartTimeTo);
         }
 
         // queryParams.serviceStopTimeFrom -> $XDSDocumentEntryServiceStopTimeFrom(O)
-        String serviceStopTimeFrom = getQuerySlotDateTimeValue(query.getSlots(),
+        String serviceStopTimeFrom = getQuerySlotDateTimeValue(query.getSlot(),
                 XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_SERVICE_STOP_TIME_FROM);
         if (serviceStopTimeFrom != null) {
             queryParams.setServiceStopTimeFrom(serviceStopTimeFrom);
         }
 
         // queryParams.serviceStopTimeTo -> $XDSDocumentEntryServiceStopTimeTo(O)
-        String serviceStopTimeTo = getQuerySlotDateTimeValue(query.getSlots(),
+        String serviceStopTimeTo = getQuerySlotDateTimeValue(query.getSlot(),
                 XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_SERVICE_STOP_TIME_TO);
         if (serviceStopTimeTo != null) {
             queryParams.setServiceStopTimeTo(serviceStopTimeTo);
         }
 
         // queryParams.healthcareFacilityTypes -> $XDSDocumentEntryHealthcareFacilityTypeCode(O,M)
-        List<CodedValue> healthcareFacilityTypes = getQuerySlotCodedValues(query.getSlots(),
+        List<CodedValue> healthcareFacilityTypes = getQuerySlotCodedValues(query.getSlot(),
                 XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_HEALTHCARE_FACILITY_TYPE_CODE);
         if (!healthcareFacilityTypes.isEmpty()) {
             queryParams.getHealthcareFacilityTypes().addAll(healthcareFacilityTypes);
         }
 
         // queryParams.clinicalSpecialties -> $XDSDocumentEntryPracticeSettingCode(O,M)
-        List<CodedValue> clinicalSpecialties = getQuerySlotCodedValues(query.getSlots(),
+        List<CodedValue> clinicalSpecialties = getQuerySlotCodedValues(query.getSlot(),
                 XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_PRACTICE_SETTING_CODE);
         if (!clinicalSpecialties.isEmpty()) {
             queryParams.getClinicalSpecialties().addAll(clinicalSpecialties);
         }
 
         // queryParams.keywords -> $XDSDocumentEntryEventCodeList(O,M)
-        List<String> keywords = getQuerySlotValues(query.getSlots(),
+        List<String> keywords = getQuerySlotValues(query.getSlot(),
                 XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_EVENT_CODE_LIST);
         if (!keywords.isEmpty()) {
             queryParams.getKeywords().addAll(keywords);
         }
 
         // queryParams.status -> $XDSDocumentEntryStatus(R,M)
-        List<String> statusCodes = getQuerySlotValues(query.getSlots(),
+        List<String> statusCodes = getQuerySlotValues(query.getSlot(),
                 XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_STATUS);
         Validate.notEmpty(statusCodes, "'" + XDSConstants.QUERY_PARAM_DOCUMENT_ENTRY_STATUS + "' must be specified in the AdhocQuery.");
         for (String statusCode : statusCodes) {
@@ -753,19 +753,19 @@ public final class XDSMapper {
 
     /**
      * Extract the {@link SubmissionMetadata} from the XDSSubmissionEntry objects
-     * in the {@link RegistryObjectList}.
+     * in the {@link RegistryObjectListType}.
      *
-     * @param registryObjectList A {@link RegistryObjectList} containing zero or more
+     * @param registryObjectList A {@link RegistryObjectListType} containing zero or more
      *                           XDSSubmissionEntry extrinsic objects.
      * @return The {@link SubmissionMetadata} extracted from the
-     * XDSSubmissionEntry objects in the {@link RegistryObjectList}.
+     * XDSSubmissionEntry objects in the {@link RegistryObjectListType}.
      */
-    public static List<SubmissionMetadata> getSubmissionMetadata(RegistryObjectList registryObjectList) {
+    public static List<SubmissionMetadata> getSubmissionMetadata(RegistryObjectListType registryObjectList) {
         Validate.notNull(registryObjectList, "'registryObjectList' must be specified.");
 
         List<SubmissionMetadata> metadata = new ArrayList<>();
 
-        for (JAXBElement<? extends IdentifiableType> identifiable : registryObjectList.getIdentifiables()) {
+        for (JAXBElement<? extends IdentifiableType> identifiable : registryObjectList.getIdentifiable()) {
             if (identifiable.getValue() instanceof RegistryPackageType) {
                 RegistryPackageType rp = (RegistryPackageType) identifiable.getValue();
                 metadata.add(XDSMapper.getSubmissionMetadata(rp));
@@ -787,7 +787,7 @@ public final class XDSMapper {
         SubmissionMetadata sm = new SubmissionMetadata();
 
         // submissionTime
-        sm.setSubmissionTime(getSlotDate(registryPackage.getSlots(), XDSConstants.SUBMISSION_TIME_SLOT));
+        sm.setSubmissionTime(getSlotDate(registryPackage.getSlot(), XDSConstants.SUBMISSION_TIME_SLOT));
 
         // comments
         sm.setComments(getString(registryPackage.getDescription()));
@@ -805,8 +805,8 @@ public final class XDSMapper {
         return null;
     }
 
-    private static Slot getSlot(List<Slot> slots, String slotName) {
-        for (Slot slot : slots) {
+    private static SlotType1 getSlot(List<SlotType1> slots, String slotName) {
+        for (SlotType1 slot : slots) {
             if (StringUtils.equals(slot.getName(), slotName)) {
                 return slot;
             }
@@ -814,24 +814,24 @@ public final class XDSMapper {
         return null;
     }
 
-    private static String getSlotValue(List<Slot> slots, String slotName) {
-        Slot slot = getSlot(slots, slotName);
+    private static String getSlotValue(List<SlotType1> slots, String slotName) {
+        SlotType1 slot = getSlot(slots, slotName);
         if (slot != null) {
             return getSlotValue(slot);
         }
         return null;
     }
 
-    private static String getSlotValue(Slot slot) {
-        if ((slot.getValueList() != null) && !slot.getValueList().getValues().isEmpty()) {
-            return slot.getValueList().getValues().get(0);
+    private static String getSlotValue(SlotType1 slot) {
+        if ((slot.getValueList() != null) && !slot.getValueList().getValue().isEmpty()) {
+            return slot.getValueList().getValue().get(0);
         }
         return null;
     }
 
-    private static List<String> getQuerySlotValues(Slot slot) {
+    private static List<String> getQuerySlotValues(SlotType1 slot) {
         List<String> values = new ArrayList<>();
-        for (String queryValue : slot.getValueList().getValues()) {
+        for (String queryValue : slot.getValueList().getValue()) {
             if (StringUtils.isNotBlank(queryValue)) {
                 if (queryValue.startsWith("('")) {
                     queryValue = queryValue.substring(2);
@@ -845,17 +845,17 @@ public final class XDSMapper {
         return values;
     }
 
-    private static List<String> getQuerySlotValues(List<Slot> slots, String slotName) {
-        Slot slot = getSlot(slots, slotName);
+    private static List<String> getQuerySlotValues(List<SlotType1> slots, String slotName) {
+        SlotType1 slot = getSlot(slots, slotName);
         if (slot != null) {
             return getQuerySlotValues(slot);
         }
         return Collections.emptyList();
     }
 
-    private static List<CodedValue> getQuerySlotCodedValues(List<Slot> slots, String slotName) {
-        Slot valueSlot = getSlot(slots, slotName);
-        Slot codeSystemSlot = getSlot(slots, slotName + "Scheme");
+    private static List<CodedValue> getQuerySlotCodedValues(List<SlotType1> slots, String slotName) {
+        SlotType1 valueSlot = getSlot(slots, slotName);
+        SlotType1 codeSystemSlot = getSlot(slots, slotName + "Scheme");
 
         List<CodedValue> codedValues = Collections.emptyList();
 
@@ -878,7 +878,7 @@ public final class XDSMapper {
         return codedValues;
     }
 
-    private static String getQuerySlotValue(List<Slot> slots, String slotName) {
+    private static String getQuerySlotValue(List<SlotType1> slots, String slotName) {
         List<String> values = getQuerySlotValues(slots, slotName);
         if (!values.isEmpty()) {
             return values.get(0);
@@ -886,7 +886,7 @@ public final class XDSMapper {
         return null;
     }
 
-    private static String getQuerySlotDateTimeValue(List<Slot> slots, String slotName) {
+    private static String getQuerySlotDateTimeValue(List<SlotType1> slots, String slotName) {
         String value = getQuerySlotValue(slots, slotName);
         if (StringUtils.isNotBlank(value)) {
             return DateUtils.toUtcDate(value);
@@ -894,7 +894,7 @@ public final class XDSMapper {
         return null;
     }
 
-    private static Date getSlotDate(List<Slot> slots, String slotName) {
+    private static Date getSlotDate(List<SlotType1> slots, String slotName) {
         String strValue = getSlotValue(slots, slotName);
         if (strValue != null) {
             return MetadataUtils.parseDate(strValue);
@@ -905,7 +905,7 @@ public final class XDSMapper {
     private static String getString(InternationalStringType internationalString) {
         StringBuilder sb = new StringBuilder();
         if (internationalString != null) {
-            for (LocalizedString ls : internationalString.getLocalizedStrings()) {
+            for (LocalizedStringType ls : internationalString.getLocalizedString()) {
                 if (sb.length() > 0) {
                     sb.append(LINE_SEPARATOR);
                 }

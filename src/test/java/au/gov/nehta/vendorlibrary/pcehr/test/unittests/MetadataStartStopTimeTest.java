@@ -79,10 +79,10 @@ public class MetadataStartStopTimeTest {
     private static PCEHRHeader getHeader() {
         return MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003618334357646", null, "Ross John", false),
+                        MessageComponents.createUser("HPII", "8003618334357646", null, "Ross John", false),
                         "8003601243017717",
                         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        "CIS",
                         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
                 );
     }

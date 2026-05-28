@@ -16,10 +16,9 @@ package au.gov.nehta.vendorlibrary.pcehr.test.utils;
 import au.gov.nehta.vendorlibrary.pcehr.clients.common.type.SubmissionMetadata;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader.AccessingOrganisation;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader.ClientSystemType;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader.ProductType;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader.User;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader.User.IDType;
+import au.gov.nehta.vendorlibrary.pcehr.test.utils.DefaultValues;
 import org.apache.commons.lang3.time.DateUtils;
 
 import java.util.Calendar;
@@ -32,7 +31,7 @@ public final class TestDataFactory {
 
     public static PCEHRHeader createValidPCEHRHeader() {
         User user = new User();
-        user.setIDType(IDType.HPII);
+        user.setIDType(DefaultValues.ID_TYPE);
         user.setID("{ID}");
         user.setUserName("{UserName}");
 
@@ -49,7 +48,7 @@ public final class TestDataFactory {
 
         PCEHRHeader header = new PCEHRHeader();
         header.setIhiNumber("{IHINumber}");
-        header.setClientSystemType(ClientSystemType.OTHER);
+        header.setClientSystemType(DefaultValues.CLIENT_SYSTEM_TYPE);
         header.setUser(user);
         header.setProductType(productType);
         header.setAccessingOrganisation(org);

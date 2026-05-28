@@ -26,7 +26,7 @@ import oasis.names.tc.ebxml_regrep.xsd.rim._3.*;
 import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryError;
 import org.junit.*;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 import java.util.Date;
 import java.util.List;
 
@@ -66,18 +66,18 @@ public class GetDocumentListClientTest {
 
         PCEHRHeader request = MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                         "8003603459803467",
                         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        "CIS",
                         MessageComponents.createAccessingOrganisation(/*"8003620833337558 "8003628233352432"*/ "8003628233352432", "Medicare305", null)
                 );
 
 
         AdhocQueryResponse response = client.getDocumentList(request, queryParams);
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObjects().size() > 0);
-        List<ExtrinsicObjectType> docs = response.getRegistryObjectList().getExtrinsicObjects();
+        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObject().size() > 0);
+        List<ExtrinsicObjectType> docs = response.getRegistryObjectList().getExtrinsicObject();
         for (ExtrinsicObjectType doc : docs) {
             Assert.assertEquals(XDSConstants.EOT_STATUS_APPROVED, doc.getStatus());
         }
@@ -92,26 +92,26 @@ public class GetDocumentListClientTest {
 
         PCEHRHeader request = MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                         "8003601243017691",
                         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        "CIS",
                         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
                 );
 
 
         AdhocQueryResponse response = client.getDocumentList(request, queryParams);
 
-        ExtrinsicObjectType first = response.getRegistryObjectList().getExtrinsicObjects().get(0);
+        ExtrinsicObjectType first = response.getRegistryObjectList().getExtrinsicObject().get(0);
 
         Date serviceStartTime = null;
 
 
-        for (Slot slot : first.getSlots()) {
+        for (SlotType1 slot : first.getSlot()) {
 
             //get the correct Slot
             if (XDSConstants.SERVICE_START_TIME_SLOT.equals(slot.getName())) {
-                List<String> values = slot.getValueList().getValues();
+                List<String> values = slot.getValueList().getValue();
 
                 if (!values.isEmpty()) {
                     //parse the date
@@ -131,8 +131,8 @@ public class GetDocumentListClientTest {
 
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObjects().size() > 0);
-        List<ExtrinsicObjectType> docs = response.getRegistryObjectList().getExtrinsicObjects();
+        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObject().size() > 0);
+        List<ExtrinsicObjectType> docs = response.getRegistryObjectList().getExtrinsicObject();
         for (ExtrinsicObjectType doc : docs) {
             Assert.assertEquals(XDSConstants.EOT_STATUS_APPROVED, doc.getStatus());
         }
@@ -149,18 +149,18 @@ public class GetDocumentListClientTest {
 
         PCEHRHeader request = MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                         "8003603459803467",
                         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        "CIS",
                         MessageComponents.createAccessingOrganisation(/*"8003620833337558"*/ "8003628233352432", "Medicare305", null)
                 );
 
 
         AdhocQueryResponse response = client.getDocumentList(request, queryParams);
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        Assert.assertEquals(0, response.getRegistryObjectList().getExtrinsicObjects().size());
-        List<ExtrinsicObjectType> docs = response.getRegistryObjectList().getExtrinsicObjects();
+        Assert.assertEquals(0, response.getRegistryObjectList().getExtrinsicObject().size());
+        List<ExtrinsicObjectType> docs = response.getRegistryObjectList().getExtrinsicObject();
         for (ExtrinsicObjectType doc : docs) {
             Assert.assertEquals(XDSConstants.EOT_STATUS_APPROVED, doc.getStatus());
         }
@@ -181,7 +181,7 @@ public class GetDocumentListClientTest {
         if ("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure".equals(response.getStatus())) {
             String highestSeverity = response.getRegistryErrorList().getHighestSeverity();
             System.out.println(highestSeverity);
-            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError e : registryErrors) {
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -193,7 +193,7 @@ public class GetDocumentListClientTest {
         debugOut(response);
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        Assert.assertEquals(2, response.getRegistryObjectList().getExtrinsicObjects().size());
+        Assert.assertEquals(2, response.getRegistryObjectList().getExtrinsicObject().size());
     }
 
     @Test
@@ -211,7 +211,7 @@ public class GetDocumentListClientTest {
         if ("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure".equals(response.getStatus())) {
             String highestSeverity = response.getRegistryErrorList().getHighestSeverity();
             System.out.println(highestSeverity);
-            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError e : registryErrors) {
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -223,7 +223,7 @@ public class GetDocumentListClientTest {
         debugOut(response);
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        Assert.assertEquals(5, response.getRegistryObjectList().getExtrinsicObjects().size());
+        Assert.assertEquals(5, response.getRegistryObjectList().getExtrinsicObject().size());
     }
 
     @Test
@@ -241,7 +241,7 @@ public class GetDocumentListClientTest {
         if ("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure".equals(response.getStatus())) {
             String highestSeverity = response.getRegistryErrorList().getHighestSeverity();
             System.out.println(highestSeverity);
-            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError e : registryErrors) {
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -253,7 +253,7 @@ public class GetDocumentListClientTest {
         debugOut(response);
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObjects().size() > 0);
+        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObject().size() > 0);
     }
 
 
@@ -272,7 +272,7 @@ public class GetDocumentListClientTest {
         if ("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure".equals(response.getStatus())) {
             String highestSeverity = response.getRegistryErrorList().getHighestSeverity();
             System.out.println(highestSeverity);
-            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError e : registryErrors) {
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -284,7 +284,7 @@ public class GetDocumentListClientTest {
         debugOut(response);
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        Assert.assertEquals(2, response.getRegistryObjectList().getExtrinsicObjects().size());
+        Assert.assertEquals(2, response.getRegistryObjectList().getExtrinsicObject().size());
     }
 
     @Test
@@ -302,7 +302,7 @@ public class GetDocumentListClientTest {
         if ("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure".equals(response.getStatus())) {
             String highestSeverity = response.getRegistryErrorList().getHighestSeverity();
             System.out.println(highestSeverity);
-            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError e : registryErrors) {
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -314,7 +314,7 @@ public class GetDocumentListClientTest {
         debugOut(response);
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        Assert.assertEquals(5, response.getRegistryObjectList().getExtrinsicObjects().size());
+        Assert.assertEquals(5, response.getRegistryObjectList().getExtrinsicObject().size());
     }
 
 
@@ -333,7 +333,7 @@ public class GetDocumentListClientTest {
         if ("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure".equals(response.getStatus())) {
             String highestSeverity = response.getRegistryErrorList().getHighestSeverity();
             System.out.println(highestSeverity);
-            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError e : registryErrors) {
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -345,7 +345,7 @@ public class GetDocumentListClientTest {
         debugOut(response);
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObjects().size() > 0);
+        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObject().size() > 0);
     }
 
 
@@ -364,7 +364,7 @@ public class GetDocumentListClientTest {
         if ("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure".equals(response.getStatus())) {
             String highestSeverity = response.getRegistryErrorList().getHighestSeverity();
             System.out.println(highestSeverity);
-            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError e : registryErrors) {
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -376,7 +376,7 @@ public class GetDocumentListClientTest {
         debugOut(response);
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        Assert.assertEquals(4, response.getRegistryObjectList().getExtrinsicObjects().size());
+        Assert.assertEquals(4, response.getRegistryObjectList().getExtrinsicObject().size());
     }
 
     @Test
@@ -394,7 +394,7 @@ public class GetDocumentListClientTest {
         if ("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure".equals(response.getStatus())) {
             String highestSeverity = response.getRegistryErrorList().getHighestSeverity();
             System.out.println(highestSeverity);
-            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError e : registryErrors) {
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -406,7 +406,7 @@ public class GetDocumentListClientTest {
         debugOut(response);
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObjects().size() > 0);
+        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObject().size() > 0);
     }
 
     @Test
@@ -423,7 +423,7 @@ public class GetDocumentListClientTest {
         if ("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure".equals(response.getStatus())) {
             String highestSeverity = response.getRegistryErrorList().getHighestSeverity();
             System.out.println(highestSeverity);
-            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError e : registryErrors) {
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -435,7 +435,7 @@ public class GetDocumentListClientTest {
         debugOut(response);
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObjects().size() > 0);
+        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObject().size() > 0);
     }
 
 
@@ -453,7 +453,7 @@ public class GetDocumentListClientTest {
         if ("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure".equals(response.getStatus())) {
             String highestSeverity = response.getRegistryErrorList().getHighestSeverity();
             System.out.println(highestSeverity);
-            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError e : registryErrors) {
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -465,7 +465,7 @@ public class GetDocumentListClientTest {
         debugOut(response);
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObjects().size() > 0);
+        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObject().size() > 0);
     }
 
     @Test
@@ -483,7 +483,7 @@ public class GetDocumentListClientTest {
         if ("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure".equals(response.getStatus())) {
             String highestSeverity = response.getRegistryErrorList().getHighestSeverity();
             System.out.println(highestSeverity);
-            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError e : registryErrors) {
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -495,7 +495,7 @@ public class GetDocumentListClientTest {
         debugOut(response);
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        //  Assert.assertTrue( response.getRegistryObjectList().getExtrinsicObjects().size() >0 );
+        //  Assert.assertTrue( response.getRegistryObjectList().getExtrinsicObject().size() >0 );
 
     }
 
@@ -515,7 +515,7 @@ public class GetDocumentListClientTest {
         if ("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure".equals(response.getStatus())) {
             String highestSeverity = response.getRegistryErrorList().getHighestSeverity();
             System.out.println(highestSeverity);
-            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError e : registryErrors) {
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -527,8 +527,8 @@ public class GetDocumentListClientTest {
         debugOut(response);
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObjects().size() > 0);
-        System.out.println(response.getRegistryObjectList().getExtrinsicObjects().size());
+        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObject().size() > 0);
+        System.out.println(response.getRegistryObjectList().getExtrinsicObject().size());
     }
 
     @Ignore // EntryEventCode not supported
@@ -547,7 +547,7 @@ public class GetDocumentListClientTest {
         if ("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure".equals(response.getStatus())) {
             String highestSeverity = response.getRegistryErrorList().getHighestSeverity();
             System.out.println(highestSeverity);
-            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError e : registryErrors) {
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -559,8 +559,8 @@ public class GetDocumentListClientTest {
         debugOut(response);
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObjects().size() > 0);
-        System.out.println(response.getRegistryObjectList().getExtrinsicObjects().size());
+        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObject().size() > 0);
+        System.out.println(response.getRegistryObjectList().getExtrinsicObject().size());
     }
 
     @Test
@@ -578,7 +578,7 @@ public class GetDocumentListClientTest {
         if ("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure".equals(response.getStatus())) {
             String highestSeverity = response.getRegistryErrorList().getHighestSeverity();
             System.out.println(highestSeverity);
-            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError e : registryErrors) {
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -590,8 +590,8 @@ public class GetDocumentListClientTest {
         debugOut(response);
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObjects().size() > 0);
-        System.out.println(response.getRegistryObjectList().getExtrinsicObjects().size());
+        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObject().size() > 0);
+        System.out.println(response.getRegistryObjectList().getExtrinsicObject().size());
     }
 
     @Test
@@ -609,7 +609,7 @@ public class GetDocumentListClientTest {
         if ("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure".equals(response.getStatus())) {
             String highestSeverity = response.getRegistryErrorList().getHighestSeverity();
             System.out.println(highestSeverity);
-            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError e : registryErrors) {
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -621,8 +621,8 @@ public class GetDocumentListClientTest {
         debugOut(response);
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObjects().size() > 0);
-        System.out.println(response.getRegistryObjectList().getExtrinsicObjects().size());
+        Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObject().size() > 0);
+        System.out.println(response.getRegistryObjectList().getExtrinsicObject().size());
     }
 
     @Test
@@ -640,7 +640,7 @@ public class GetDocumentListClientTest {
         if ("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure".equals(response.getStatus())) {
             String highestSeverity = response.getRegistryErrorList().getHighestSeverity();
             System.out.println(highestSeverity);
-            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError e : registryErrors) {
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -652,8 +652,8 @@ public class GetDocumentListClientTest {
         debugOut(response);
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        // Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObjects().size()>0 );
-        System.out.println(response.getRegistryObjectList().getExtrinsicObjects().size());
+        // Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObject().size()>0 );
+        System.out.println(response.getRegistryObjectList().getExtrinsicObject().size());
     }
 
 
@@ -673,7 +673,7 @@ public class GetDocumentListClientTest {
         if ("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure".equals(response.getStatus())) {
             String highestSeverity = response.getRegistryErrorList().getHighestSeverity();
             System.out.println(highestSeverity);
-            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError e : registryErrors) {
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -685,8 +685,8 @@ public class GetDocumentListClientTest {
         debugOut(response);
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        // Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObjects().size()>0 );
-        System.out.println(response.getRegistryObjectList().getExtrinsicObjects().size());
+        // Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObject().size()>0 );
+        System.out.println(response.getRegistryObjectList().getExtrinsicObject().size());
     }
 
     @Test
@@ -705,7 +705,7 @@ public class GetDocumentListClientTest {
         if ("urn:oasis:names:tc:ebxml-regrep:ResponseStatusType:Failure".equals(response.getStatus())) {
             String highestSeverity = response.getRegistryErrorList().getHighestSeverity();
             System.out.println(highestSeverity);
-            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> registryErrors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError e : registryErrors) {
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -717,8 +717,8 @@ public class GetDocumentListClientTest {
         debugOut(response);
 
         Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-        Assert.assertEquals(0, response.getRegistryObjectList().getExtrinsicObjects().size());
-        System.out.println(response.getRegistryObjectList().getExtrinsicObjects().size());
+        Assert.assertEquals(0, response.getRegistryObjectList().getExtrinsicObject().size());
+        System.out.println(response.getRegistryObjectList().getExtrinsicObject().size());
     }
 
 
@@ -735,10 +735,10 @@ public class GetDocumentListClientTest {
     public PCEHRHeader getKnownIHIHeader() {
         PCEHRHeader request = MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                         "8003606789133695",
                         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        "CIS",
                         MessageComponents.createAccessingOrganisation(/*"8003620833337558"*/ "8003628233352432", "Medicare305", null)
                 );
         return request;
@@ -748,39 +748,39 @@ public class GetDocumentListClientTest {
     public void debugOut(AdhocQueryResponse response) {
         if (null != response.getResponseSlotList()) {
             System.out.println("===SlotList===");
-            List<Slot> slots = response.getResponseSlotList().getSlots();
+            List<SlotType1> slots = response.getResponseSlotList().getSlot();
             System.out.println("slots:" + slots.size());
-            for (Slot s : slots) {
+            for (SlotType1 s : slots) {
                 System.out.println(s.getName() + " " + s.getSlotType());
             }
         }
 
         System.out.println("===RegistryObjectList===");
-        List<RegistryPackageType> packages = response.getRegistryObjectList().getRegistryPackages();
+        List<RegistryPackageType> packages = response.getRegistryObjectList().getRegistryPackage();
         System.out.println("packages:" + packages.size());
         for (RegistryPackageType s : packages) {
             System.out.println(s.getName() + " " + s.getStatus());
         }
-        List<ClassificationType> classes = response.getRegistryObjectList().getClassifications();
+        List<ClassificationType> classes = response.getRegistryObjectList().getClassification();
         System.out.println("classes:" + classes.size());
         for (ClassificationType s : classes) {
             System.out.println(s.getStatus() + " " + s.getClassificationNode());
         }
 
-        List<AssociationType1> ass = response.getRegistryObjectList().getAssociations();
+        List<AssociationType1> ass = response.getRegistryObjectList().getAssociation();
         System.out.println("associations:" + ass.size());
         for (AssociationType1 s : ass) {
             System.out.println(s.getStatus() + " " + s.getAssociationType());
         }
 
-        List<ExtrinsicObjectType> ex = response.getRegistryObjectList().getExtrinsicObjects();
+        List<ExtrinsicObjectType> ex = response.getRegistryObjectList().getExtrinsicObject();
         System.out.println("ExtrinsicObjectType:" + ex.size());
         for (ExtrinsicObjectType s : ex) {
-            if (s.getName() != null && s.getName().getLocalizedStrings().size() > 0)
-                System.out.println(s.getStatus() + " " + s.getName().getLocalizedStrings().get(0).getValue());
+            if (s.getName() != null && s.getName().getLocalizedString().size() > 0)
+                System.out.println(s.getStatus() + " " + s.getName().getLocalizedString().get(0).getValue());
         }
 
-        List<JAXBElement<? extends IdentifiableType>> ids = response.getRegistryObjectList().getIdentifiables();
+        List<JAXBElement<? extends IdentifiableType>> ids = response.getRegistryObjectList().getIdentifiable();
         System.out.println("IdentifiableType:" + ids.size());
         for (JAXBElement<? extends IdentifiableType> s : ids) {
             System.out.println(s.getName() + " " + s.getValue().getId());
@@ -788,7 +788,7 @@ public class GetDocumentListClientTest {
 
         System.out.println("=== errors === ");
         if (null != response.getRegistryErrorList()) {
-            List<RegistryError> errors = response.getRegistryErrorList().getRegistryErrors();
+            List<RegistryError> errors = response.getRegistryErrorList().getRegistryError();
             for (RegistryError s : errors) {
                 System.out.println(s.getErrorCode() + " " + s.getLocation());
             }

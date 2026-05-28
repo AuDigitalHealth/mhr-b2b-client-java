@@ -102,6 +102,6 @@ public class GetIndividualDetailsViewSample {
 
         // Get the individual.
         Individual individual = response.getIndividual();
-        System.out.println("Got " + individual.getName().getGivenNames().get(0) + individual.getName().getFamilyName());
+        System.out.println("Got " + individual.getName().getGivenName().get(0) + individual.getName().getFamilyName());
     }
 }

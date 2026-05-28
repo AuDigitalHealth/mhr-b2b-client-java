@@ -39,10 +39,10 @@ public class SearchTemplateClientTest {
         metadata.setName("TemplateFormatType");
         metadata.setValue("CDA");
         TemplateMetadataType templateMetadata = new TemplateMetadataType();
-        templateMetadata.getMetadatas().add(metadata);
+        templateMetadata.getMetadata().add(metadata);
         SearchTemplateResponse response = client.searchTemplate(AllTests.getDefaultRequest(), null, templateMetadata);
         Assert.assertEquals("PCEHR_SUCCESS", response.getResponseStatus().getCode());
         Assert.assertEquals("SUCCESS", response.getResponseStatus().getDescription());
-        System.out.println(response.getTemplates().size());
+        System.out.println(response.getTemplate().size());
     }
 }

@@ -105,6 +105,6 @@ public class GetRepresentativeListSample {
         GetRepresentativeListResponse.PCEHRRecord.RepresentativeList representativeList = response.getPCEHRRecord().getRepresentativeList();
 
         // Get document status.
-        System.out.println("Representative List Size: " + representativeList.getRepresentatives().size());
+        System.out.println("Representative List Size: " + representativeList.getRepresentative().size());
     }
 }

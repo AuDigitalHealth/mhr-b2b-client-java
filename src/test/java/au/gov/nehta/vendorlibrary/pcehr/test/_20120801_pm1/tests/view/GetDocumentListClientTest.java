@@ -61,8 +61,8 @@ public class GetDocumentListClientTest {
     queryParams.getStatuses().add(DocumentStatus.APPROVED);
     AdhocQueryResponse response = client.getDocumentList(AllTests.getDefaultRequest(), queryParams);
     Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-    Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObjects().size() > 0);
-    List<ExtrinsicObjectType> docs = response.getRegistryObjectList().getExtrinsicObjects();
+    Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObject().size() > 0);
+    List<ExtrinsicObjectType> docs = response.getRegistryObjectList().getExtrinsicObject();
     for (ExtrinsicObjectType doc : docs) {
       Assert.assertEquals(XDSConstants.EOT_STATUS_APPROVED, doc.getStatus());
     }

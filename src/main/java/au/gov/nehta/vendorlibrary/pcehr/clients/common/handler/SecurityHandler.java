@@ -41,13 +41,13 @@ import org.w3c.dom.NodeList;
 
 import javax.security.auth.x500.X500PrivateCredential;
 import javax.xml.namespace.QName;
-import javax.xml.soap.SOAPBody;
-import javax.xml.soap.SOAPEnvelope;
-import javax.xml.soap.SOAPException;
-import javax.xml.soap.SOAPHeader;
-import javax.xml.ws.handler.MessageContext;
-import javax.xml.ws.handler.soap.SOAPHandler;
-import javax.xml.ws.handler.soap.SOAPMessageContext;
+import jakarta.xml.soap.SOAPBody;
+import jakarta.xml.soap.SOAPEnvelope;
+import jakarta.xml.soap.SOAPException;
+import jakarta.xml.soap.SOAPHeader;
+import jakarta.xml.ws.handler.MessageContext;
+import jakarta.xml.ws.handler.soap.SOAPHandler;
+import jakarta.xml.ws.handler.soap.SOAPMessageContext;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.*;
@@ -149,7 +149,7 @@ public class SecurityHandler implements SOAPHandler<SOAPMessageContext> {
      *
      * @param context the incoming / outgoing soap message context
      * @return true Always returns true.
-     * @see javax.xml.ws.handler.Handler#handleMessage(javax.xml.ws.handler.MessageContext)
+     * @see jakarta.xml.ws.handler.Handler#handleMessage(jakarta.xml.ws.handler.MessageContext)
      */
     public final boolean handleMessage(final SOAPMessageContext context) {
 
@@ -195,7 +195,7 @@ public class SecurityHandler implements SOAPHandler<SOAPMessageContext> {
      *
      * @param context the incoming / outgoing soap message context
      * @return true if the handle signature check is successful.
-     * @see javax.xml.ws.handler.Handler#handleFault(javax.xml.ws.handler.MessageContext)
+     * @see jakarta.xml.ws.handler.Handler#handleFault(jakarta.xml.ws.handler.MessageContext)
      */
     public final boolean handleFault(final SOAPMessageContext context) {
         // Verifies the inbound fault signature.
@@ -208,7 +208,7 @@ public class SecurityHandler implements SOAPHandler<SOAPMessageContext> {
      * Ignore processing of SOAP header as the primary intention is just to
      * 'Dump' the SOAP message
      *
-     * @return @see javax.xml.ws.handler.soap.SOAPHandler#getHeaders()
+     * @return @see jakarta.xml.ws.handler.soap.SOAPHandler#getHeaders()
      */
     public final Set<QName> getHeaders() {
         return null;
@@ -218,7 +218,7 @@ public class SecurityHandler implements SOAPHandler<SOAPMessageContext> {
      * Does nothing <br>
      * Not utilised for dumping SOAP message.
      *
-     * @param context @see javax.xml.ws.handler.Handler#close(javax.xml.ws.handler.MessageContext)
+     * @param context @see jakarta.xml.ws.handler.Handler#close(jakarta.xml.ws.handler.MessageContext)
      */
     public void close(final MessageContext context) {
         //Do nothing
@@ -227,7 +227,7 @@ public class SecurityHandler implements SOAPHandler<SOAPMessageContext> {
     /**
      * Signs the SOAP message parts.
      *
-     * @param context of type {@link javax.xml.ws.handler.soap.SOAPMessageContext} (Mandatory)
+     * @param context of type {@link jakarta.xml.ws.handler.soap.SOAPMessageContext} (Mandatory)
      */
     private void signBodyAndSOAPHeaders(final SOAPMessageContext context) {
 
@@ -309,7 +309,7 @@ public class SecurityHandler implements SOAPHandler<SOAPMessageContext> {
     /**
      * Helper method to retrieve the signature's document object model.
      *
-     * @param context @see javax.xml.ws.handler.Handler#close(javax.xml.ws.handler.MessageContext).
+     * @param context @see jakarta.xml.ws.handler.Handler#close(jakarta.xml.ws.handler.MessageContext).
      * @return Extracted {@link org.w3c.dom.Document} object.
      * @throws au.gov.nehta.vendorlibrary.pcehr.clients.common.exception.CertificateVerificationException thrown when signature extraction fails.
      */

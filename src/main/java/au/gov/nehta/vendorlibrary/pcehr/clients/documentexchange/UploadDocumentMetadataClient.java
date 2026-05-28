@@ -24,7 +24,7 @@ import java.util.Date;
 
 import javax.net.ssl.SSLSocketFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 import javax.xml.xpath.XPathExpressionException;
 
 import oasis.names.tc.ebxml_regrep.xsd.lcm._3.SubmitObjectsRequest;
@@ -44,7 +44,7 @@ import au.gov.nehta.vendorlibrary.pcehr.clients.common.util.MetadataUtils;
 import au.gov.nehta.vendorlibrary.pcehr.clients.common.util.XDSMapper;
 import au.gov.nehta.xsp.CertificateValidator;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.Signature;
+import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.SignatureContainerType;
 
 /**
  * A JAX-WS client to the PCEHR 'Upload Document Metadata' web service.
@@ -142,9 +142,9 @@ public final class UploadDocumentMetadataClient extends Client<DocumentRegistryP
             final CodedValue formatCode
     ) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException {
 
-        Validate.notNull(packageContent);
-        Validate.notNull(healthcareFacilityTypeCode);
-        Validate.notNull(practiceSettingTypeCode);
+        Validate.notNull(packageContent, "'packageContent' must be specified.");
+        Validate.notNull(healthcareFacilityTypeCode, "'healthcareFacilityTypeCode' must be specified.");
+        Validate.notNull(practiceSettingTypeCode, "'practiceSettingTypeCode' must be specified.");
 
         byte[] document = FileUtils.getCdaDocument(packageContent);
 
@@ -169,7 +169,7 @@ public final class UploadDocumentMetadataClient extends Client<DocumentRegistryP
                 null
         );
 
-        Holder<Signature> signatureHolder = null;
+        Holder<SignatureContainerType> signatureHolder = null;
 
         return getPort().documentRegistryRegisterDocumentSetB(
                 DateUtils.generateTimestamp(),

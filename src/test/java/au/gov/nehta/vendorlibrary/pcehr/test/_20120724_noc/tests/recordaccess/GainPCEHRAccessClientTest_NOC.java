@@ -14,7 +14,7 @@
 package au.gov.nehta.vendorlibrary.pcehr.test._20120724_noc.tests.recordaccess;
 
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetResponse;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
 
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -30,7 +30,7 @@ import javax.net.ssl.SSLSocketFactory;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.ExternalIdentifierType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.ExtrinsicObjectType;
-import oasis.names.tc.ebxml_regrep.xsd.rim._3.Slot;
+import oasis.names.tc.ebxml_regrep.xsd.rim._3.SlotType1;
 import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryError;
 
 import org.junit.After;
@@ -154,16 +154,16 @@ public class GainPCEHRAccessClientTest_NOC {
 	  
 	  PCEHRHeader request = MessageComponents.createRequest
 		      (
-		        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+		        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
 		        "8003606792133146",
 		        MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-		        PCEHRHeader.ClientSystemType.CIS,
+		        "CIS",
 		        MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
 		      );
 
 		    GainPCEHRAccess.PCEHRRecord record = MessageComponents.createGainPCEHRRecord
 		      (
-		        MessageComponents.createAuthorisationDetails(GainPCEHRAccess.PCEHRRecord.AuthorisationDetails.AccessType.EMERGENCY_ACCESS, null)
+		        MessageComponents.createAuthorisationDetails("EmergencyAccess", null)
 		      );
 
 		    HttpsURLConnection.setDefaultHostnameVerifier(
@@ -200,10 +200,10 @@ public class GainPCEHRAccessClientTest_NOC {
   @Test
   public void test_ForSterlingSystems() throws Exception {
     PCEHRHeader request = MessageComponents.createRequest(
-      MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+      MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
       "8003608166697110",//"8003604570901313",
       MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-      PCEHRHeader.ClientSystemType.CIS,
+      "CIS",
       MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
     );
     
@@ -214,14 +214,14 @@ public class GainPCEHRAccessClientTest_NOC {
 
     AdhocQueryResponse list = listclient.getDocumentList(request, queryParams);
    
-    ExtrinsicObjectType firstDocument = list.getRegistryObjectList().getExtrinsicObjects().get(0);
-	String repoId =getRepoId( firstDocument.getSlots());
+    ExtrinsicObjectType firstDocument = list.getRegistryObjectList().getExtrinsicObject().get(0);
+	String repoId =getRepoId( firstDocument.getSlot());
 	
-    String xdsUniqueId=getXDSUniqueID(firstDocument.getExternalIdentifiers());
+    String xdsUniqueId=getXDSUniqueID(firstDocument.getExternalIdentifier());
     
     GainPCEHRAccess.PCEHRRecord record = MessageComponents.createGainPCEHRRecord
     (
-    	MessageComponents.createAuthorisationDetails(GainPCEHRAccess.PCEHRRecord.AuthorisationDetails.AccessType.EMERGENCY_ACCESS, null)
+    	MessageComponents.createAuthorisationDetails("EmergencyAccess", null)
     );
     
     GainPCEHRAccessResponse gainAccess = client.gainPCEHRAccess(record, request);
@@ -232,9 +232,9 @@ public class GainPCEHRAccessClientTest_NOC {
     docRequest.setRepositoryUniqueId(repoId) ;
     
     
-    RetrieveDocumentSetResponse response = docclient.retrieveDocument(request, docRequest);
+    RetrieveDocumentSetResponseType response = docclient.retrieveDocument(request, docRequest);
     System.out.println(response.getRegistryResponse().getStatus());
-    RegistryError registryError = response.getRegistryResponse().getRegistryErrorList().getRegistryErrors().get(0);
+    RegistryError registryError = response.getRegistryResponse().getRegistryErrorList().getRegistryError().get(0);
 	System.out.println(registryError.getCodeContext());
 	System.out.println(registryError.getValue());
 	System.out.println(registryError.getSeverity());
@@ -243,10 +243,10 @@ public class GainPCEHRAccessClientTest_NOC {
     Assert.assertEquals("XDSRepositoryError", registryError.getErrorCode());
   }
   
-  public String getRepoId(List<Slot> slots){
-	  for(Slot slot:slots){
+  public String getRepoId(List<SlotType1> slots){
+	  for(SlotType1 slot:slots){
 		  if("repositoryUniqueId".equals(slot.getName()) ){
-			  return slot.getValueList().getValues().get(0);
+			  return slot.getValueList().getValue().get(0);
 		  }
 	  }
 	  
@@ -269,10 +269,10 @@ public class GainPCEHRAccessClientTest_NOC {
   public void test_018() throws Exception {
 
     PCEHRHeader request = MessageComponents.createRequest(
-      MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+      MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
       "8003601243017691",
       MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-      PCEHRHeader.ClientSystemType.CIS,
+      "CIS",
       MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
     );
 
@@ -288,10 +288,10 @@ public class GainPCEHRAccessClientTest_NOC {
   @Test(expected = IllegalArgumentException.class)
   public void test_019() throws Exception {
     PCEHRHeader request = MessageComponents.createRequest(
-      MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+      MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
       "0003602348687602",
       MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-      PCEHRHeader.ClientSystemType.CIS,
+      "CIS",
       MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
     );
 
@@ -304,16 +304,16 @@ public class GainPCEHRAccessClientTest_NOC {
   public void test_020() throws Exception {
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003606792133146",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 
     GainPCEHRAccess.PCEHRRecord record = MessageComponents.createGainPCEHRRecord
       (
-        MessageComponents.createAuthorisationDetails(GainPCEHRAccess.PCEHRRecord.AuthorisationDetails.AccessType.EMERGENCY_ACCESS, null)
+        MessageComponents.createAuthorisationDetails("EmergencyAccess", null)
       );
 
     GainPCEHRAccessResponse response = client.gainPCEHRAccess(record, request);
@@ -327,16 +327,16 @@ public class GainPCEHRAccessClientTest_NOC {
   public void test_021() throws Exception {
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003603459803459",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 
     GainPCEHRAccess.PCEHRRecord record = MessageComponents.createGainPCEHRRecord(
       MessageComponents.createAuthorisationDetails(
-        GainPCEHRAccess.PCEHRRecord.AuthorisationDetails.AccessType.ACCESS_CODE,
+        "AccessCode",
         "12345678"
       )
     );
@@ -352,16 +352,16 @@ public class GainPCEHRAccessClientTest_NOC {
   public void test_022() throws Exception {
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003601243017709",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 
     GainPCEHRAccess.PCEHRRecord record = MessageComponents.createGainPCEHRRecord(
       MessageComponents.createAuthorisationDetails(
-        GainPCEHRAccess.PCEHRRecord.AuthorisationDetails.AccessType.ACCESS_CODE,
+        "AccessCode",
         null
       )
     );
@@ -374,10 +374,10 @@ public class GainPCEHRAccessClientTest_NOC {
 
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 
@@ -391,10 +391,10 @@ public class GainPCEHRAccessClientTest_NOC {
 
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003608833338197",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 
@@ -408,10 +408,10 @@ public class GainPCEHRAccessClientTest_NOC {
 
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003605681935025",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 
@@ -429,10 +429,10 @@ public class GainPCEHRAccessClientTest_NOC {
 
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003602348687602",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8000627500003640", "Medicare305", null)
       );
 

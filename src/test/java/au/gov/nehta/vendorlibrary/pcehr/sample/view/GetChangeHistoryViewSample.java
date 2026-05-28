@@ -111,6 +111,6 @@ public final class GetChangeHistoryViewSample {
 
         // Process response.
         System.out.println("Response Status: " + response.getAdhocQueryResponse().getStatus());
-        System.out.println("Registry Object List Count: " + response.getAdhocQueryResponse().getRegistryObjectList().getExtrinsicObjects().size());
+        System.out.println("Registry Object List Count: " + response.getAdhocQueryResponse().getRegistryObjectList().getExtrinsicObject().size());
     }
 }

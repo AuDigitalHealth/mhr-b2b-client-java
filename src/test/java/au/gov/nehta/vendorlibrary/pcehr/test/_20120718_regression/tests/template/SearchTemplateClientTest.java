@@ -40,18 +40,18 @@ public class SearchTemplateClientTest {
         metadata.setValue("CDA");
 
         TemplateMetadataType templateMetadata = new TemplateMetadataType();
-        templateMetadata.getMetadatas().add(metadata);
+        templateMetadata.getMetadata().add(metadata);
 
         SearchTemplateResponse response = client.searchTemplate(AllTests.getDefaultRequest(), null, templateMetadata);
 
-        for (SearchTemplateResponse.Template template : response.getTemplates()) {
-            for (TemplateMetadataType.Metadata templateDetails : template.getTemplateMetadata().getMetadatas()) {
+        for (SearchTemplateResponse.Template template : response.getTemplate()) {
+            for (TemplateMetadataType.Metadata templateDetails : template.getTemplateMetadata().getMetadata()) {
                 System.out.println(templateDetails.getName() + ": " + templateDetails.getValue());
             }
         }
 
         Assert.assertEquals("PCEHR_SUCCESS", response.getResponseStatus().getCode());
         Assert.assertEquals("SUCCESS", response.getResponseStatus().getDescription());
-        System.out.println(response.getTemplates().size());
+        System.out.println(response.getTemplate().size());
     }
 }

@@ -69,7 +69,7 @@ public final class SearchTemplateSample {
     //    TemplateMetadataType.Metadata metadata = new TemplateMetadataType.Metadata();
     //    metadata.setName("name");
     //    metadata.setValue("value");
-    //    metadataList.getMetadatas().add(metadata);
+    //    metadataList.getMetadata().add(metadata);
 
     // Create a sample PCEHR header consisting of:
     //

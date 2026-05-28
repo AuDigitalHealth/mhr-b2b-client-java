@@ -17,7 +17,7 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 
 import org.apache.commons.lang3.Validate;
 
@@ -31,7 +31,7 @@ import au.net.electronichealth.ns.pcehr.svc.registerpcehr._2.RegisterPCEHRPortTy
 import au.net.electronichealth.ns.pcehr.svc.registerpcehr._2.RegisterPCEHRService;
 import au.net.electronichealth.ns.pcehr.svc.registerpcehr._2.StandardErrorMsg;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.Signature;
+import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.SignatureContainerType;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.registerpcehr._2.RegisterPCEHR;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.registerpcehr._2.RegisterPCEHRResponse;
 
@@ -113,7 +113,7 @@ public class RegisterPCEHRClient extends Client<RegisterPCEHRPortType> {
 
         // Response holder variables.
         Holder<RegisterPCEHRResponse> responseHolder = new Holder<>();
-        Holder<Signature> signatureHolder = null;
+        Holder<SignatureContainerType> signatureHolder = null;
 
         // Attempt to call the registerPCEHR operation storing response message values in the supplied holders.
         getPort().registerPCEHR(

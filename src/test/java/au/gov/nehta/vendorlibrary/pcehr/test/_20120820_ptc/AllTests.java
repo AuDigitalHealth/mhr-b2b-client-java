@@ -47,11 +47,11 @@ public class AllTests {
     );
 
     defaultRequest = MessageComponents.createRequest(
-      MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003618334357646", null, "Henry Button", false),
+      MessageComponents.createUser("HPII", "8003618334357646", null, "Henry Button", false),
       "8003608666701594",
 //      "8003602345690302",
       MessageComponents.createProductType("NEHTA", "dummyCISusr1", "dummyCISusrV1", "Windows 7 - Java"),
-      PCEHRHeader.ClientSystemType.CIS,
+      "CIS",
       MessageComponents.createAccessingOrganisation("8003628233352432", "Good Hospital", null)
     );
 

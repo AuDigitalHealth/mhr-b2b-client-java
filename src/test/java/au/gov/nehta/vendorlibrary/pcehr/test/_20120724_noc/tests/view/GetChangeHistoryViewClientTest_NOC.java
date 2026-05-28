@@ -83,16 +83,16 @@ public class GetChangeHistoryViewClientTest_NOC {
 
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003604570901321",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 
     GetChangeHistoryViewResponse response = client.getChangeHistoryView(request, "urn:uuid:00da425d-ddfb-4ef0-876e-855cd882fa78");
     Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getAdhocQueryResponse().getStatus());
-//    Assert.assertTrue(response.getAdhocQueryResponse().getRegistryObjectList().getExtrinsicObjects().size() > 0);
+//    Assert.assertTrue(response.getAdhocQueryResponse().getRegistryObjectList().getExtrinsicObject().size() > 0);
   }
 
   @Test
@@ -100,18 +100,18 @@ public class GetChangeHistoryViewClientTest_NOC {
 
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003604570901321",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 
     GetChangeHistoryViewResponse response = client.getChangeHistoryView(request, "urn:uuid:b494924e-9bd6-4adc-950c-12f0224f6805");
 
     Assert.assertEquals(XDSConstants.RESPONSE_STATUS_FAILURE, response.getAdhocQueryResponse().getStatus());
-    Assert.assertEquals("XDSRegistryError", response.getAdhocQueryResponse().getRegistryErrorList().getRegistryErrors().get(0).getErrorCode());
-    Assert.assertEquals("METADATA_ERROR - The requested registry object is deprecated.", response.getAdhocQueryResponse().getRegistryErrorList().getRegistryErrors().get(0).getCodeContext());
+    Assert.assertEquals("XDSRegistryError", response.getAdhocQueryResponse().getRegistryErrorList().getRegistryError().get(0).getErrorCode());
+    Assert.assertEquals("METADATA_ERROR - The requested registry object is deprecated.", response.getAdhocQueryResponse().getRegistryErrorList().getRegistryError().get(0).getCodeContext());
   }
 
   @Test(expected = StandardErrorMsg.class)
@@ -119,10 +119,10 @@ public class GetChangeHistoryViewClientTest_NOC {
 
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003606792133161",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8000627500003640", "Medicare305", null)
       );
 

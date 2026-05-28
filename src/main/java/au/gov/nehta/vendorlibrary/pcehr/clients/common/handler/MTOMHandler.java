@@ -16,19 +16,20 @@ package au.gov.nehta.vendorlibrary.pcehr.clients.common.handler;
 import au.gov.nehta.vendorlibrary.pcehr.clients.common.constant.XMLNamespaces;
 import au.gov.nehta.vendorlibrary.pcehr.clients.common.exception.MTOMException;
 import au.gov.nehta.vendorlibrary.pcehr.clients.common.util.HandlerUtils;
-import org.apache.commons.io.IOUtils;
 import org.w3c.dom.NodeList;
 
 import javax.xml.namespace.QName;
-import javax.xml.soap.AttachmentPart;
-import javax.xml.soap.SOAPBody;
-import javax.xml.soap.SOAPBodyElement;
-import javax.xml.soap.SOAPEnvelope;
-import javax.xml.soap.SOAPException;
-import javax.xml.ws.handler.MessageContext;
-import javax.xml.ws.handler.soap.SOAPHandler;
-import javax.xml.ws.handler.soap.SOAPMessageContext;
+import jakarta.xml.soap.AttachmentPart;
+import jakarta.xml.soap.SOAPBody;
+import jakarta.xml.soap.SOAPBodyElement;
+import jakarta.xml.soap.SOAPEnvelope;
+import jakarta.xml.soap.SOAPException;
+import jakarta.xml.ws.handler.MessageContext;
+import jakarta.xml.ws.handler.soap.SOAPHandler;
+import jakarta.xml.ws.handler.soap.SOAPMessageContext;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.util.UUID;
 
@@ -41,6 +42,7 @@ import java.util.UUID;
  * 
  * @deprecated prefer {@link ConfigurableMTOMHandler} over this class with an explicitly set  MTOM element.
  */
+@Deprecated
 public class MTOMHandler implements SOAPHandler<SOAPMessageContext> {
 
   /**
@@ -53,151 +55,77 @@ public class MTOMHandler implements SOAPHandler<SOAPMessageContext> {
    */
   public static final String UPLOAD_REQUEST_ELEM = "ProvideAndRegisterDocumentSetRequest";
 
-  
-  /**
-   * Include XML element local name.
-   */
-  public static final String INCLUDE_ELEM = "Include";
+  @Override
+  public final Set<QName> getHeaders() {
+    return null;
+  }
 
-  /**
-   * XOP include attribute string format (reference ID is denoted by '%s'.
-   */
-  public static final String XOP_INCLUDE = "cid:%s";
-
-  /**
-   * XOP include HREF content ID attribute name.
-   */
-  private static final String CONTENT_ID_ATTR = "href";
-
-  /**
-   * 'application/octet-stream' content type.
-   */
-  private static final String OCTET_STREAM_CONTENT_TYPE = "application/octet-stream";
-
-  /**
-   * Updates the request to ensure byte content is correctly passed as a MTOM part.
-   *
-   * @param context the incoming / outgoing soap message context
-   * @return true Always returns true.
-   * @see javax.xml.ws.handler.Handler#handleMessage(javax.xml.ws.handler.MessageContext)
-   */
   @Override
   public final boolean handleMessage(SOAPMessageContext context) {
 
     if (HandlerUtils.isOutgoing(context)) {
+      try {
+        // Convert message body to SOAP envelope and body objects.
+        SOAPEnvelope envelope = context.getMessage().getSOAPPart().getEnvelope();
+        SOAPBody body = envelope.getBody();
 
-      if (HandlerUtils.isResponseType(context, XMLNamespaces.IHE.getNamespace(), UPLOAD_REQUEST_ELEM)) {
-        try {
+        // New reference ID for use in include and attachment part.
+        UUID referenceId = UUID.randomUUID();
 
-          SOAPEnvelope envelope = context.getMessage().getSOAPPart().getEnvelope();
-          SOAPBody body = envelope.getBody();
+        // Retrieve the Base64 document content string.
+        String documentContent = HandlerUtils.extractElementContent(body, XMLNamespaces.IHE.getNamespace(), DOCUMENT_ELEM);
 
-          // New reference ID for use in include and attachment part.
-          UUID referenceId = UUID.randomUUID();
+        // Convert to an Input Stream, as required to add an attachment.
+        InputStream is = new ByteArrayInputStream(documentContent.getBytes(StandardCharsets.UTF_8));
 
-          // Retrieve the Base64 document content string.
-          String documentContent = HandlerUtils.extractElementContent(body, XMLNamespaces.IHE.getNamespace(), DOCUMENT_ELEM);
+        // Create a new attachment for the document content.
+        createDocumentAttachmentPart(context, is, referenceId);
 
-          // Convert to an Input Stream, as required to add an attachment.
-          InputStream is = IOUtils.toInputStream(documentContent);
+        // Replace document content in SOAP envelope with XOP reference.
+        replaceDocumentContent(body, referenceId);
 
-          // Create a new attachment for the document content.
-          createDocumentAttachmentPart(context, is, referenceId);
-
-          // Replace document content in SOAP envelope with XOP reference.
-          replaceDocumentContent(body, referenceId);
-
-        } catch (SOAPException e) {
-          throw new MTOMException("Unable to extract SOAP components", e);
-        }
+      } catch (SOAPException e) {
+        throw new MTOMException("Unable to extract SOAP components", e);
       }
     }
 
     return true;
   }
 
-  /**
-   * Replaces inline Base64 content of a 'Document' element and adds an XOP include reference to the SOAP binary attachment.
-   *
-   * @param body        the SOAP body to be altered.
-   * @param referenceId the reference ID corresponding to the content-id in the SOAP attachment to contain the binary document content.
-   */
-  private void replaceDocumentContent(SOAPBody body, UUID referenceId) {
-
-    NodeList nodeList = body.getElementsByTagNameNS(XMLNamespaces.IHE.getNamespace(), DOCUMENT_ELEM);
-    SOAPBodyElement documentElement = (SOAPBodyElement) HandlerUtils.getFirstElementFromNodeList(nodeList);
-
-    // Need to do this otherwise the Base64 content still appears inline.
-    documentElement.removeContents();
-
-    // Add the new element.
-    try {
-      documentElement
-        .addChildElement(INCLUDE_ELEM, XMLNamespaces.XOP.getPrefix(), XMLNamespaces.XOP.getNamespace())
-        .setAttribute(CONTENT_ID_ATTR, String.format(XOP_INCLUDE, referenceId.toString()));
-    } catch (SOAPException e) {
-      throw new MTOMException("Failed to add the new XOP include element to the SOAP body.", e);
-    }
-  }
-
-  /**
-   * Creates a new attachment part that contains document element's binary content.
-   *
-   * @param context     context the incoming / outgoing soap message context
-   * @param is          the {@link InputStream} encapsulating the Base64 encoded binary content.
-   * @param referenceId the reference ID corresponding to the content-id in the SOAP attachment to contain the binary document content.
-   */
-  private void createDocumentAttachmentPart(SOAPMessageContext context, InputStream is, UUID referenceId) {
-
-    AttachmentPart attachment = context.getMessage().createAttachmentPart();
-
-    // The attachment is able to accept a Base64 encoded string and transform that to binary in the SOAP attachment part.
-    try {
-      attachment.setBase64Content(is, OCTET_STREAM_CONTENT_TYPE);
-    } catch (SOAPException e) {
-      throw new MTOMException("Failed to create a new attachment part", e);
-    }
-
-    // Set the reference ID to match that being used in the XOP include.
-    attachment.setContentId(referenceId.toString());
-
-    // Add the new attachment part to the SOAP message.
-    context.getMessage().addAttachmentPart(attachment);
-  }
-
-  /**
-   * Ignore Fault and continues with processing logical handling of message.
-   *
-   * @param context the incoming / outgoing soap message context
-   * @return true if the handle signature check is successful.
-   * @see javax.xml.ws.handler.Handler#handleFault(javax.xml.ws.handler.MessageContext)
-   */
   @Override
   public final boolean handleFault(SOAPMessageContext context) {
-    // Verifies the inbound fault signature.
-    // Do nothing. Implement in production code.
     return true;
   }
 
-  /**
-   * Does nothing <br>
-   * Not utilised for dumping SOAP message.
-   *
-   * @param context @see javax.xml.ws.handler.Handler#close(javax.xml.ws.handler.MessageContext)
-   */
   @Override
-  public void close(MessageContext context) {
-    // Do nothing.
+  public final void close(MessageContext context) {
+    // no-op
   }
 
-  /**
-   * Does nothing returns null.<br>
-   * Ignore processing of SOAP header as the primary intention is just to
-   * 'Dump' the SOAP message
-   *
-   * @return @see javax.xml.ws.handler.soap.SOAPHandler#getHeaders()
-   */
-  public final Set<QName> getHeaders() {
-    return null;
+  protected void createDocumentAttachmentPart(
+      SOAPMessageContext context,
+      InputStream inputStream,
+      UUID referenceId
+  ) {
+    AttachmentPart attachmentPart = context.getMessage().createAttachmentPart(inputStream, "application/octet-stream");
+    attachmentPart.setContentId(referenceId + "@ihe.net");
+    context.getMessage().addAttachmentPart(attachmentPart);
+  }
+
+  protected SOAPBodyElement getDocumentBodyElement(SOAPBody body) {
+    NodeList nodeList = body.getElementsByTagNameNS(XMLNamespaces.IHE.getNamespace(), DOCUMENT_ELEM);
+    return (SOAPBodyElement) nodeList.item(0);
+  }
+
+  protected void replaceDocumentContent(
+      SOAPBody body,
+      UUID referenceId
+  ) throws SOAPException {
+    SOAPBodyElement bodyElement = getDocumentBodyElement(body);
+    bodyElement.removeContents();
+    bodyElement.addChildElement("Include", "xop", XMLNamespaces.XOP.getNamespace()).addAttribute(
+        QName.valueOf("href"),
+        "cid:" + referenceId + "@ihe.net"
+    );
   }
 }

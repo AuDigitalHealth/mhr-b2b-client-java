@@ -23,11 +23,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.xml.namespace.QName;
-import javax.xml.ws.BindingProvider;
-import javax.xml.ws.handler.Handler;
-import javax.xml.ws.handler.MessageContext;
-import javax.xml.ws.handler.soap.SOAPHandler;
-import javax.xml.ws.handler.soap.SOAPMessageContext;
+import jakarta.xml.ws.BindingProvider;
+import jakarta.xml.ws.handler.Handler;
+import jakarta.xml.ws.handler.MessageContext;
+import jakarta.xml.ws.handler.soap.SOAPHandler;
+import jakarta.xml.ws.handler.soap.SOAPMessageContext;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -135,6 +135,6 @@ public class DoesPCHERExistClientTest {
 
         DoesPCEHRExistResponse response = client.doesPCEHRExist(AllTests.getDefaultRequest());
         Assert.assertTrue(response.isPCEHRExists());
-        Assert.assertEquals(DoesPCEHRExistResponse.AccessCodeRequired.ACCESS_GRANTED, response.getAccessCodeRequired());
+        Assert.assertEquals("AccessGranted", response.getAccessCodeRequired());
     }
 }

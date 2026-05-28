@@ -34,7 +34,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -142,10 +142,10 @@ public class UploadDocumentClientTest {
   public void test_pathologyMaxDocUpload() throws Exception {
 	  PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003618334357646", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003618334357646", null, "Ross John", false),
         "8003601243017717",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 	  
@@ -168,7 +168,7 @@ public class UploadDocumentClientTest {
       new CodedValue("PCEHR_FormatCodes", "1.2.36.1.2001.1006.1.220.1", "Pathology Result Report - Conformance Level 3A")
     );
     System.out.println(response.getStatus());
-    System.out.println(response.getRegistryErrorList().getRegistryErrors().get( 0 ).getCodeContext());
+    System.out.println(response.getRegistryErrorList().getRegistryError().get( 0 ).getCodeContext());
     Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
   }
   
@@ -176,10 +176,10 @@ public class UploadDocumentClientTest {
   public void test_pathologyMinDocUpload() throws Exception {
 	  PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003618334357646", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003618334357646", null, "Ross John", false),
         "8003601243017717",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 	  
@@ -202,7 +202,7 @@ public class UploadDocumentClientTest {
       new CodedValue("PCEHR_FormatCodes", "1.2.36.1.2001.1006.1.220.1", "Pathology Result Report - Conformance Level 3A")
     );
     System.out.println(response.getStatus());
-    System.out.println(response.getRegistryErrorList().getRegistryErrors().get( 0 ).getCodeContext());
+    System.out.println(response.getRegistryErrorList().getRegistryError().get( 0 ).getCodeContext());
     Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
 
   }

@@ -15,15 +15,15 @@ package au.gov.nehta.vendorlibrary.pcehr.clients.documentexchange;
 
 import ihe.iti.xds_b._2007.DocumentRepositoryPortType;
 import ihe.iti.xds_b._2007.DocumentRepositoryService;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest.DocumentRequest;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetResponse;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetRequestType;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetRequestType.DocumentRequest;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
 
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 
 import org.apache.commons.lang3.Validate;
 
@@ -32,7 +32,7 @@ import au.gov.nehta.vendorlibrary.pcehr.clients.common.util.CommonHeaderValidato
 import au.gov.nehta.vendorlibrary.pcehr.clients.common.util.DateUtils;
 import au.gov.nehta.xsp.CertificateValidator;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.Signature;
+import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.SignatureContainerType;
 
 /**
  * A JAX-WS client to the PCEHR 'Get Document' web service.
@@ -107,7 +107,7 @@ public final class GetDocumentClient extends Client<DocumentRepositoryPortType> 
    * @param docRequest   A request containing the unique document identifier.
    * @return The requested document.
    */
-  public RetrieveDocumentSetResponse retrieveDocument(PCEHRHeader commonHeader, DocumentRequest docRequest) {
+  public RetrieveDocumentSetResponseType retrieveDocument(PCEHRHeader commonHeader, DocumentRequest docRequest) {
 
     Validate.notNull(commonHeader, "'commonHeader' must be specified.");
     Validate.notNull(docRequest, "'docRequest' must be specified.");
@@ -116,9 +116,9 @@ public final class GetDocumentClient extends Client<DocumentRepositoryPortType> 
 
     CommonHeaderValidator.validate(commonHeader, true); // IHINumber is required.
 
-    RetrieveDocumentSetRequest request = new RetrieveDocumentSetRequest();
-    request.getDocumentRequests().add(docRequest);
-    Holder<Signature> signatureHolder = null;
+    RetrieveDocumentSetRequestType request = new RetrieveDocumentSetRequestType();
+    request.getDocumentRequest().add(docRequest);
+    Holder<SignatureContainerType> signatureHolder = null;
 
     return getPort().documentRepositoryRetrieveDocumentSet(
       DateUtils.generateTimestamp(),

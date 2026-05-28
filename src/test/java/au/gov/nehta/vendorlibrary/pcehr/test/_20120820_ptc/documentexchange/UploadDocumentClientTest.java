@@ -49,7 +49,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -136,7 +136,7 @@ public class UploadDocumentClientTest {
 
         System.out.println("======================================");
         System.out.println(response.getStatus());
-        for (RegistryError e : response.getRegistryErrorList().getRegistryErrors()) {
+        for (RegistryError e : response.getRegistryErrorList().getRegistryError()) {
             System.out.println(e.getCodeContext());
             System.out.println(e.getErrorCode());
             System.out.println(e.getSeverity());
@@ -188,10 +188,10 @@ public class UploadDocumentClientTest {
         PackagingUtility.writeZip(subset, "./src/test/resources/TestFiles/Generated/out_" + new Date().getTime() + ".zip");
 
         PCEHRHeader defaultRequest = MessageComponents.createRequest(
-                MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003618334357646", null, "Henry Button", false),
+                MessageComponents.createUser("HPII", "8003618334357646", null, "Henry Button", false),
                 "8003608666701594",
                 MessageComponents.createProductType("NEHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                PCEHRHeader.ClientSystemType.CIS,
+                "CIS",
                 MessageComponents.createAccessingOrganisation("8003628233352432", "Good Hospital", null)
         );
 
@@ -213,7 +213,7 @@ public class UploadDocumentClientTest {
 
         System.out.println("======================================");
         System.out.println(response.getStatus());
-        for (RegistryError e : response.getRegistryErrorList().getRegistryErrors()) {
+        for (RegistryError e : response.getRegistryErrorList().getRegistryError()) {
             System.out.println(e.getCodeContext());
             System.out.println(e.getErrorCode());
             System.out.println(e.getSeverity());
@@ -273,11 +273,11 @@ public class UploadDocumentClientTest {
 
 
         PCEHRHeader request = MessageComponents.createRequest(
-                MessageComponents.createUser(PCEHRHeader.User.IDType.LOCAL_SYSTEM_IDENTIFIER, "buttonj001", null, "Henry Button", false),
+                MessageComponents.createUser("LocalSystemIdentifier", "buttonj001", null, "Henry Button", false),
                 "8003608666701594",
                 // null,
                 MessageComponents.createProductType("NEHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                PCEHRHeader.ClientSystemType.CIS,
+                "CIS",
                 MessageComponents.createAccessingOrganisation("8003628233352432", "Good Hospital", null)
         );
 
@@ -298,7 +298,7 @@ public class UploadDocumentClientTest {
 
         System.out.println("======================================");
         System.out.println(response.getStatus());
-        for (RegistryError e : response.getRegistryErrorList().getRegistryErrors()) {
+        for (RegistryError e : response.getRegistryErrorList().getRegistryError()) {
             System.out.println(e.getCodeContext());
             System.out.println(e.getErrorCode());
             System.out.println(e.getSeverity());
@@ -323,10 +323,10 @@ public class UploadDocumentClientTest {
         PackagingUtility.writeZip(subset, "./src/test/resources/TestFiles/Generated/out_" + new Date().getTime() + ".zip");
 
         PCEHRHeader request = MessageComponents.createRequest(
-                MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003618334357646", null, "Henry Button", false),
+                MessageComponents.createUser("HPII", "8003618334357646", null, "Henry Button", false),
                 "8003608666701594",
                 MessageComponents.createProductType("NEHTA", "dummyCISusr1", "dummyCISusrV1", "Windows 7 - Java"),
-                PCEHRHeader.ClientSystemType.CIS,
+                "CIS",
                 MessageComponents.createAccessingOrganisation("8003628233352432", "Good Hospital", null)
         );
 
@@ -349,7 +349,7 @@ public class UploadDocumentClientTest {
         System.out.println("======================================");
         if (response != null) {
             System.out.println(response.getStatus());
-            for (RegistryError e : response.getRegistryErrorList().getRegistryErrors()) {
+            for (RegistryError e : response.getRegistryErrorList().getRegistryError()) {
                 System.out.println(e.getCodeContext());
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());
@@ -415,11 +415,11 @@ public class UploadDocumentClientTest {
 
         //8003618334357646, 8003608666701594,  dummyCISusr1, dummyCISusrV1 dummyCISusrV1
         PCEHRHeader request = MessageComponents.createRequest(
-                MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003618334357646", null, "Anthony TUCKER", false),
+                MessageComponents.createUser("HPII", "8003618334357646", null, "Anthony TUCKER", false),
                 "8003608666701594", //. 8003608666701594
                 MessageComponents.createProductType("NEHTA", "Test Harness", "1.0", "Windows 7"),
-//    	      PCEHRHeader.ClientSystemType.CIS,
-                PCEHRHeader.ClientSystemType.CIS,
+//    	      "CIS",
+                "CIS",
                 MessageComponents.createAccessingOrganisation("8003628233352432", "Good Hospital", null)
                 //8003620833335909			Medicare305
         );
@@ -439,7 +439,7 @@ public class UploadDocumentClientTest {
         System.out.println("======================================");
         if (response != null) {
             System.out.println(response.getStatus());
-            for (RegistryError e : response.getRegistryErrorList().getRegistryErrors()) {
+            for (RegistryError e : response.getRegistryErrorList().getRegistryError()) {
                 System.out.println(e.getCodeContext());
                 System.out.println(e.getErrorCode());
                 System.out.println(e.getSeverity());

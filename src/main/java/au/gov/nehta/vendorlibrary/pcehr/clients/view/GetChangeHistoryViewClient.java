@@ -17,7 +17,7 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 
 import org.apache.commons.lang3.Validate;
 
@@ -29,7 +29,7 @@ import au.net.electronichealth.ns.pcehr.svc.getchangehistoryview._1.GetChangeHis
 import au.net.electronichealth.ns.pcehr.svc.getchangehistoryview._1.GetChangeHistoryViewService;
 import au.net.electronichealth.ns.pcehr.svc.getchangehistoryview._1.StandardErrorMsg;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.Signature;
+import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.SignatureContainerType;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.getchangehistoryview._1.GetChangeHistoryView;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.getchangehistoryview._1.GetChangeHistoryViewResponse;
 
@@ -111,7 +111,7 @@ public final class GetChangeHistoryViewClient extends Client<GetChangeHistoryVie
 
         // Response holders.
         Holder<GetChangeHistoryViewResponse> responseHolder = new Holder<>();
-        Holder<Signature> signatureHolder = null;
+        Holder<SignatureContainerType> signatureHolder = null;
 
         GetChangeHistoryView params = new GetChangeHistoryView();
         params.setDocumentID(documentId);

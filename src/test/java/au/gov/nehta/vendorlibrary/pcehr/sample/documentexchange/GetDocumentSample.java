@@ -19,8 +19,8 @@ import au.gov.nehta.vendorlibrary.pcehr.sample.common.constants.SampleEndpoints;
 import au.gov.nehta.vendorlibrary.pcehr.sample.common.constants.SampleValues;
 import au.gov.nehta.vendorlibrary.pcehr.sample.common.util.SecurityUtil;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetResponse;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetRequestType;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
@@ -60,7 +60,7 @@ public final class GetDocumentSample {
     );
 
     // Create a sample document request.
-    RetrieveDocumentSetRequest.DocumentRequest documentRequest = new RetrieveDocumentSetRequest.DocumentRequest();
+    RetrieveDocumentSetRequestType.DocumentRequest documentRequest = new RetrieveDocumentSetRequestType.DocumentRequest();
     documentRequest.setDocumentUniqueId(SampleValues.DOCUMENT_REQUEST_DOCUMENT_ID);
     documentRequest.setRepositoryUniqueId(SampleValues.DOCUMENT_REQUEST_REPOSITORY_ID);
 
@@ -106,12 +106,12 @@ public final class GetDocumentSample {
     );
 
     // Call operation.
-    RetrieveDocumentSetResponse response = client.retrieveDocument(commonHeader, documentRequest);
+    RetrieveDocumentSetResponseType response = client.retrieveDocument(commonHeader, documentRequest);
 
     // Process response.
-    System.out.println("MIME Type: " + response.getDocumentResponses().get(0).getMimeType());
-    System.out.println("Document Unique ID: " + response.getDocumentResponses().get(0).getDocumentUniqueId());
-    System.out.println("Repository Unique ID: " + response.getDocumentResponses().get(0).getRepositoryUniqueId());
-    System.out.println("Document Content Size: " + response.getDocumentResponses().get(0).getDocument().length);
+    System.out.println("MIME Type: " + response.getDocumentResponse().get(0).getMimeType());
+    System.out.println("Document Unique ID: " + response.getDocumentResponse().get(0).getDocumentUniqueId());
+    System.out.println("Repository Unique ID: " + response.getDocumentResponse().get(0).getRepositoryUniqueId());
+    System.out.println("Document Content Size: " + response.getDocumentResponse().get(0).getDocument().length);
   }
 }

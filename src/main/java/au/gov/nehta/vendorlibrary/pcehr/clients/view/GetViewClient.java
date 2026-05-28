@@ -17,8 +17,8 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.xml.bind.JAXBException;
-import javax.xml.ws.Holder;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.ws.Holder;
 
 import org.apache.commons.lang3.Validate;
 
@@ -31,7 +31,7 @@ import au.net.electronichealth.ns.pcehr.svc.getview._1.GetViewPortType;
 import au.net.electronichealth.ns.pcehr.svc.getview._1.GetViewService;
 import au.net.electronichealth.ns.pcehr.svc.getview._1.StandardErrorMsg;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.Signature;
+import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.SignatureContainerType;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.diagnosticimagingreportview._1.DiagnosticImagingReportView;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.diagnosticimagingreportview._1.DiagnosticImagingReportViewResponse;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.getview._1.GetView;
@@ -240,7 +240,7 @@ public class GetViewClient extends Client<GetViewPortType> {
         // Response holder variables.
 
         Holder<GetViewResponse> responseHolder = new Holder<>();
-        Holder<Signature> signatureHolder = null;
+        Holder<SignatureContainerType> signatureHolder = null;
 
 
         GetView getView = new GetView();

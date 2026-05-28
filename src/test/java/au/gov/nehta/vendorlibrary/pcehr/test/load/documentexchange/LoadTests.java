@@ -27,8 +27,8 @@ import au.gov.nehta.vendorlibrary.pcehr.clients.documentexchange.GetDocumentClie
 import au.gov.nehta.vendorlibrary.pcehr.clients.documentexchange.UploadDocumentClient;
 import au.gov.nehta.vendorlibrary.pcehr.test.load.AllTests;
 import au.net.electronichealth.ns.cdapackage.xsd.esignature._2012.PersonNameType;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetResponse;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetRequestType;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
 import oasis.names.tc.ebxml_regrep.xsd.rs._3.RegistryResponseType;
 import org.databene.contiperf.PerfTest;
 import org.databene.contiperf.junit.ContiPerfRule;
@@ -51,7 +51,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -137,13 +137,13 @@ public class LoadTests {
     Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, uploadDocumentResponse.getStatus());
 
     // Get
-    RetrieveDocumentSetRequest.DocumentRequest docRequest = new RetrieveDocumentSetRequest.DocumentRequest();
+    RetrieveDocumentSetRequestType.DocumentRequest docRequest = new RetrieveDocumentSetRequestType.DocumentRequest();
     docRequest.setDocumentUniqueId(currentId.value);
     docRequest.setRepositoryUniqueId("1.2.36.1.2001.1007.10.8003640002000050");
-    RetrieveDocumentSetResponse response = getDocumentClient.retrieveDocument(AllTests.getDefaultRequest(), docRequest);
+    RetrieveDocumentSetResponseType response = getDocumentClient.retrieveDocument(AllTests.getDefaultRequest(), docRequest);
     Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getRegistryResponse().getStatus());
-    Assert.assertEquals("application/zip", response.getDocumentResponses().get(0).getMimeType());
-    Assert.assertNotNull(response.getDocumentResponses().get(0).getDocument());
+    Assert.assertEquals("application/zip", response.getDocumentResponse().get(0).getMimeType());
+    Assert.assertNotNull(response.getDocumentResponse().get(0).getDocument());
 
   }
 

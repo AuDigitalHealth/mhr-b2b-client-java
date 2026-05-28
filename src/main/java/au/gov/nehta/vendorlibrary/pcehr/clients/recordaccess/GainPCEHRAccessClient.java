@@ -17,7 +17,7 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 
 import org.apache.commons.lang3.Validate;
 
@@ -30,7 +30,7 @@ import au.net.electronichealth.ns.pcehr.b2b.svc.pcehrprofile._1.PCEHRProfileServ
 import au.net.electronichealth.ns.pcehr.b2b.svc.pcehrprofile._1.StandardErrorMsg;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.ResponseStatusType;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.Signature;
+import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.SignatureContainerType;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.pcehrprofile._1.GainPCEHRAccess;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.pcehrprofile._1.GainPCEHRAccessResponse;
 
@@ -110,11 +110,11 @@ public class GainPCEHRAccessClient extends Client<PCEHRProfilePortType> {
     ) throws StandardErrorMsg {
 
         Validate.notNull(commonHeader, "'commonHeader' must be specified.");
-        Validate.notNull(pcehrRecord);
+        Validate.notNull(pcehrRecord, "'pcehrRecord' must be specified.");
         CommonHeaderValidator.validate(commonHeader, true); // IHINumber is required.
 
         if (pcehrRecord.getAuthorisationDetails() != null) {
-            if (pcehrRecord.getAuthorisationDetails().getAccessType() == GainPCEHRAccess.PCEHRRecord.AuthorisationDetails.AccessType.ACCESS_CODE) {
+            if ("AccessCode".equals(pcehrRecord.getAuthorisationDetails().getAccessType())) {
                 Validate.notEmpty(pcehrRecord.getAuthorisationDetails().getAccessCode(), "'pcehrRecord.authorisationDetails.accessCode' must be specified.");
             }
         }
@@ -125,7 +125,7 @@ public class GainPCEHRAccessClient extends Client<PCEHRProfilePortType> {
         // Holder variables.
         Holder<ResponseStatusType> responseHolder = new Holder<>();
         Holder<GainPCEHRAccessResponse.Individual> individualHolder = new Holder<>();
-        Holder<Signature> signatureHolder = null;
+        Holder<SignatureContainerType> signatureHolder = null;
 
         // Attempt to call the gainPCEHRAccess operation, storing response message values in the supplied holders.
         getPort().gainPCEHRAccess(

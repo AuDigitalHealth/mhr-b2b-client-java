@@ -18,7 +18,7 @@ import java.security.cert.X509Certificate;
 import java.util.Date;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 
 import org.apache.commons.lang3.Validate;
 
@@ -30,7 +30,7 @@ import au.net.electronichealth.ns.pcehr.svc.getauditview._1.GetAuditViewPortType
 import au.net.electronichealth.ns.pcehr.svc.getauditview._1.GetAuditViewService;
 import au.net.electronichealth.ns.pcehr.svc.getauditview._1.StandardErrorMsg;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.Signature;
+import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.SignatureContainerType;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.getauditview._1.GetAuditView;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.getauditview._1.GetAuditViewResponse;
 
@@ -115,7 +115,7 @@ public final class GetAuditViewClient extends Client<GetAuditViewPortType> {
         CommonHeaderValidator.validate(commonHeader, true); // IHINumber is required.
 
         Holder<GetAuditViewResponse> auditView = new Holder<>();
-        Holder<Signature> signatureHolder = null;
+        Holder<SignatureContainerType> signatureHolder = null;
 
         GetAuditView params = new GetAuditView();
 

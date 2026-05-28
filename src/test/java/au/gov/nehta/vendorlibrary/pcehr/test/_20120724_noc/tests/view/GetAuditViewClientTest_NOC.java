@@ -81,10 +81,10 @@ public class GetAuditViewClientTest_NOC {
 
         PCEHRHeader request = MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                         "8003602348687628",
                         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        "CIS",
                         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
                 );
 
@@ -100,10 +100,10 @@ public class GetAuditViewClientTest_NOC {
     public void test_009() throws Exception {
         PCEHRHeader request = MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                         "8003602348687628",
                         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        "CIS",
                         MessageComponents.createAccessingOrganisation("8003624166667177", "Medicare305", null)
                 );
 
@@ -114,10 +114,10 @@ public class GetAuditViewClientTest_NOC {
     public void test_010() throws Exception {
         PCEHRHeader request = MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                         "8003604570901339",
                         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        "CIS",
                         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
                 );
 
@@ -135,10 +135,10 @@ public class GetAuditViewClientTest_NOC {
 
         PCEHRHeader request = MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                         "8003602348687628",
                         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        "CIS",
                         MessageComponents.createAccessingOrganisation("8000627500003640", "Medicare305", null)
                 );
 

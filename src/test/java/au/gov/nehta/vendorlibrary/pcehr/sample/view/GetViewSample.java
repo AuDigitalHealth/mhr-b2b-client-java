@@ -19,6 +19,7 @@ import au.gov.nehta.vendorlibrary.pcehr.sample.common.constants.SampleEndpoints;
 import au.gov.nehta.vendorlibrary.pcehr.sample.common.constants.SampleValues;
 import au.gov.nehta.vendorlibrary.pcehr.sample.common.util.MessageComponents;
 import au.gov.nehta.vendorlibrary.pcehr.sample.common.util.SecurityUtil;
+import au.gov.nehta.vendorlibrary.pcehr.test.utils.XmlDateUtils;
 import au.net.electronichealth.ns.pcehr.svc.getview._1.StandardErrorMsg;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.diagnosticimagingreportview._1.DiagnosticImagingReportView;
@@ -112,8 +113,8 @@ public class GetViewSample {
         MedicareOverview medicareOverview = new MedicareOverview();
         Calendar OneJan1900 = Calendar.getInstance();
         OneJan1900.set(1900, Calendar.JANUARY, 1); //from 1 January 1900
-        medicareOverview.setFromDate(OneJan1900);
-        medicareOverview.setToDate(Calendar.getInstance()); //to current time
+        medicareOverview.setFromDate(XmlDateUtils.toXmlGregorianCalendar(OneJan1900));
+        medicareOverview.setToDate(XmlDateUtils.toXmlGregorianCalendar(Calendar.getInstance()));
         medicareOverview.setVersionNumber("1.0");
         // Call operation - get all PCEHR documents associated with given IHI.
         GetViewResponse response = client.getView(commonHeader, medicareOverview);
@@ -121,15 +122,15 @@ public class GetViewSample {
 
         //Prescription And Dispense
         PrescriptionAndDispenseView pdView = new PrescriptionAndDispenseView();
-        pdView.setFromDate(OneJan1900);
-        pdView.setToDate(Calendar.getInstance());
+        pdView.setFromDate(XmlDateUtils.toXmlGregorianCalendar(OneJan1900));
+        pdView.setToDate(XmlDateUtils.toXmlGregorianCalendar(Calendar.getInstance()));
         pdView.setVersionNumber("1.0");
         response = client.getView(commonHeader, pdView);
 
         //Observation Schedule
         ObservationView observationview = new ObservationView();
-        observationview.setFromDate(OneJan1900);
-        observationview.setToDate(Calendar.getInstance());
+        observationview.setFromDate(XmlDateUtils.toXmlGregorianCalendar(OneJan1900));
+        observationview.setToDate(XmlDateUtils.toXmlGregorianCalendar(Calendar.getInstance()));
         observationview.setVersionNumber("1.0");
         response = client.getView(commonHeader, observationview);
 
@@ -147,14 +148,14 @@ public class GetViewSample {
 
         //PathologyReport
         PathologyReportView pathologyReportview = new PathologyReportView();
-        pathologyReportview.setFromDate(OneJan1900);
-        pathologyReportview.setToDate(Calendar.getInstance()); //to current time
+        pathologyReportview.setFromDate(XmlDateUtils.toXmlGregorianCalendar(OneJan1900));
+        pathologyReportview.setToDate(XmlDateUtils.toXmlGregorianCalendar(Calendar.getInstance()));
         pathologyReportview.setVersionNumber("1.0");
 
         //strongly typed view response object
         TypedViewResponse<PathologyReportViewResponse> pathologyResponse = client.getView(commonHeader, pathologyReportview);
         PathologyReportViewResponse pathologyReportViewResponse = pathologyResponse.getResponseObject();
-        pathologyReportViewResponse.getPathologyReports();
+        pathologyReportViewResponse.getPathologyReport();
         pathologyReportViewResponse.getViewMetadata();
 
         //the original viewResponse with template IDs and getResponseStatus
@@ -163,14 +164,14 @@ public class GetViewSample {
 
         //Diagnostic Image
         DiagnosticImagingReportView diView = new DiagnosticImagingReportView();
-        diView.setFromDate(OneJan1900);
-        diView.setToDate(Calendar.getInstance()); //to current time
+        diView.setFromDate(XmlDateUtils.toXmlGregorianCalendar(OneJan1900));
+        diView.setToDate(XmlDateUtils.toXmlGregorianCalendar(Calendar.getInstance()));
         diView.setVersionNumber("1.0");
 
         TypedViewResponse<DiagnosticImagingReportViewResponse> diResponse = client.getView(commonHeader, diView);
 
         DiagnosticImagingReportViewResponse diagnosticImagingReportViewResponse = diResponse.getResponseObject();
-        diagnosticImagingReportViewResponse.getDiagnosticImagingReports();
+        diagnosticImagingReportViewResponse.getDiagnosticImagingReport();
         diagnosticImagingReportViewResponse.getViewMetadata();
 
         //the raw response object is still available:

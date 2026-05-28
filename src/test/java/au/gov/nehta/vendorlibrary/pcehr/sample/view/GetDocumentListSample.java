@@ -113,10 +113,10 @@ public final class GetDocumentListSample {
         // Process response.
         System.out.println("Response Status: " + responseAll.getStatus());
 
-        System.out.println("Response Document Count : " + responseAll.getRegistryObjectList().getExtrinsicObjects().size());
+        System.out.println("Response Document Count : " + responseAll.getRegistryObjectList().getExtrinsicObject().size());
 
         // Get list of documents.
-        List<ExtrinsicObjectType> docs = responseAll.getRegistryObjectList().getExtrinsicObjects();
+        List<ExtrinsicObjectType> docs = responseAll.getRegistryObjectList().getExtrinsicObject();
 
         // Get document status.
         for (ExtrinsicObjectType doc : docs) {

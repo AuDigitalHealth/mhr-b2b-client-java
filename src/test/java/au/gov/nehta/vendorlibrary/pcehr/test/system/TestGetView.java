@@ -8,6 +8,7 @@ import au.gov.nehta.vendorlibrary.pcehr.test.utils.Endpoints;
 import au.gov.nehta.vendorlibrary.pcehr.test.utils.Logging;
 import au.gov.nehta.vendorlibrary.pcehr.test.utils.SecurityConstants;
 import au.gov.nehta.vendorlibrary.pcehr.test.utils.SecurityUtil;
+import au.gov.nehta.vendorlibrary.pcehr.test.utils.XmlDateUtils;
 import au.net.electronichealth.ns.pcehr.svc.getview._1.StandardErrorMsg;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.diagnosticimagingreportview._1.DiagnosticImagingReportView;
@@ -75,10 +76,10 @@ public class TestGetView {
         );
 
         request = MessageComponents.createRequest(
-                MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "ROSS JOHN", false),
+                MessageComponents.createUser("HPII", "8003619166674595", null, "ROSS JOHN", false),
                 "8003608666701594",
                 MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 8.1"),
-                PCEHRHeader.ClientSystemType.CIS,
+                "CIS",
                 MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null));
 
     }
@@ -95,8 +96,8 @@ public class TestGetView {
         MedicareOverview medicareOverview = new MedicareOverview();
         Calendar OneJan1900 = Calendar.getInstance();
         OneJan1900.set(1900, Calendar.JANUARY, 1); //from 1 January 1900
-        medicareOverview.setFromDate(OneJan1900);
-        medicareOverview.setToDate(Calendar.getInstance()); //to current time
+        medicareOverview.setFromDate(XmlDateUtils.toXmlGregorianCalendar(OneJan1900));
+        medicareOverview.setToDate(XmlDateUtils.toXmlGregorianCalendar(Calendar.getInstance())); //to current time
         medicareOverview.setVersionNumber("1.0");
 
         GetViewResponse response = client.getView(request, medicareOverview);
@@ -111,8 +112,8 @@ public class TestGetView {
         ObservationView view = new ObservationView();
         Calendar OneJan1900 = Calendar.getInstance();
         OneJan1900.set(1900, Calendar.JANUARY, 1); //from 1 January 1900
-        view.setFromDate(OneJan1900);
-        view.setToDate(Calendar.getInstance()); //to current time
+        view.setFromDate(XmlDateUtils.toXmlGregorianCalendar(OneJan1900));
+        view.setToDate(XmlDateUtils.toXmlGregorianCalendar(Calendar.getInstance())); //to current time
         view.setVersionNumber("1.0");
         view.setObservationType("HEADCIRCUMFERENCE"); //other valid values are HEIGHT,WEIGHT,BMI
         view.setDocumentSource("ALL"); //other valid values are PERSONAL, PROVIDER
@@ -130,8 +131,8 @@ public class TestGetView {
         PrescriptionAndDispenseView view = new PrescriptionAndDispenseView();
         Calendar OneJan1900 = Calendar.getInstance();
         OneJan1900.set(1900, Calendar.JANUARY, 1); //from 1 January 1900
-        view.setFromDate(OneJan1900);
-        view.setToDate(Calendar.getInstance()); //to current time
+        view.setFromDate(XmlDateUtils.toXmlGregorianCalendar(OneJan1900));
+        view.setToDate(XmlDateUtils.toXmlGregorianCalendar(Calendar.getInstance())); //to current time
         view.setVersionNumber("1.0");
 
         GetViewResponse response = client.getView(request, view);
@@ -159,13 +160,13 @@ public class TestGetView {
 
         Calendar OneJan1900 = Calendar.getInstance();
         OneJan1900.set(1900, Calendar.JANUARY, 1); //from 1 January 1900
-        view.setFromDate(OneJan1900);
-        view.setToDate(Calendar.getInstance()); //to current time
+        view.setFromDate(XmlDateUtils.toXmlGregorianCalendar(OneJan1900));
+        view.setToDate(XmlDateUtils.toXmlGregorianCalendar(Calendar.getInstance())); //to current time
         view.setVersionNumber("1.0");
 
         TypedViewResponse<PathologyReportViewResponse> response = client.getView(request, view);
         PathologyReportViewResponse responseObject = response.getResponseObject();
-        responseObject.getPathologyReports();
+        responseObject.getPathologyReport();
         responseObject.getViewMetadata();
 
         Assert.assertEquals("PCEHR_SUCCESS", response.getCode());
@@ -178,8 +179,8 @@ public class TestGetView {
 
         Calendar OneJan1900 = Calendar.getInstance();
         OneJan1900.set(1900, Calendar.JANUARY, 1); //from 1 January 1900
-        view.setFromDate(OneJan1900);
-        view.setToDate(Calendar.getInstance()); //to current time
+        view.setFromDate(XmlDateUtils.toXmlGregorianCalendar(OneJan1900));
+        view.setToDate(XmlDateUtils.toXmlGregorianCalendar(Calendar.getInstance())); //to current time
         view.setVersionNumber("1.0");
 
         //to fail the request
@@ -187,7 +188,7 @@ public class TestGetView {
 
         TypedViewResponse<PathologyReportViewResponse> response = client.getView(request, view);
         PathologyReportViewResponse responseObject = response.getResponseObject();
-        responseObject.getPathologyReports();
+        responseObject.getPathologyReport();
         responseObject.getViewMetadata();
 
         Assert.assertEquals("PCEHR_ERROR", response.getCode());
@@ -199,8 +200,8 @@ public class TestGetView {
         DiagnosticImagingReportView view = new DiagnosticImagingReportView();
         Calendar OneJan1900 = Calendar.getInstance();
         OneJan1900.set(1900, Calendar.JANUARY, 1); //from 1 January 1900
-        view.setFromDate(OneJan1900);
-        view.setToDate(Calendar.getInstance()); //to current time
+        view.setFromDate(XmlDateUtils.toXmlGregorianCalendar(OneJan1900));
+        view.setToDate(XmlDateUtils.toXmlGregorianCalendar(Calendar.getInstance())); //to current time
         view.setVersionNumber("1.0");
 
         TypedViewResponse<DiagnosticImagingReportViewResponse> response = client.getView(request, view);
@@ -211,7 +212,7 @@ public class TestGetView {
 
         DiagnosticImagingReportViewResponse responseObject = response.getResponseObject();
 
-        responseObject.getDiagnosticImagingReports();
+        responseObject.getDiagnosticImagingReport();
         responseObject.getViewMetadata();
 
 
@@ -280,10 +281,10 @@ public class TestGetView {
 
         PCEHRHeader request = MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "pwilford", null, "PhilipWilford", false),
+                        MessageComponents.createUser("HPII", "pwilford", null, "PhilipWilford", false),
                         "8003602345690302",
                         MessageComponents.createProductType("NeHTA", "dummyCISusr1", "dummyCISusrV1", "Windows 7"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        "CIS",
                         MessageComponents.createAccessingOrganisation("8003629900024122", "Medicare-305", null)
                 );
 
@@ -302,8 +303,8 @@ public class TestGetView {
         MedicareOverview medicareOverview = new MedicareOverview();
         Calendar OneJan1900 = Calendar.getInstance(UTC_TIME_ZONE);
         OneJan1900.set(2013, Calendar.JANUARY, 1); //from 1 January 2013
-        medicareOverview.setFromDate(OneJan1900);
-        medicareOverview.setToDate(Calendar.getInstance(UTC_TIME_ZONE)); //to current time
+        medicareOverview.setFromDate(XmlDateUtils.toXmlGregorianCalendar(OneJan1900));
+        medicareOverview.setToDate(XmlDateUtils.toXmlGregorianCalendar(Calendar.getInstance(UTC_TIME_ZONE))); //to current time
         medicareOverview.setVersionNumber("1.0");
 
 
@@ -312,8 +313,8 @@ public class TestGetView {
         hcs.setVersionNumber("1.0");
 
         PrescriptionAndDispenseView pd = new PrescriptionAndDispenseView();
-        pd.setFromDate(OneJan1900);
-        pd.setToDate(Calendar.getInstance(UTC_TIME_ZONE));
+        pd.setFromDate(XmlDateUtils.toXmlGregorianCalendar(OneJan1900));
+        pd.setToDate(XmlDateUtils.toXmlGregorianCalendar(Calendar.getInstance(UTC_TIME_ZONE)));
         pd.setVersionNumber("1.0");
 
         GetViewResponse response = client.getView(request, pd);

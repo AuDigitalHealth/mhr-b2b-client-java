@@ -78,16 +78,16 @@ public class DoesPCHERExistClientTest_NOC {
         DoesPCEHRExistResponse response = client.doesPCEHRExist(
                 MessageComponents.createRequest
                         (
-                                MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                                MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                                 "8003602348687602",
                                 MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                                PCEHRHeader.ClientSystemType.CIS,
+                                "CIS",
                                 MessageComponents.createAccessingOrganisation(SecurityUtil.getHPIOMatchingCertificate(), "Medicare305", null)
                         )
         );
 
         Assert.assertTrue(response.isPCEHRExists());
-        Assert.assertEquals(DoesPCEHRExistResponse.AccessCodeRequired.ACCESS_GRANTED, response.getAccessCodeRequired());
+        Assert.assertEquals("AccessGranted", response.getAccessCodeRequired());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -95,10 +95,10 @@ public class DoesPCHERExistClientTest_NOC {
         DoesPCEHRExistResponse response = client.doesPCEHRExist(
                 MessageComponents.createRequest
                         (
-                                MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                                MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                                 "800360234868760",
                                 MessageComponents.createProductType("NeHTA", "Harness", "1.0", "Windows 7 - Java"),
-                                PCEHRHeader.ClientSystemType.CIS,
+                                "CIS",
                                 MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
                         )
         );
@@ -121,10 +121,10 @@ public class DoesPCHERExistClientTest_NOC {
             DoesPCEHRExistResponse response = client.doesPCEHRExist(
                     MessageComponents.createRequest
                             (
-                                    MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                                    MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                                     "8003602348687602",
                                     MessageComponents.createProductType("NeHTA", "Harness", "1.0", "Windows 7 - Java"),
-                                    PCEHRHeader.ClientSystemType.CIS,
+                                    "CIS",
                                     MessageComponents.createAccessingOrganisation("8000627500003640", "Medicare305", null)
                             )
             );

@@ -71,10 +71,10 @@ public class GainPCEHRAccessClientTest {
       
       PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003606789133695",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation(/*"8003620833337558"*/ "8003624166667177", "Medicare305", null)
       );
     GainPCEHRAccess.PCEHRRecord record = MessageComponents.createGainPCEHRRecord(null);

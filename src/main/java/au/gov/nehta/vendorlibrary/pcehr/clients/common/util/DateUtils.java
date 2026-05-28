@@ -14,14 +14,14 @@
 package au.gov.nehta.vendorlibrary.pcehr.clients.common.util;
 
 import au.gov.nehta.vendorlibrary.pcehr.clients.common.constant.DateParsePatterns;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.Timestamp;
+import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.TimestampType;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -54,11 +54,11 @@ public final class DateUtils {
      *
      * @return {@link Timestamp}.
      */
-    public static Timestamp generateTimestamp() {
+    public static TimestampType generateTimestamp() {
         GregorianCalendar gregorianCalendar = new GregorianCalendar();
         gregorianCalendar.setTime(new Date());
 
-        Timestamp timestamp = new Timestamp();
+        TimestampType timestamp = new TimestampType();
 
         try {
             timestamp.setCreated(DatatypeFactory.newInstance().newXMLGregorianCalendar(gregorianCalendar));
@@ -158,8 +158,8 @@ public final class DateUtils {
      */
     private static ZoneId findTimeZonePatternByLength(final String operator, final String timeZone, final Holder<Boolean> halfHour) {
 
-        Validate.notEmpty("'operator' must be specified.");
-        Validate.notEmpty("'timeZone' must be specified.");
+        Validate.notEmpty(operator, "'operator' must be specified.");
+        Validate.notEmpty(timeZone, "'timeZone' must be specified.");
 
         halfHour.value = false;
 

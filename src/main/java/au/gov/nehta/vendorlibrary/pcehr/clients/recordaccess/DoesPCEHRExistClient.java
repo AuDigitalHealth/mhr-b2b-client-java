@@ -17,7 +17,7 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 
 import org.apache.commons.lang3.Validate;
 
@@ -29,7 +29,7 @@ import au.net.electronichealth.ns.pcehr.b2b.svc.pcehrprofile._1.PCEHRProfilePort
 import au.net.electronichealth.ns.pcehr.b2b.svc.pcehrprofile._1.PCEHRProfileService;
 import au.net.electronichealth.ns.pcehr.b2b.svc.pcehrprofile._1.StandardErrorMsg;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.Signature;
+import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.SignatureContainerType;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.pcehrprofile._1.DoesPCEHRExistResponse;
 
 /**
@@ -108,7 +108,7 @@ public class DoesPCEHRExistClient extends Client<PCEHRProfilePortType> {
 
         // Response holder variables.
         Holder<DoesPCEHRExistResponse> responseHolder = new Holder<>();
-        Holder<Signature> signatureHolder = null;
+        Holder<SignatureContainerType> signatureHolder = null;
 
         // Attempt to call the doesPCEHRExist operation, storing response message values in the supplied holders.
         getPort().doesPCEHRExist(

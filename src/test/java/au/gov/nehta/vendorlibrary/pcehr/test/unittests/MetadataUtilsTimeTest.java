@@ -3,6 +3,7 @@ package au.gov.nehta.vendorlibrary.pcehr.test.unittests;
 import au.gov.nehta.common.utils.IOUtils;
 import au.gov.nehta.vendorlibrary.pcehr.clients.common.type.DocumentMetadata;
 import au.gov.nehta.vendorlibrary.pcehr.clients.common.util.MetadataUtils;
+import au.gov.nehta.vendorlibrary.pcehr.sample.common.constants.SampleValues;
 import au.gov.nehta.vendorlibrary.pcehr.sample.common.util.MessageComponents;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
 import org.junit.Assert;
@@ -21,10 +22,10 @@ public class MetadataUtilsTimeTest {
     static {
         exampleHeader = MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                        MessageComponents.createUser(SampleValues.USER_ID_TYPE, "8003619166674595", null, "Ross John", false),
                         "8003602348687628",
                         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        SampleValues.CLIENT_SYSTEM_TYPE_CIS,
                         MessageComponents.createAccessingOrganisation("8003624166667177", "Medicare305", null)
                 );
     }

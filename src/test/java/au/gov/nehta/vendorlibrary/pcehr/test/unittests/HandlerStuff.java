@@ -23,27 +23,28 @@ import au.gov.nehta.vendorlibrary.pcehr.clients.common.util.FileUtils;
 import au.gov.nehta.vendorlibrary.pcehr.clients.common.util.MetadataUtils;
 import au.gov.nehta.vendorlibrary.pcehr.clients.common.util.XDSMapper;
 import au.gov.nehta.vendorlibrary.pcehr.sample.common.util.MessageComponents;
+import au.gov.nehta.vendorlibrary.pcehr.sample.common.constants.SampleValues;
 import au.gov.nehta.vendorlibrary.pcehr.test._20120718_regression.AllTests;
 import au.net.electronichealth.ns.cdapackage.xsd.esignature._2012.PersonNameType;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.Signature;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.Timestamp;
+import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.SignatureContainerType;
+import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.TimestampType;
 import ihe.iti.xds_b._2007.DocumentRepositoryPortType;
 import ihe.iti.xds_b._2007.DocumentRepositoryService;
-import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequest;
+import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequestType;
 import oasis.names.tc.ebxml_regrep.xsd.lcm._3.SubmitObjectsRequest;
 import org.xml.sax.SAXException;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.ws.BindingProvider;
-import javax.xml.ws.Holder;
-import javax.xml.ws.Service;
-import javax.xml.ws.WebServiceClient;
-import javax.xml.ws.handler.Handler;
-import javax.xml.ws.handler.HandlerResolver;
-import javax.xml.ws.handler.PortInfo;
-import javax.xml.ws.soap.SOAPBinding;
+import jakarta.xml.ws.BindingProvider;
+import jakarta.xml.ws.Holder;
+import jakarta.xml.ws.Service;
+import jakarta.xml.ws.WebServiceClient;
+import jakarta.xml.ws.handler.Handler;
+import jakarta.xml.ws.handler.HandlerResolver;
+import jakarta.xml.ws.handler.PortInfo;
+import jakarta.xml.ws.soap.SOAPBinding;
 import javax.xml.xpath.XPathExpressionException;
 import java.io.File;
 import java.io.IOException;
@@ -87,10 +88,10 @@ public class HandlerStuff {
         byte[] packageContent = PackagingUtility.createZip(subset);
 
         PCEHRHeader commonHeader = MessageComponents.createRequest(
-                MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166668209", null, "Anthony TUCKER", false),
+                MessageComponents.createUser(SampleValues.USER_ID_TYPE, "8003619166668209", null, "Anthony TUCKER", false),
                 "8003608500011184",
                 MessageComponents.createProductType("NEHTA", "testHarness", "1.0", "Windows 7 - Java"),
-                PCEHRHeader.ClientSystemType.CIS,
+                SampleValues.CLIENT_SYSTEM_TYPE_CIS,
                 MessageComponents.createAccessingOrganisation("8003622500001608", "2", null)
         );
 
@@ -107,15 +108,15 @@ public class HandlerStuff {
 
         SubmitObjectsRequest request = XDSMapper.toSubmitObjectsRequest(commonHeader, submissionMetadata, documentMetadata, null);
 
-        ProvideAndRegisterDocumentSetRequest.Document iheDocument = new ProvideAndRegisterDocumentSetRequest.Document();
+        ProvideAndRegisterDocumentSetRequestType.Document iheDocument = new ProvideAndRegisterDocumentSetRequestType.Document();
         iheDocument.setId(documentMetadata.getEntryUuid());
         iheDocument.setValue(packageContent);
 
-        ProvideAndRegisterDocumentSetRequest body = new ProvideAndRegisterDocumentSetRequest();
+        ProvideAndRegisterDocumentSetRequestType body = new ProvideAndRegisterDocumentSetRequestType();
         body.setSubmitObjectsRequest(request);
-        body.getDocuments().add(iheDocument);
+        body.getDocument().add(iheDocument);
 
-        port.documentRepositoryProvideAndRegisterDocumentSetB(new Timestamp(), new Holder<>(), commonHeader, body);
+        port.documentRepositoryProvideAndRegisterDocumentSetB(new TimestampType(), new Holder<>(), commonHeader, body);
     }
 
     /**

@@ -25,7 +25,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -53,11 +53,11 @@ import au.gov.nehta.vendorlibrary.pcehr.test._20120718_regression.AllTests;
 import au.gov.nehta.vendorlibrary.pcehr.test.utils.Endpoints;
 import au.gov.nehta.vendorlibrary.pcehr.test.utils.Logging;
 import au.gov.nehta.vendorlibrary.pcehr.test.utils.SecurityUtil;
+import au.gov.nehta.vendorlibrary.pcehr.test.utils.XmlDateUtils;
 import au.net.electronichealth.ns.cdapackage.xsd.esignature._2012.PersonNameType;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.ContactDetailsType;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.NameTypeSupp;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.Sex;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.registerpcehr._2.RegisterPCEHR;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.registerpcehr._2.RegisterPCEHR.Assertions.Identity;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.registerpcehr._2.RegisterPCEHR.Assertions.Identity.EvidenceOfIdentity;
@@ -207,12 +207,12 @@ public class RegisterPCEHRClientTest {
 		Demographics demographics = new Demographics();
 		Calendar cal = Calendar.getInstance();
 		cal.set(1981, 8, 28);// 28/09/1980
-		demographics.setDateOfBirth(cal);
+		demographics.setDateOfBirth(XmlDateUtils.toXmlGregorianCalendar(cal));
 		NameTypeSupp name = new NameTypeSupp();
 		name.setFamilyName("JACOB");
-		name.getGivenNames().add("ERICAL");
+		name.getGivenName().add("ERICAL");
 		demographics.setName(name);
-		demographics.setSex(Sex.F);
+		demographics.setSex("F");
 		Individual ind = new Individual();
 		ind.setDemographics(demographics);
 		registrationDetails.setIndividual(ind);
@@ -259,10 +259,10 @@ public class RegisterPCEHRClientTest {
 
 		 return MessageComponents.createRequest
 			      (
-			        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "JOHN ROSS", false),
+			        MessageComponents.createUser("HPII", "8003619166674595", null, "JOHN ROSS", false),
 			        ihi,
 			        MessageComponents.createProductType("NEHTA", "Test Harness", "1.0", "Windows 7"),
-			        PCEHRHeader.ClientSystemType.CIS,
+			        "CIS",
 			        MessageComponents.createAccessingOrganisation("8003624166667177", "Medicare305", null)
 			      );
   }

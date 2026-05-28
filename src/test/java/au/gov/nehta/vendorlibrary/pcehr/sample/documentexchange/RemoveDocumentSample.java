@@ -100,7 +100,7 @@ public final class RemoveDocumentSample {
     );
 
     // Call operation.
-    RemoveDocumentResponse response = client.removeDocument(commonHeader, SampleValues.REMOVE_DOCUMENT_ID, SampleValues.REMOVE_DOCUMENT_REASON);
+    RemoveDocumentResponse response = client.removeDocument(commonHeader, SampleValues.REMOVE_DOCUMENT_ID, RemoveDocumentClient.DocumentRemovalReason.WITHDRAWN);
 
     // Process response.
     System.out.println("Document Removal Response Status Code" + response.getResponseStatus().getCode());

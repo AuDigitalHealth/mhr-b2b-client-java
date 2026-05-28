@@ -86,10 +86,10 @@ public class GetDocumentListClientTest_NOC {
 
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003604570901313",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 
@@ -100,9 +100,9 @@ public class GetDocumentListClientTest_NOC {
     AdhocQueryResponse response = client.getDocumentList(request, queryParams);
 
     Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
-    Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObjects().size() > 0);
+    Assert.assertTrue(response.getRegistryObjectList().getExtrinsicObject().size() > 0);
 
-    List<ExtrinsicObjectType> docs = response.getRegistryObjectList().getExtrinsicObjects();
+    List<ExtrinsicObjectType> docs = response.getRegistryObjectList().getExtrinsicObject();
 
     for (ExtrinsicObjectType doc : docs) {
       Assert.assertEquals(XDSConstants.EOT_STATUS_APPROVED, doc.getStatus());
@@ -114,10 +114,10 @@ public class GetDocumentListClientTest_NOC {
   public void test_013() throws Exception {
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003608166668517",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8000627500003640", "Medicare305", null)
       );
 
@@ -127,8 +127,8 @@ public class GetDocumentListClientTest_NOC {
 
     AdhocQueryResponse response = client.getDocumentList(request, queryParams);
 
-    Assert.assertEquals("XDSRegistryError", response.getRegistryErrorList().getRegistryErrors().get(0).getErrorCode());
-    Assert.assertEquals("PCEHR_ERROR_0505 - Invalid HPI-O", response.getRegistryErrorList().getRegistryErrors().get(0).getCodeContext());
+    Assert.assertEquals("XDSRegistryError", response.getRegistryErrorList().getRegistryError().get(0).getErrorCode());
+    Assert.assertEquals("PCEHR_ERROR_0505 - Invalid HPI-O", response.getRegistryErrorList().getRegistryError().get(0).getCodeContext());
   }
 }
 

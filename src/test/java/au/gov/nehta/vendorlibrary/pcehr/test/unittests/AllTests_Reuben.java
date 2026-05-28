@@ -47,10 +47,10 @@ public class AllTests_Reuben {
         );
 
         defaultRequest = MessageComponents.createRequest(
-                MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003618233333524", null, "PHIL TOUSANT", false),
+                MessageComponents.createUser("HPII", "8003618233333524", null, "PHIL TOUSANT", false),
                 "8003602348687602",
                 MessageComponents.createProductType("NEHTA Implementation Architects", "CHIRON", "1.0.0", "Java"),
-                PCEHRHeader.ClientSystemType.CIS,
+                "CIS",
                 MessageComponents.createAccessingOrganisation("8003626566667756", "DHS5749", null)
         );
 

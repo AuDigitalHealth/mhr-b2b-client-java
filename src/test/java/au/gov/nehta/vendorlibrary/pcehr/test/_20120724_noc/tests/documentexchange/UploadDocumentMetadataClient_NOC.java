@@ -36,7 +36,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -100,10 +100,10 @@ public class UploadDocumentMetadataClient_NOC {
   public void test_038() throws Exception {
 
     PCEHRHeader request = MessageComponents.createRequest(
-      MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+      MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
       "8003606792133153",
       MessageComponents.createProductType("NEHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-      PCEHRHeader.ClientSystemType.CRP,
+      "CRP",
       MessageComponents.createAccessingOrganisation("8003629900000957", "Medicare305", null)
     );
 

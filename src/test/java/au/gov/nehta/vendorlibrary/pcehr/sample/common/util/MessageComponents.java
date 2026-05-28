@@ -53,7 +53,7 @@ public final class MessageComponents {
    * @return populated {@link GainPCEHRAccess.PCEHRRecord.AuthorisationDetails} object.
    */
   public static GainPCEHRAccess.PCEHRRecord.AuthorisationDetails createAuthorisationDetails(
-    GainPCEHRAccess.PCEHRRecord.AuthorisationDetails.AccessType accessType,
+    String accessType,
     String accessCode
   ) {
     GainPCEHRAccess.PCEHRRecord.AuthorisationDetails authorisationDetails = new GainPCEHRAccess.PCEHRRecord.AuthorisationDetails();
@@ -76,7 +76,7 @@ public final class MessageComponents {
     PCEHRHeader.User user,
     String ihiNumber,
     PCEHRHeader.ProductType productType,
-    PCEHRHeader.ClientSystemType clientSystemType,
+    String clientSystemType,
     PCEHRHeader.AccessingOrganisation accessingOrganisation
   ) {
     // Instantiate new request header.
@@ -104,7 +104,7 @@ public final class MessageComponents {
    * @return Populated {@link PCEHRHeader.User} object.
    */
   public static PCEHRHeader.User createUser(
-    PCEHRHeader.User.IDType idType,
+    String idType,
     String id,
     String role,
     String userName,

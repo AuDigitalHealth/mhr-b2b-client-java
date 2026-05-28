@@ -73,10 +73,10 @@ public class GetTemplateClientTest_NOC {
         System.setProperty("com.sun.xml.internal.ws.transport.http.client.HttpTransportPipe.dump", "true");
 
         PCEHRHeader request = MessageComponents.createRequest(
-                MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                 null,
                 MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                PCEHRHeader.ClientSystemType.CIS,
+                "CIS",
                 MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
         );
         GetTemplateResponse response = null;
@@ -97,10 +97,10 @@ public class GetTemplateClientTest_NOC {
         Assert.fail("No valid test data.");
 //    FIXME: add proper test data here.
 //    PCEHRHeader request = MessageComponents.createRequest(
-//      MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+//      MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
 //      null,
 //      MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-//      PCEHRHeader.ClientSystemType.CIS,
+//      "CIS",
 //      MessageComponents.createAccessingOrganisation("8003624166667177", "Medicare305", null)
 //    );
 //
@@ -115,10 +115,10 @@ public class GetTemplateClientTest_NOC {
     @Test
     public void test_045() throws Exception {
         PCEHRHeader request = MessageComponents.createRequest(
-                MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                 null,
                 MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                PCEHRHeader.ClientSystemType.CIS,
+                "CIS",
                 MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
         );
 

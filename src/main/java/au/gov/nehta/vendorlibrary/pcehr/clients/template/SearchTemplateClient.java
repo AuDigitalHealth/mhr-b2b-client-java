@@ -17,7 +17,7 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 
 import org.apache.commons.lang3.Validate;
 
@@ -26,7 +26,7 @@ import au.gov.nehta.vendorlibrary.pcehr.clients.common.util.CommonHeaderValidato
 import au.gov.nehta.vendorlibrary.pcehr.clients.common.util.DateUtils;
 import au.gov.nehta.xsp.CertificateValidator;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.Signature;
+import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.SignatureContainerType;
 import au.net.electronichealth.ns.tplt.svc.searchtemplate._1.SearchTemplatePortType;
 import au.net.electronichealth.ns.tplt.svc.searchtemplate._1.SearchTemplateService;
 import au.net.electronichealth.ns.tplt.svc.searchtemplate._1.StandardErrorMsg;
@@ -115,7 +115,7 @@ public final class SearchTemplateClient extends Client<SearchTemplatePortType> {
         CommonHeaderValidator.validate(commonHeader, false); // IHINumber is NOT required.
 
         Holder<SearchTemplateResponse> responseHolder = new Holder<>();
-        Holder<Signature> signatureHolder = null;
+        Holder<SignatureContainerType> signatureHolder = null;
 
         SearchTemplate params = new SearchTemplate();
         params.setTemplateID(templateId);

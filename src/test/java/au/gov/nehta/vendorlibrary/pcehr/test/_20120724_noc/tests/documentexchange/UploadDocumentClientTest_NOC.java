@@ -26,7 +26,7 @@ import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHe
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.removedocument._1.RemoveDocument;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.removedocument._1.RemoveDocumentResponse;
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetResponse;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.ExternalIdentifierType;
 import oasis.names.tc.ebxml_regrep.xsd.rim._3.ExtrinsicObjectType;
@@ -56,7 +56,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -134,18 +134,18 @@ public class UploadDocumentClientTest_NOC {
 
 //    PCEHRHeader request = MessageComponents.createRequest
 //      (
-//        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+//        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
 //        "8003603459803467",
 //        MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-//        PCEHRHeader.ClientSystemType.CIS,
+//        "CIS",
 //        MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
 //      );
 	  PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003618334357646", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003618334357646", null, "Ross John", false),
         "8003601243017717",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 	  
@@ -170,7 +170,7 @@ public class UploadDocumentClientTest_NOC {
       new CodedValue("PCEHR_FormatCodes", "1.2.36.1.2001.1006.1.20000.11", "Manually Supplied Discharge Summary - Conformance Level 3A")
     );
     System.out.println(response.getStatus());
-    System.out.println(response.getRegistryErrorList().getRegistryErrors().get( 0 ).getCodeContext());
+    System.out.println(response.getRegistryErrorList().getRegistryError().get( 0 ).getCodeContext());
     Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getStatus());
 
     RemoveDocumentResponse removeResponse = removeDoc(request, currentId.value);
@@ -184,10 +184,10 @@ public class UploadDocumentClientTest_NOC {
   public void test_029() throws Exception {
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003603459803467",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 
@@ -220,10 +220,10 @@ public class UploadDocumentClientTest_NOC {
   public void test_030() throws Exception {
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003603459803467",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 
@@ -259,10 +259,10 @@ public class UploadDocumentClientTest_NOC {
   public void test_SizeAndHashWhenUsingRepositoryID() throws Exception {
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003603459803467",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation(/*"8003620833337558"*/ "8003628233352432", "Medicare305", null)
       );
 
@@ -289,7 +289,7 @@ public class UploadDocumentClientTest_NOC {
 
     //if error, spit out the details before failing the assertion
     if(!XDSConstants.RESPONSE_STATUS_SUCCESS.equals( response.getStatus())){
-        for(RegistryError e: response.getRegistryErrorList().getRegistryErrors()){
+        for(RegistryError e: response.getRegistryErrorList().getRegistryError()){
             StringBuffer b = new StringBuffer( e.getCodeContext());
             b.append( "     Location: " ).append( e.getLocation() ).append( "       Value: " ).append( e.getValue() );
             b.append( "     code: " ).append( e.getErrorCode() );
@@ -308,10 +308,10 @@ public class UploadDocumentClientTest_NOC {
   public void test_031() throws Exception {
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003603459803467",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 
@@ -329,18 +329,18 @@ public class UploadDocumentClientTest_NOC {
     );
 
     Assert.assertEquals(XDSConstants.RESPONSE_STATUS_FAILURE, response.getStatus());
-    Assert.assertEquals("XDSRepositoryError", response.getRegistryErrorList().getRegistryErrors().get(0).getErrorCode());
-    Assert.assertEquals("PCEHR_ERROR_3001 - Invalid document folder structure", response.getRegistryErrorList().getRegistryErrors().get(0).getCodeContext());
+    Assert.assertEquals("XDSRepositoryError", response.getRegistryErrorList().getRegistryError().get(0).getErrorCode());
+    Assert.assertEquals("PCEHR_ERROR_3001 - Invalid document folder structure", response.getRegistryErrorList().getRegistryError().get(0).getCodeContext());
   }
 
   @Test
   public void test_032() throws Exception {
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003604570901305",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 
@@ -364,18 +364,18 @@ public class UploadDocumentClientTest_NOC {
     );
 
     Assert.assertEquals(XDSConstants.RESPONSE_STATUS_FAILURE, response.getStatus());
-    Assert.assertEquals("XDSRepositoryError", response.getRegistryErrorList().getRegistryErrors().get(0).getErrorCode());
-    Assert.assertEquals("PCEHR_ERROR_3002 - Document metadata failed validation", response.getRegistryErrorList().getRegistryErrors().get(0).getCodeContext());
+    Assert.assertEquals("XDSRepositoryError", response.getRegistryErrorList().getRegistryError().get(0).getErrorCode());
+    Assert.assertEquals("PCEHR_ERROR_3002 - Document metadata failed validation", response.getRegistryErrorList().getRegistryError().get(0).getCodeContext());
   }
 
   @Test
   public void testReplaceDocument() throws Exception {
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003603459803467",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 
@@ -417,17 +417,17 @@ public class UploadDocumentClientTest_NOC {
 
     String replaceId = null;
 
-    for (ExtrinsicObjectType eot : adhocQueryResponse.getRegistryObjectList().getExtrinsicObjects()) {
+    for (ExtrinsicObjectType eot : adhocQueryResponse.getRegistryObjectList().getExtrinsicObject()) {
       System.out.println(eot.getObjectType());
 
       if (eot.getObjectType().compareTo("urn:oasis:names:tc:ebxml-regrep:ObjectType:RegistryObject:ExternalIdentifier") == 0) {
-        List<ExternalIdentifierType> identifiers = eot.getExternalIdentifiers();
+        List<ExternalIdentifierType> identifiers = eot.getExternalIdentifier();
         System.out.println();
       }
     }
 
-    for (ExtrinsicObjectType eot : adhocQueryResponse.getRegistryObjectList().getExtrinsicObjects()) {
-      for (ExternalIdentifierType identifier : eot.getExternalIdentifiers()) {
+    for (ExtrinsicObjectType eot : adhocQueryResponse.getRegistryObjectList().getExtrinsicObject()) {
+      for (ExternalIdentifierType identifier : eot.getExternalIdentifier()) {
         System.out.println(identifier.getObjectType());
         if (identifier.getObjectType().compareTo(XDSConstants.XDS_DOCUMENT_ENTRY_UUID) == 0) {
           System.out.println(identifier.getId());
@@ -474,7 +474,7 @@ public class UploadDocumentClientTest_NOC {
     docRequest.setDocumentUniqueId(currentId2.value);
     docRequest.setRepositoryUniqueId("1.2.36.1.2001.1006.0.1.3.1");
 
-    RetrieveDocumentSetResponse retrieveDocumentSetResponse = getdoc.retrieveDocument(request, docRequest);
+    RetrieveDocumentSetResponseType retrieveDocumentSetResponse = getdoc.retrieveDocument(request, docRequest);
     System.out.println(retrieveDocumentSetResponse.getRegistryResponse().
 
       getStatus()
@@ -494,10 +494,10 @@ public class UploadDocumentClientTest_NOC {
 
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003603459803467",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 
@@ -531,10 +531,10 @@ public class UploadDocumentClientTest_NOC {
   public void testUploadTwice() throws Exception {
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003603459803467",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 
@@ -661,7 +661,7 @@ public class UploadDocumentClientTest_NOC {
       false
     );
 
-    return removeClient.removeDocument(commonHeader, docId, RemoveDocument.DocumentRemovalReason.WITHDRAWN);
+    return removeClient.removeDocument(commonHeader, docId, RemoveDocumentClient.DocumentRemovalReason.WITHDRAWN);
   }
 
 

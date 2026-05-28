@@ -26,9 +26,9 @@ import au.net.electronichealth.ns.tplt.xsd.common.templatescoreelements._1.Templ
 public final class SampleValues {
 
   /**
-   * User - ID type.
+   * User - ID type (string form, e.g. "HPII").
    */
-  public static final PCEHRHeader.User.IDType USER_ID_TYPE = PCEHRHeader.User.IDType.HPII;
+  public static final String USER_ID_TYPE = "HPII";
 
   /**
    * User - ID.
@@ -78,12 +78,12 @@ public final class SampleValues {
   /**
    * Client system type - CIS.
    */
-  public static final PCEHRHeader.ClientSystemType CLIENT_SYSTEM_TYPE_CIS = PCEHRHeader.ClientSystemType.CIS;
+  public static final String CLIENT_SYSTEM_TYPE_CIS = "CIS";
 
   /**
    * Client system type - CRP.
    */
-  public static final PCEHRHeader.ClientSystemType CLIENT_SYSTEM_TYPE_CRP = PCEHRHeader.ClientSystemType.CRP;
+  public static final String CLIENT_SYSTEM_TYPE_CRP = "CRP";
 
   /**
    * Accessing Organisation - Organisation ID.
@@ -103,7 +103,7 @@ public final class SampleValues {
   /**
    * Authorisation Details - Access type.
    */
-  public static final GainPCEHRAccess.PCEHRRecord.AuthorisationDetails.AccessType AUTHORISATION_DETAILS_ACCESS_TYPE = GainPCEHRAccess.PCEHRRecord.AuthorisationDetails.AccessType.EMERGENCY_ACCESS;
+  public static final String AUTHORISATION_DETAILS_ACCESS_TYPE = "EmergencyAccess";
 
   /**
    * Authorisation Details - Access code.
@@ -128,7 +128,7 @@ public final class SampleValues {
   /**
    * Remove Document - Removal reason.
    */
-  public static final RemoveDocument.DocumentRemovalReason REMOVE_DOCUMENT_REASON = RemoveDocument.DocumentRemovalReason.WITHDRAWN;
+  public static final String REMOVE_DOCUMENT_REASON = "Withdrawn";
 
   /**
    * Search Template - Template ID.

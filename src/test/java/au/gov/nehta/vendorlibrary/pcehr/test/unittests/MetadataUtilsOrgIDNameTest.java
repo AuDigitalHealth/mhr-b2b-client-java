@@ -22,10 +22,10 @@ public class MetadataUtilsOrgIDNameTest {
     static {
         exampleHeader = MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                         "8003602348687628",
                         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        "CIS",
                         MessageComponents.createAccessingOrganisation("8003624166667177", "Medicare305", null)
                 );
     }

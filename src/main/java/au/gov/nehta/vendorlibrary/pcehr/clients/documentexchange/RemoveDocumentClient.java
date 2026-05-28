@@ -17,7 +17,7 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 
 import org.apache.commons.lang3.Validate;
 
@@ -29,15 +29,30 @@ import au.net.electronichealth.ns.pcehr.svc.removedocument._1.RemoveDocumentPort
 import au.net.electronichealth.ns.pcehr.svc.removedocument._1.RemoveDocumentService;
 import au.net.electronichealth.ns.pcehr.svc.removedocument._1.StandardErrorMsg;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.Signature;
+import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.SignatureContainerType;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.removedocument._1.RemoveDocument;
-import au.net.electronichealth.ns.pcehr.xsd.interfaces.removedocument._1.RemoveDocument.DocumentRemovalReason;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.removedocument._1.RemoveDocumentResponse;
 
 /**
  * A JAX-WS client to the PCEHR 'Remove Document' web service.
  */
 public final class RemoveDocumentClient extends Client<RemoveDocumentPortType> {
+
+    public enum DocumentRemovalReason {
+        WITHDRAWN("Withdrawn"),
+        ELECT_TO_REMOVE("ElectToRemove"),
+        INCORRECT_IDENTITY("IncorrectIdentity");
+
+        private final String value;
+
+        DocumentRemovalReason(String value) {
+            this.value = value;
+        }
+
+        public String value() {
+            return value;
+        }
+    }
 
     /**
      * Constructor - no certificate verification performed.
@@ -118,10 +133,10 @@ public final class RemoveDocumentClient extends Client<RemoveDocumentPortType> {
 
         RemoveDocument removeDocument = new RemoveDocument();
         removeDocument.setDocumentID(documentId);
-        removeDocument.setReasonForRemoval(removalReason);
+        removeDocument.setReasonForRemoval(removalReason.value());
 
         Holder<RemoveDocumentResponse> removeDocumentResponseHolder = new Holder<>();
-        Holder<Signature> signatureHolder = null;
+        Holder<SignatureContainerType> signatureHolder = null;
 
         getPort().removeDocument(
                 removeDocument,

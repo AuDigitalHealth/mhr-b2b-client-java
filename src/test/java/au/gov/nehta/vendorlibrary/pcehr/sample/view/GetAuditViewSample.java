@@ -119,8 +119,8 @@ public final class GetAuditViewSample {
         System.out.println("Response Status: " + response.getResponseStatus().getCode());
         System.out.println("Response Description: " + response.getResponseStatus().getDescription());
 
-        if (!response.getAuditView().getEventTrails().isEmpty()) {
-            System.out.println("Audit View Business Event: " + response.getAuditView().getEventTrails().get(0).getBusinessEvent());
+        if (!response.getAuditView().getEventTrail().isEmpty()) {
+            System.out.println("Audit View Business Event: " + response.getAuditView().getEventTrail().get(0).getBusinessEvent());
         }
     }
 

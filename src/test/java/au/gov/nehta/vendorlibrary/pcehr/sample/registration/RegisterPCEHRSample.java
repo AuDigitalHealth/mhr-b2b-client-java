@@ -27,7 +27,8 @@ import au.gov.nehta.vendorlibrary.pcehr.sample.common.util.SecurityUtil;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.ContactDetailsType;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.NameTypeSupp;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.Sex;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.registerpcehr._2.RegisterPCEHR;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.registerpcehr._2.RegisterPCEHR.Representative;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.registerpcehr._2.RegisterPCEHR.Assertions.DocumentConsent;
@@ -165,9 +166,9 @@ public class RegisterPCEHRSample {
 
     DocumentConsent dc = new DocumentConsent();
     Document document = new Document();
-    document.setType( DocumentConsentCodes.Type.PBS.toString()); 
+    document.setType( DocumentConsentCodes.Type.PBS.toString());
     document.setStatus( DocumentConsentCodes.Status.ConsentGiven.toString() );
-	dc.getDocuments().add( document  );
+    dc.getDocument().add( document );
 	assertions.setDocumentConsent( dc  );
     
 	Identity identity = new Identity();
@@ -220,7 +221,7 @@ public class RegisterPCEHRSample {
     Document document = new Document();
     document.setType( DocumentConsentCodes.Type.PBS.toString()); 
     document.setStatus( DocumentConsentCodes.Status.ConsentGiven.toString() );
-	dc.getDocuments().add( document  );
+	dc.getDocument().add( document  );
 	assertions.setDocumentConsent( dc  );
     
 	Identity identity = new Identity();
@@ -258,13 +259,18 @@ public class RegisterPCEHRSample {
 
     // Populate the individual's name.
     NameTypeSupp name = new NameTypeSupp();
-    name.getGivenNames().add("<change to individual's given name>");
+    name.getGivenName().add("<change to individual's given name>");
     name.setFamilyName("<change to individual's last name>");
     demographics.setName(name);
-    demographics.setSex(Sex.F);
-    Calendar dob = GregorianCalendar.getInstance();
-    dob.set( 2009, 11 , 9); //December 9th 2009
-	demographics.setDateOfBirth(dob );
+    demographics.setSex("F");
+    try {
+      GregorianCalendar dob = new GregorianCalendar();
+      dob.set(2009, 11, 9); //December 9th 2009
+      XMLGregorianCalendar xdob = DatatypeFactory.newInstance().newXMLGregorianCalendar(dob);
+      demographics.setDateOfBirth(xdob);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
 
     individual.setDemographics(demographics);
     registrationDetails.setAssertions(assertions);
@@ -277,13 +283,18 @@ public class RegisterPCEHRSample {
 
     // Populate the representative's name.
     NameTypeSupp repName = new NameTypeSupp();
-    repName.getGivenNames().add("<change to representative's given name>");
+    repName.getGivenName().add("<change to representative's given name>");
     repName.setFamilyName("<change to representative's last name>");
     repDemographics.setName(repName);
-    repDemographics.setSex(Sex.M);
-    Calendar repDOB = GregorianCalendar.getInstance();
-    repDOB.set( 1980, 0, 1 ); // Jan 1st 1980
-	repDemographics.setDateOfBirth(repDOB );
+    repDemographics.setSex("M");
+    try {
+      GregorianCalendar repDOB = new GregorianCalendar();
+      repDOB.set(1980, 0, 1); // Jan 1st 1980
+      XMLGregorianCalendar xrepDOB = DatatypeFactory.newInstance().newXMLGregorianCalendar(repDOB);
+      repDemographics.setDateOfBirth(xrepDOB);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
     representative.setDemographics(repDemographics  );
     representative.setIhiNumber( "<Reps IHI Number>" );
 	registrationDetails.setRepresentative( representative  );

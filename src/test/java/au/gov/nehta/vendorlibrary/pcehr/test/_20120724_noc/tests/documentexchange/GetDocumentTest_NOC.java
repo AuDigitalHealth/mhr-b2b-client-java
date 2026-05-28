@@ -1,7 +1,7 @@
 package au.gov.nehta.vendorlibrary.pcehr.test._20120724_noc.tests.documentexchange;
 
 import ihe.iti.xds_b._2007.RetrieveDocumentSetRequest;
-import ihe.iti.xds_b._2007.RetrieveDocumentSetResponse;
+import ihe.iti.xds_b._2007.RetrieveDocumentSetResponseType;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -83,10 +83,10 @@ public class GetDocumentTest_NOC {
 
     PCEHRHeader request = MessageComponents.createRequest
       (
-        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
         "8003604570901313",
         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-        PCEHRHeader.ClientSystemType.CIS,
+        "CIS",
         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
       );
 
@@ -94,21 +94,21 @@ public class GetDocumentTest_NOC {
     docRequest.setDocumentUniqueId("1.2.13.1.3998.1985336745999149");
     docRequest.setRepositoryUniqueId("1.2.36.1.2001.1007.10");
 
-    RetrieveDocumentSetResponse response = client.retrieveDocument(request, docRequest);
+    RetrieveDocumentSetResponseType response = client.retrieveDocument(request, docRequest);
     System.out.println(response.getRegistryResponse().getStatus());
     
-    for(RegistryError e :response.getRegistryResponse().getRegistryErrorList().getRegistryErrors()){
+    for(RegistryError e :response.getRegistryResponse().getRegistryErrorList().getRegistryError()){
     	System.out.println(e.getErrorCode());
     	System.out.println(e.getCodeContext());
     }
     
     Assert.assertEquals(XDSConstants.RESPONSE_STATUS_SUCCESS, response.getRegistryResponse().getStatus());
-    Assert.assertEquals("application/zip", response.getDocumentResponses().get(0).getMimeType());
-    Assert.assertEquals("1.2.13.1.3998.1985336745999149", response.getDocumentResponses().get(0).getDocumentUniqueId());
-    Assert.assertEquals("1.2.36.1.2001.1007.10", response.getDocumentResponses().get(0).getRepositoryUniqueId());
-    Assert.assertNotNull(response.getDocumentResponses().get(0).getDocument());
+    Assert.assertEquals("application/zip", response.getDocumentResponse().get(0).getMimeType());
+    Assert.assertEquals("1.2.13.1.3998.1985336745999149", response.getDocumentResponse().get(0).getDocumentUniqueId());
+    Assert.assertEquals("1.2.36.1.2001.1007.10", response.getDocumentResponse().get(0).getRepositoryUniqueId());
+    Assert.assertNotNull(response.getDocumentResponse().get(0).getDocument());
 
-    TestUtils.writeDoc(response.getDocumentResponses().get(0).getDocument(), new Object() {
+    TestUtils.writeDoc(response.getDocumentResponse().get(0).getDocument(), new Object() {
     }.getClass().getEnclosingMethod().getName(), "test");
 
     SubmissionSet submissionSet = PackagingUtility.extractPackage(String.format("./src/test/resources/TestFiles/Generated/GetDocument/%s", String.format("%stest.zip", new Object() {
@@ -118,10 +118,10 @@ public class GetDocumentTest_NOC {
   @Test
   public void test_034() throws Exception {
     PCEHRHeader request = MessageComponents.createRequest(
-      MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+      MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
       "8003604570901313",
       MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-      PCEHRHeader.ClientSystemType.CIS,
+      "CIS",
       MessageComponents.createAccessingOrganisation("8003624166667177", "Medicare305", null)
     );
 
@@ -129,10 +129,10 @@ public class GetDocumentTest_NOC {
     docRequest.setDocumentUniqueId("1.3.16.1.38818.298717791234576");
     docRequest.setRepositoryUniqueId("1.2.36.1.2001.1006.0.1.3.1");
 
-    RetrieveDocumentSetResponse response = client.retrieveDocument(request, docRequest);
+    RetrieveDocumentSetResponseType response = client.retrieveDocument(request, docRequest);
 
     Assert.assertEquals(XDSConstants.RESPONSE_STATUS_FAILURE, response.getRegistryResponse().getStatus());
-    Assert.assertEquals("XDSRepositoryError", response.getRegistryResponse().getRegistryErrorList().getRegistryErrors().get(0).getErrorCode());
-    Assert.assertEquals("PCEHR_ERROR_3503 - Removed document not retrievable from PCEHR", response.getRegistryResponse().getRegistryErrorList().getRegistryErrors().get(0).getCodeContext());
+    Assert.assertEquals("XDSRepositoryError", response.getRegistryResponse().getRegistryErrorList().getRegistryError().get(0).getErrorCode());
+    Assert.assertEquals("PCEHR_ERROR_3503 - Removed document not retrievable from PCEHR", response.getRegistryResponse().getRegistryErrorList().getRegistryError().get(0).getCodeContext());
   }
 }

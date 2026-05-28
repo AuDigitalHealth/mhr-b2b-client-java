@@ -67,10 +67,10 @@ public class SearchTemplateClientTest_NOC {
 
         PCEHRHeader request = MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                         "8003602348687628",
                         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        "CIS",
                         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
                 );
 
@@ -79,7 +79,7 @@ public class SearchTemplateClientTest_NOC {
         metadata.setValue("CDA");
 
         TemplateMetadataType templateMetadata = new TemplateMetadataType();
-        templateMetadata.getMetadatas().add(metadata);
+        templateMetadata.getMetadata().add(metadata);
 
         SearchTemplateResponse response = client.searchTemplate(request, null, templateMetadata);
 
@@ -87,7 +87,7 @@ public class SearchTemplateClientTest_NOC {
         StringBuilder builder = new StringBuilder();
 
         // Get possible keys
-        List<String> keys = populateKeys(response.getTemplates());
+        List<String> keys = populateKeys(response.getTemplate());
 
 
         try (FileOutputStream out = new FileOutputStream("C:/tmp/template.csv")) {
@@ -97,7 +97,7 @@ public class SearchTemplateClientTest_NOC {
             throw new IOException("Error writing package to file", e);
         }
 
-        System.out.println(response.getTemplates().size());
+        System.out.println(response.getTemplate().size());
 
         Assert.assertEquals("PCEHR_SUCCESS", response.getResponseStatus().getCode());
         Assert.assertEquals("SUCCESS", response.getResponseStatus().getDescription());
@@ -107,10 +107,10 @@ public class SearchTemplateClientTest_NOC {
     public void test_047() throws Exception {
         PCEHRHeader request = MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                         "8003602348687628",
                         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        "CIS",
                         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
                 );
 
@@ -119,7 +119,7 @@ public class SearchTemplateClientTest_NOC {
         metadata.setValue("CCC");
 
         TemplateMetadataType templateMetadata = new TemplateMetadataType();
-        templateMetadata.getMetadatas().add(metadata);
+        templateMetadata.getMetadata().add(metadata);
 
         SearchTemplateResponse response = client.searchTemplate(request, "913", null);
         Assert.assertEquals("PCEHR_ERROR_1803", response.getResponseStatus().getCode());
@@ -131,10 +131,10 @@ public class SearchTemplateClientTest_NOC {
 
         PCEHRHeader request = MessageComponents.createRequest
                 (
-                        MessageComponents.createUser(PCEHRHeader.User.IDType.HPII, "8003619166674595", null, "Ross John", false),
+                        MessageComponents.createUser("HPII", "8003619166674595", null, "Ross John", false),
                         "8003602348687628",
                         MessageComponents.createProductType("NeHTA", "Test Harness", "1.0", "Windows 7 - Java"),
-                        PCEHRHeader.ClientSystemType.CIS,
+                        "CIS",
                         MessageComponents.createAccessingOrganisation("8003628233352432", "Medicare305", null)
                 );
 
@@ -148,7 +148,7 @@ public class SearchTemplateClientTest_NOC {
 
         for (SearchTemplateResponse.Template templateMetadataType : templates) {
 
-            for (TemplateMetadataType.Metadata metadata : templateMetadataType.getTemplateMetadata().getMetadatas()) {
+            for (TemplateMetadataType.Metadata metadata : templateMetadataType.getTemplateMetadata().getMetadata()) {
                 String name = metadata.getName();
 
                 if (!contains(keys, name)) {

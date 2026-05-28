@@ -15,7 +15,7 @@ package au.gov.nehta.vendorlibrary.pcehr.clients.documentexchange;
 
 import ihe.iti.xds_b._2007.DocumentRepositoryPortType;
 import ihe.iti.xds_b._2007.DocumentRepositoryService;
-import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequest;
+import ihe.iti.xds_b._2007.ProvideAndRegisterDocumentSetRequestType;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -25,7 +25,7 @@ import java.util.Date;
 
 import javax.net.ssl.SSLSocketFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 import javax.xml.xpath.XPathExpressionException;
 
 import oasis.names.tc.ebxml_regrep.xsd.lcm._3.SubmitObjectsRequest;
@@ -48,7 +48,7 @@ import au.gov.nehta.vendorlibrary.pcehr.clients.common.util.MetadataUtils;
 import au.gov.nehta.vendorlibrary.pcehr.clients.common.util.XDSMapper;
 import au.gov.nehta.xsp.CertificateValidator;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.Signature;
+import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.SignatureContainerType;
 
 /**
  * A JAX-WS client to the PCEHR 'Upload Document' web service.
@@ -236,15 +236,15 @@ public final class UploadDocumentClient extends Client<DocumentRepositoryPortTyp
         SubmitObjectsRequest request = XDSMapper.toSubmitObjectsRequest(
                 commonHeader, submissionMetadata, documentMetadata, replacementId);
 
-        ProvideAndRegisterDocumentSetRequest.Document iheDocument = new ProvideAndRegisterDocumentSetRequest.Document();
+        ProvideAndRegisterDocumentSetRequestType.Document iheDocument = new ProvideAndRegisterDocumentSetRequestType.Document();
         iheDocument.setId(documentMetadata.getEntryUuid());
         iheDocument.setValue(packageContent);
 
-        ProvideAndRegisterDocumentSetRequest body = new ProvideAndRegisterDocumentSetRequest();
+        ProvideAndRegisterDocumentSetRequestType body = new ProvideAndRegisterDocumentSetRequestType();
         body.setSubmitObjectsRequest(request);
-        body.getDocuments().add(iheDocument);
+        body.getDocument().add(iheDocument);
 
-        Holder<Signature> signatureHolder = null;
+        Holder<SignatureContainerType> signatureHolder = null;
 
         return getPort().documentRepositoryProvideAndRegisterDocumentSetB(
                 DateUtils.generateTimestamp(),

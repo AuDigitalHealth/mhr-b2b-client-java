@@ -20,7 +20,7 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryResponse;
@@ -36,7 +36,7 @@ import au.gov.nehta.vendorlibrary.pcehr.clients.common.util.DateUtils;
 import au.gov.nehta.vendorlibrary.pcehr.clients.common.util.XDSMapper;
 import au.gov.nehta.xsp.CertificateValidator;
 import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.PCEHRHeader;
-import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.Signature;
+import au.net.electronichealth.ns.pcehr.xsd.common.commoncoreelements._1.SignatureContainerType;
 
 /**
  * A JAX-WS client to the PCEHR 'Get Document List' web service.
@@ -122,7 +122,7 @@ public final class GetDocumentListClient extends Client<DocumentRegistryPortType
                 queryParams
         );
 
-        Holder<Signature> signatureHolder = null;
+        Holder<SignatureContainerType> signatureHolder = null;
 
         // Perform the query.
         return getPort().documentRegistryRegistryStoredQuery(
@@ -153,7 +153,7 @@ public final class GetDocumentListClient extends Client<DocumentRegistryPortType
                 queryParams
         );
 
-        Holder<Signature> signatureHolder = null;
+        Holder<SignatureContainerType> signatureHolder = null;
 
         // Perform the query.
         return getPort().documentRegistryRegistryStoredQuery(

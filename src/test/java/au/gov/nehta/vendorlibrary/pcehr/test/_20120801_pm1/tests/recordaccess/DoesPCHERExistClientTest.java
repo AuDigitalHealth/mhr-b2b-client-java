@@ -64,6 +64,6 @@ public class DoesPCHERExistClientTest {
 	  System.setProperty("com.sun.xml.internal.ws.transport.http.HttpAdapter.dump", "true");
     DoesPCEHRExistResponse response = null;
 	Assert.assertEquals(true, response.isPCEHRExists());
-    Assert.assertEquals(DoesPCEHRExistResponse.AccessCodeRequired.ACCESS_GRANTED, response.getAccessCodeRequired());
+    Assert.assertEquals("AccessGranted", response.getAccessCodeRequired());
   }
 }

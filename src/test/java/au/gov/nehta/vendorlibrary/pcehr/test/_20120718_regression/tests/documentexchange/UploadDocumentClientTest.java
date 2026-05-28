@@ -33,7 +33,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -185,6 +185,6 @@ public class UploadDocumentClientTest {
                 false
         );
 
-        return removeClient.removeDocument(commonHeader, docId, RemoveDocument.DocumentRemovalReason.WITHDRAWN);
+        return removeClient.removeDocument(commonHeader, docId, RemoveDocumentClient.DocumentRemovalReason.WITHDRAWN);
     }
 }

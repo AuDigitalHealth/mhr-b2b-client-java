@@ -48,6 +48,6 @@ public class ReubenArchitectTest {
     public void test_030() throws Exception {
         DoesPCEHRExistResponse response = client.doesPCEHRExist(AllTests_Reuben.getDefaultRequest());
         Assert.assertTrue(response.isPCEHRExists());
-        Assert.assertEquals(DoesPCEHRExistResponse.AccessCodeRequired.ACCESS_GRANTED, response.getAccessCodeRequired());
+        Assert.assertEquals("AccessGranted", response.getAccessCodeRequired());
     }
 }
