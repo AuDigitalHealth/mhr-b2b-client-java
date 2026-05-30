@@ -20,29 +20,27 @@ From the project root (directory containing **`pom.xml`**):
 mvn -B "-Dgpg.skip=true" clean verify
 ```
 
-On PowerShell, quote **`-D`** arguments as shown.
-
-Skip tests (default in **`pom.xml`** today): **`skipTests`** is **`true`** unless you enable the integration profile.
+Skip tests: **`mvn -B "-Dgpg.skip=true" clean package "-DskipTests=true"`**.
 
 | Goal | Command |
 | ---- | ------- |
-| Compile + package (no tests) | `mvn -B "-Dgpg.skip=true" clean verify` |
-| Generate + compile from WSDL | `mvn -B "-Dgpg.skip=true" clean compile` |
-| Integration / network tests | `mvn -B "-Dgpg.skip=true" -Pintegration clean test` |
+| Default unit tests (offline) | `mvn -B "-Dgpg.skip=true" test` |
+| Full build with default tests | `mvn -B "-Dgpg.skip=true" clean verify` |
+| Full mutual-TLS / historical suite | `mvn -B "-Dgpg.skip=true" -Pintegration clean test` |
 | Sample sources | `mvn -B -Psample "-DskipTests=true" clean compile` |
 | Install to local repo | `mvn clean install` |
 
-`mvn clean` removes generated sources, so follow with a full compile/package run to regenerate SOAP/JAXB types from the WSDL tree.
+Default Surefire **`<includes>`** (see **`pom.xml`**): **`ArgumentUtilsTest`**, **`CommonHeaderValidatorTest`**, **`DateUtilsTest`**, metadata unit tests, **`OIDUtilTest`**. Details: **`MAINTAINERS.md`**.
 
----
+`mvn clean` removes generated sources; follow with a full compile or verify to regenerate SOAP/JAXB types from the WSDL tree.
 
 ## Integration tests
 
-Historical tests under **`src/test/java`** call live or cert-environment endpoints and embed URLs in **`Endpoints.java`**. They are **not** run by default (**`skipTests=true`**).
+Historical tests under **`src/test/java`** call cert-environment endpoints configured in test helper classes (for example **`Endpoints.java`**). They are **not** in the default Surefire **`<includes>`** list.
 
-**`-Pintegration`** sets **`skipTests=false`** and runs **`**/*Test.java`**. You need valid mutual-TLS material and registration metadata before expecting green results.
+**`-Pintegration`** runs **`**/*Test.java`**. You need valid mutual-TLS material and registration metadata before expecting green results.
 
-A future refresh may adopt **`local.properties`** (see **`local.properties.example`**) similar to **`hi-b2b-client-java`**. Until then, configure endpoints and keystores in test utilities or environment-specific copies kept **out of Git**.
+**`local.properties.example`** documents planned **`MHR_*`** keys for a future **`TestConfiguration`** layer (aligned with **`hi-b2b-client-java`**). Until that lands, keep endpoints and keystores in gitignored copies or environment-specific test utilities. See **`MAINTAINERS.md`** section 5.
 
 ---
 

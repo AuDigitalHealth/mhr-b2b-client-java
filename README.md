@@ -44,10 +44,26 @@ Package base: `au.gov.nehta.vendorlibrary.pcehr.clients`
 ## Build from source
 
 ```text
-mvn -B "-Dgpg.skip=true" clean package
+mvn -B "-Dgpg.skip=true" clean verify
 ```
 
+Or use root **`build.ps1`** / **`build.sh`** / **`build.bat`**. Pass **`shaded`** (or **`-Shaded`** on PowerShell) to activate the **`fat-jar`** profile and produce **`mhr-b2b-client-*-all.jar`**.
+
 This build generates SOAP/JAXB sources from the WSDL set in `wsdls/src/main/resources/`.
+
+## Tests
+
+Default Surefire run (offline unit tests only):
+
+```text
+mvn -B "-Dgpg.skip=true" test
+```
+
+Full mutual-TLS integration suite:
+
+```text
+mvn -B "-Dgpg.skip=true" -Pintegration test
+```
 
 ## Samples
 

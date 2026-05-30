@@ -64,18 +64,24 @@
         <project.reporting.outputEncoding>${encoding}</project.reporting.outputEncoding>
         <project.resources.sourceEncoding>${encoding}</project.resources.sourceEncoding>
         <archetype.encoding>${encoding}</archetype.encoding>
-        <skipTests>true</skipTests>
-        <maven.test.skip>false</maven.test.skip>
+        <skipTests>false</skipTests>
+        <!-- Eclipse EE4J XML Web Services: align jaxws-rt / jaxws-tools. jaxws-maven-plugin 4.0.3+ requires JDK 17 to run wsimport - keep plugin at 4.0.2 on JDK 11. -->
         <jaxws.rt.version>4.0.4</jaxws.rt.version>
         <jaxws.maven.plugin.version>4.0.2</jaxws.maven.plugin.version>
+        <!-- GMavenPlus build scripts only (`groovy` + `groovy-ant` on the plugin classpath; not compile deps of the published JAR). -->
         <groovy.version>4.0.32</groovy.version>
-        <!-- Run wsimport/code generation by default. -->
+        <!-- Set -Dmhr.wsdl.codegen.skip=true to skip JAX-WS wsimport (faster when generated tree is unused). Skips maven-enforcer-plugin WSDL presence check; compile still needs generated sources under target/. -->
         <mhr.wsdl.codegen.skip>false</mhr.wsdl.codegen.skip>
+        <!-- Set -Dmhr.wsdl.codegen.clean=true to delete wsimport output before codegen (use when wsimport reports "Can't delete previous version"). -->
+        <mhr.wsdl.codegen.clean>false</mhr.wsdl.codegen.clean>
+        <!-- Build-time only: mhr.wsdl.resources.root is set in initialize (GMavenPlus): -Dmhr.wsdl.resources.root, env MHR_WSDL_RESOURCES_ROOT, active settings.xml profile property mhr.wsdl.resources.root, else wsdls/src/main/resources. -->
         <mhr.wsdl.resources.root>${project.basedir}/wsdls/src/main/resources</mhr.wsdl.resources.root>
         <mhr.wsdl.dir>${mhr.wsdl.resources.root}/wsdl/External</mhr.wsdl.dir>
         <mhr.binding.dir>${mhr.wsdl.resources.root}/binding</mhr.binding.dir>
+        <maven.shade.plugin.version>3.6.0</maven.shade.plugin.version>
     </properties>
 
+    <!-- Compile/runtime for the published JAR: smi-xsp, jaxws-rt (Jakarta XML-WS RI), commons helpers. JUnit and integration fixtures are test-scoped only. -->
     <dependencies>
         <dependency>
             <groupId>au.gov.nehta</groupId>
@@ -142,41 +148,7 @@
             <version>2.3.1</version>
             <scope>test</scope>
         </dependency>
-        <!-- Explicit Jakarta API dependencies to prefer Eclipse implementations -->
-        <dependency>
-            <groupId>jakarta.xml.ws</groupId>
-            <artifactId>jakarta.xml.ws-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.activation</groupId>
-            <artifactId>jakarta.activation-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <!-- Ensure Jakarta / Eclipse APIs are used consistently -->
-            <dependency>
-                <groupId>jakarta.xml.ws</groupId>
-                <artifactId>jakarta.xml.ws-api</artifactId>
-                <version>4.0.3</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.xml.bind</groupId>
-                <artifactId>jakarta.xml.bind-api</artifactId>
-                <version>4.0.4</version>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.activation</groupId>
-                <artifactId>jakarta.activation-api</artifactId>
-                <version>2.1.4</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
- 
 
     <build>
         <plugins>
@@ -265,6 +237,17 @@
                     <encoding>UTF-8</encoding>
                     <enableAssertions>true</enableAssertions>
                     <argLine>-Xmx1024m</argLine>
+                    <!-- Default Surefire includes: offline-safe unit tests only. Full MHR mutual-TLS suite: mvn -Pintegration test -->
+                    <includes>
+                        <include>**/ArgumentUtilsTest.java</include>
+                        <include>**/CommonHeaderValidatorTest.java</include>
+                        <include>**/DateUtilsTest.java</include>
+                        <include>**/MetadataStartStopTimeTest.java</include>
+                        <include>**/MetadataUtilsDefaultLangTest.java</include>
+                        <include>**/MetadataUtilsOrgIDNameTest.java</include>
+                        <include>**/MetadataUtilsTimeTest.java</include>
+                        <include>**/OIDUtilTest.java</include>
+                    </includes>
                 </configuration>
             </plugin>
             <plugin>
@@ -296,52 +279,122 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.4.2</version>
                 <configuration>
+                    <!-- Licensed PCEHR WSDL must not be packaged in this artifact (vendor terms). -->
                     <excludes>
                         <exclude>**/*.wsdl</exclude>
                     </excludes>
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.5.0</version>
-                <executions>
-                    <execution>
-                        <id>shade</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>true</createDependencyReducedPom>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>uber</shadedClassifierName>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <!-- exclude test resources and WSDLs -->
-                                        <exclude>**/test/**</exclude>
-                                        <exclude>**/*.wsdl</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"/>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
-                                    <resource>META-INF/spring.handlers</resource>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
                 <version>4.3.1</version>
                 <executions>
+                    <execution>
+                        <id>configure-mhr-wsdl-resources-root</id>
+                        <phase>initialize</phase>
+                        <goals><goal>execute</goal></goals>
+                        <configuration>
+                            <skipScriptExecution>${mhr.wsdl.codegen.skip}</skipScriptExecution>
+                            <scripts>
+                                <script><![CDATA[
+                                    import java.nio.file.Path
+                                    import java.nio.file.Paths
+                                    String resolveTreePath(String raw, Path baseDir) {
+                                        if (raw == null || raw.trim().isEmpty()) return null
+                                        Path p = Paths.get(raw.trim())
+                                        if (!p.isAbsolute()) {
+                                            p = baseDir.resolve(raw.trim()).normalize()
+                                        } else {
+                                            p = p.normalize()
+                                        }
+                                        return p.toString()
+                                    }
+
+                                    Path baseDir = Paths.get(project.basedir as String)
+                                    String userCli = session.userProperties.getProperty('mhr.wsdl.resources.root')
+                                    if (userCli != null && !userCli.trim().isEmpty()) {
+                                        project.properties.setProperty('mhr.wsdl.resources.root', resolveTreePath(userCli, baseDir))
+                                        return
+                                    }
+                                    String envTree = System.getenv('MHR_WSDL_RESOURCES_ROOT')
+                                    if (envTree != null && !envTree.trim().isEmpty()) {
+                                        project.properties.setProperty('mhr.wsdl.resources.root', resolveTreePath(envTree, baseDir))
+                                        return
+                                    }
+                                    String fromSettings = null
+                                    def settings = session.getSettings()
+                                    if (settings != null) {
+                                        def activeIds = settings.getActiveProfiles()
+                                        if (activeIds != null && !activeIds.isEmpty()) {
+                                            try {
+                                                def pmap = settings.getProfilesAsMap()
+                                                if (pmap != null) {
+                                                    for (def pid : activeIds) {
+                                                        if (fromSettings != null) break
+                                                        def prof = pmap.get(pid)
+                                                        if (prof?.getProperties() != null) {
+                                                            String v = prof.getProperties().getProperty('mhr.wsdl.resources.root')
+                                                            if (v != null && !v.trim().isEmpty()) {
+                                                                fromSettings = v.trim()
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            } catch (Exception ignored) {
+                                                settings.getProfiles()?.each { prof ->
+                                                    if (fromSettings == null && activeIds.contains(prof.getId())) {
+                                                        String v = prof.getProperties()?.getProperty('mhr.wsdl.resources.root')
+                                                        if (v != null && !v.trim().isEmpty()) fromSettings = v.trim()
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (fromSettings != null) {
+                                        project.properties.setProperty('mhr.wsdl.resources.root', resolveTreePath(fromSettings, baseDir))
+                                        return
+                                    }
+                                    project.properties.setProperty('mhr.wsdl.resources.root',
+                                            baseDir.resolve('wsdls').resolve('src').resolve('main').resolve('resources').toAbsolutePath().normalize().toString())
+                                ]]></script>
+                            </scripts>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>clean-wsimport-codegen</id>
+                        <phase>generate-sources</phase>
+                        <goals><goal>execute</goal></goals>
+                        <configuration>
+                            <skipScriptExecution>${mhr.wsdl.codegen.skip}</skipScriptExecution>
+                            <scripts>
+                                <script><![CDATA[
+                                    def clean = project.properties.getProperty('mhr.wsdl.codegen.clean', 'false')
+                                    if (!'true'.equalsIgnoreCase(clean.trim())) {
+                                        return
+                                    }
+                                    def bd = project.build.directory as File
+                                    def partsBase = new File(bd, 'generated-sources/wsimport-parts')
+                                    if (partsBase.isDirectory()) {
+                                        partsBase.eachDir { File sub -> sub.deleteDir() }
+                                        partsBase.deleteDir()
+                                    }
+                                    def destBase = new File(bd, 'jaxws/dest')
+                                    if (destBase.isDirectory()) {
+                                        destBase.eachDir { File sub -> sub.deleteDir() }
+                                    }
+                                    def merged = new File(bd, 'generated-sources/wsimport')
+                                    if (merged.isDirectory()) {
+                                        merged.deleteDir()
+                                    }
+                                    def jaxwsDir = new File(bd, 'jaxws')
+                                    if (jaxwsDir.isDirectory()) {
+                                        jaxwsDir.deleteDir()
+                                    }
+                                ]]></script>
+                            </scripts>
+                        </configuration>
+                    </execution>
                     <execution>
                         <id>merge-and-strip-wsimport</id>
                         <phase>process-sources</phase>
@@ -381,9 +434,6 @@
                                         }
                                     }
                                     project.getCompileSourceRoots().findAll { String p -> p.contains('wsimport-parts') }.each { project.removeCompileSourceRoot(it) }
-                                    if (base.isDirectory()) {
-                                        base.deleteDir()
-                                    }
                                 ]]></script>
                             </scripts>
                         </configuration>
@@ -422,7 +472,7 @@
                                     <files>
                                         <file>${mhr.wsdl.dir}/B2B_PCEHRProfile.wsdl</file>
                                     </files>
-                                    <message>PCEHR WSDL required under ${mhr.wsdl.dir}. Use -Dmhr.wsdl.codegen.skip=true only when reusing generated sources under target/generated-sources/wsimport.</message>
+                                    <message>This build requires the PCEHR WSDL/XSD tree under mhr.wsdl.resources.root (directory containing wsdl/External and binding/). Resolution order: -Dmhr.wsdl.resources.root, env MHR_WSDL_RESOURCES_ROOT, mhr.wsdl.resources.root from an active Maven user-settings profile, else default ${project.basedir}/wsdls/src/main/resources. Use -Dmhr.wsdl.codegen.skip=true only when reusing generated sources under target/generated-sources/wsimport.</message>
                                 </requireFilesExist>
                             </rules>
                         </configuration>
@@ -450,8 +500,10 @@
                     <xjcArgs>
                         <xjcArg>-XautoNameResolution</xjcArg>
                     </xjcArgs>
+                    <!-- JAXP XML security property (JDK name uses javax.*); wsimport uses it for schema resolution. -->
                     <vmArgs>
                         <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                        <vmArg>-Djava.io.tmpdir=${project.build.directory}/jaxws/tmp</vmArg>
                     </vmArgs>
                 </configuration>
                 <executions>
@@ -459,6 +511,7 @@
                         <id>wsimport-b2b-document-registry</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-document-registry</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-document-registry</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-document-registry</sourceDestDir>
                             <wsdlDirectory>${mhr.wsdl.dir}</wsdlDirectory>
@@ -475,6 +528,7 @@
                         <id>wsimport-b2b-document-repository</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-document-repository</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-document-repository</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-document-repository</sourceDestDir>
                             <wsdlDirectory>${mhr.wsdl.dir}</wsdlDirectory>
@@ -491,6 +545,7 @@
                         <id>wsimport-b2b-get-audit-view</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-get-audit-view</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-get-audit-view</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-get-audit-view</sourceDestDir>
                             <wsdlDirectory>${mhr.wsdl.dir}</wsdlDirectory>
@@ -507,6 +562,7 @@
                         <id>wsimport-b2b-get-change-history-view</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-get-change-history-view</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-get-change-history-view</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-get-change-history-view</sourceDestDir>
                             <wsdlDirectory>${mhr.wsdl.dir}</wsdlDirectory>
@@ -523,6 +579,7 @@
                         <id>wsimport-b2b-get-individual-details-view</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-get-individual-details-view</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-get-individual-details-view</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-get-individual-details-view</sourceDestDir>
                             <wsdlDirectory>${mhr.wsdl.dir}</wsdlDirectory>
@@ -539,6 +596,7 @@
                         <id>wsimport-b2b-get-representative-list</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-get-representative-list</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-get-representative-list</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-get-representative-list</sourceDestDir>
                             <wsdlDirectory>${mhr.wsdl.dir}</wsdlDirectory>
@@ -555,6 +613,7 @@
                         <id>wsimport-b2b-get-template</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-get-template</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-get-template</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-get-template</sourceDestDir>
                             <wsdlDirectory>${mhr.wsdl.dir}</wsdlDirectory>
@@ -571,6 +630,7 @@
                         <id>wsimport-b2b-get-view</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-get-view</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-get-view</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-get-view</sourceDestDir>
                             <wsdlDirectory>${mhr.wsdl.dir}</wsdlDirectory>
@@ -587,6 +647,7 @@
                         <id>wsimport-b2b-pcehr-profile</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-pcehr-profile</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-pcehr-profile</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-pcehr-profile</sourceDestDir>
                             <wsdlDirectory>${mhr.wsdl.dir}</wsdlDirectory>
@@ -603,6 +664,7 @@
                         <id>wsimport-b2b-register-pcehr</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-register-pcehr</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-register-pcehr</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-register-pcehr</sourceDestDir>
                             <wsdlDirectory>${mhr.wsdl.dir}</wsdlDirectory>
@@ -619,6 +681,7 @@
                         <id>wsimport-b2b-remove-document</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-remove-document</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-remove-document</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-remove-document</sourceDestDir>
                             <wsdlDirectory>${mhr.wsdl.dir}</wsdlDirectory>
@@ -635,6 +698,7 @@
                         <id>wsimport-b2b-search-template</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-search-template</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-search-template</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-search-template</sourceDestDir>
                             <wsdlDirectory>${mhr.wsdl.dir}</wsdlDirectory>
@@ -679,7 +743,6 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
-                            <skipTests>false</skipTests>
                             <includes combine.self="override">
                                 <include>**/*Test.java</include>
                             </includes>
@@ -705,6 +768,63 @@
                                     <sources>
                                         <source>${project.basedir}/src/sample/java</source>
                                     </sources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>fat-jar</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>${maven.shade.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>shade-runtime-deps</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <shadedArtifactAttached>true</shadedArtifactAttached>
+                                    <shadedClassifierName>all</shadedClassifierName>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                    <filters>
+                                        <filter>
+                                            <artifact>*:*</artifact>
+                                            <excludes>
+                                                <exclude>META-INF/*.SF</exclude>
+                                                <exclude>META-INF/*.DSA</exclude>
+                                                <exclude>META-INF/*.RSA</exclude>
+                                                <exclude>module-info.class</exclude>
+                                                <exclude>META-INF/MANIFEST.MF</exclude>
+                                            </excludes>
+                                        </filter>
+                                        <filter>
+                                            <artifact>org.glassfish.ha:ha-api</artifact>
+                                            <excludes>
+                                                <exclude>META-INF/hk2-locator/default</exclude>
+                                            </excludes>
+                                        </filter>
+                                        <filter>
+                                            <artifact>au.gov.nehta:smi-xsp</artifact>
+                                            <excludes>
+                                                <exclude>au/gov/nehta/common/utils/ArgumentUtils.class</exclude>
+                                            </excludes>
+                                        </filter>
+                                    </filters>
+                                    <transformers>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
+                                            <addHeader>false</addHeader>
+                                        </transformer>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                    </transformers>
                                 </configuration>
                             </execution>
                         </executions>

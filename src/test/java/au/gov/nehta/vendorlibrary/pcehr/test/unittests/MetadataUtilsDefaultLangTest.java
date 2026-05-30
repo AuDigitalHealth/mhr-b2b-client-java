@@ -33,8 +33,8 @@ public class MetadataUtilsDefaultLangTest {
     @Test
     public void testEnUS() throws XPathExpressionException, ParserConfigurationException, IOException, SAXException {
         // document lang is en-US
-        String doc = IOUtils.read(new File("src/test/resources/TestFiles/metadataTest/PCEHRPrescriptionRecord_3A_Min.xml"));
-        DocumentMetadata documentMetadata = MetadataUtils.toDocumentMetadata(exampleHeader, doc.getBytes());
+        byte[] doc = IOUtils.readBytes(new File("src/test/resources/TestFiles/metadataTest/PCEHRPrescriptionRecord_3A_Min.xml"));
+        DocumentMetadata documentMetadata = MetadataUtils.toDocumentMetadata(exampleHeader, doc);
         // should be as specified
         Assert.assertEquals("en-US", documentMetadata.getLanguageCode());
     }
@@ -43,8 +43,8 @@ public class MetadataUtilsDefaultLangTest {
     public void testDefaultLang() throws XPathExpressionException, ParserConfigurationException, IOException, SAXException {
 
         // has no lang code
-        String doc = IOUtils.read(new File("src/test/resources/TestFiles/metadataTest/PCEHRDispenseRecord_3A_Min.xml"));
-        DocumentMetadata documentMetadata = MetadataUtils.toDocumentMetadata(exampleHeader, doc.getBytes());
+        byte[] doc = IOUtils.readBytes(new File("src/test/resources/TestFiles/metadataTest/PCEHRDispenseRecord_3A_Min.xml"));
+        DocumentMetadata documentMetadata = MetadataUtils.toDocumentMetadata(exampleHeader, doc);
         /// should default to au
         Assert.assertEquals("en-AU", documentMetadata.getLanguageCode());
     }
@@ -53,8 +53,8 @@ public class MetadataUtilsDefaultLangTest {
     public void testNoTitleIsSupplied() throws XPathExpressionException, ParserConfigurationException, IOException, SAXException {
         // cups requests that no xds metadata tile is supplied with the document upload.
         // check that the title field is not filled for metadata
-        String doc = IOUtils.read(new File("src/test/resources/TestFiles/metadataTest/PCEHRPrescriptionRecord_3A_Min.xml"));
-        DocumentMetadata documentMetadata = MetadataUtils.toDocumentMetadata(exampleHeader, doc.getBytes());
+        byte[] doc = IOUtils.readBytes(new File("src/test/resources/TestFiles/metadataTest/PCEHRPrescriptionRecord_3A_Min.xml"));
+        DocumentMetadata documentMetadata = MetadataUtils.toDocumentMetadata(exampleHeader, doc);
         // should be null
         Assert.assertNull(documentMetadata.getTitle());
     }

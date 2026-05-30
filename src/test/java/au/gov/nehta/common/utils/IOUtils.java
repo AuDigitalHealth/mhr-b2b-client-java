@@ -11,5 +11,9 @@ public final class IOUtils {
     public static String read(File file) throws IOException {
         return Files.readString(file.toPath(), StandardCharsets.UTF_8);
     }
+
+    public static byte[] readBytes(File file) throws IOException {
+        return Files.readAllBytes(file.toPath());
+    }
 }
 
