@@ -51,6 +51,19 @@ Or use root **`build.ps1`** / **`build.sh`** / **`build.bat`**. Pass **`shaded`*
 
 This build generates SOAP/JAXB sources from the WSDL set in `wsdls/src/main/resources/`.
 
+### Optional: pre-generated types from mhr-wsdl-java
+
+Instead of running the **12** in-repo **`wsimport`** executions, you can compile against **`mhr-wsdl-java`** (**`au.gov.nehta:mhr-wsdl`**, same version line as this client):
+
+```text
+cd ../mhr-wsdl-java
+mvn -B "-Dgpg.skip=true" clean install
+cd ../mhr-b2b-client-java
+mvn -B "-Pmhr-wsdl-artifact" "-Dgpg.skip=true" clean verify
+```
+
+Do **not** combine **`mhr-wsdl`** on the classpath with a fresh **`wsimport`** output from this repo (duplicate generated types). Use either the default build or **`-Pmhr-wsdl-artifact`**, not both.
+
 ## Tests
 
 Default Surefire run (offline unit tests only):

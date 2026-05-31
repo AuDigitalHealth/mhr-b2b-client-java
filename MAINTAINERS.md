@@ -173,6 +173,7 @@ B2B_<Service>.wsdl.jxb where present.
 | mhr.wsdl.resources.root | Resolved in initialize; default wsdls/src/main/resources |
 | mhr.wsdl.dir | ${mhr.wsdl.resources.root}/wsdl/External |
 | mhr.binding.dir | ${mhr.wsdl.resources.root}/binding |
+| mhr.wsdl.version | ${project.version}; used by **mhr-wsdl-artifact** profile |
 | maven.shade.plugin.version | fat-jar profile |
 | skipTests | false; default surefire includes offline unit tests only |
 
@@ -196,6 +197,7 @@ and extend the merge names list in pom.xml.
 
 | Profile | Effect |
 | ------- | ------ |
+| mhr-wsdl-artifact | Skip wsimport; compile against **`au.gov.nehta:mhr-wsdl`** (install **mhr-wsdl-java** locally first; version **`${mhr.wsdl.version}`** = **`${project.version}`**) |
 | integration | Surefire runs **/*Test.java (needs endpoints, certs; see section 5) |
 | sample | Adds src/sample/java at generate-sources |
 | fat-jar | maven-shade-plugin produces mhr-b2b-client-*-all.jar; excludes duplicate ArgumentUtils from smi-xsp |

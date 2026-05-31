@@ -30,9 +30,25 @@ Skip tests: **`mvn -B "-Dgpg.skip=true" clean package "-DskipTests=true"`**.
 | Sample sources | `mvn -B -Psample "-DskipTests=true" clean compile` |
 | Install to local repo | `mvn clean install` |
 
-Default Surefire **`<includes>`** (see **`pom.xml`**): **`ArgumentUtilsTest`**, **`CommonHeaderValidatorTest`**, **`DateUtilsTest`**, metadata unit tests, **`OIDUtilTest`**. Details: **`MAINTAINERS.md`**.
+Default Surefire **`<includes>`** (see **`pom.xml`**): **`ArgumentUtilsTest`**, **`CommonHeaderValidatorTest`**, **`DateUtilsTest`**, metadata unit tests, **`OIDUtilTest`**, **`MhrWsdlArtifactSmokeTest`**. Details: **`MAINTAINERS.md`**.
 
 `mvn clean` removes generated sources; follow with a full compile or verify to regenerate SOAP/JAXB types from the WSDL tree.
+
+### Optional: mhr-wsdl artifact (skip wsimport)
+
+When **`mhr-wsdl-java`** is installed locally (**`au.gov.nehta:mhr-wsdl`**, version **`${project.version}`**):
+
+```text
+mvn -B -Pmhr-wsdl-artifact "-Dgpg.skip=true" clean verify
+```
+
+This sets **`mhr.wsdl.codegen.skip=true`**, adds the **`mhr-wsdl`** compile dependency, and skips merging **`target/generated-sources/wsimport`**. **`DateAdapter`** and generated types come from **`mhr-wsdl`** (do not add **`wsdls/src/main/java`** — it would duplicate **`DateAdapter`**).
+
+Install the sibling first:
+
+```text
+cd ../mhr-wsdl-java && mvn -B "-Dgpg.skip=true" clean install
+```
 
 ## Integration tests
 

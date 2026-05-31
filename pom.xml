@@ -79,6 +79,8 @@
         <mhr.wsdl.resources.root>${project.basedir}/wsdls/src/main/resources</mhr.wsdl.resources.root>
         <mhr.wsdl.dir>${mhr.wsdl.resources.root}/wsdl/External</mhr.wsdl.dir>
         <mhr.binding.dir>${mhr.wsdl.resources.root}/binding</mhr.binding.dir>
+        <!-- Align with mhr-wsdl-java release line when using -Pmhr-wsdl-artifact -->
+        <mhr.wsdl.version>${project.version}</mhr.wsdl.version>
         <maven.shade.plugin.version>3.6.0</maven.shade.plugin.version>
     </properties>
 
@@ -247,6 +249,7 @@
                         <include>**/MetadataUtilsOrgIDNameTest.java</include>
                         <include>**/MetadataUtilsTimeTest.java</include>
                         <include>**/OIDUtilTest.java</include>
+                        <include>**/MhrWsdlArtifactSmokeTest.java</include>
                     </includes>
                 </configuration>
             </plugin>
@@ -469,7 +472,7 @@
                                     <files>
                                         <file>${mhr.wsdl.dir}/B2B_PCEHRProfile.wsdl</file>
                                     </files>
-                                    <message>This build requires the PCEHR WSDL/XSD tree under mhr.wsdl.resources.root (directory containing wsdl/External and binding/). Resolution order: -Dmhr.wsdl.resources.root, env MHR_WSDL_RESOURCES_ROOT, mhr.wsdl.resources.root from an active Maven user-settings profile, else default ${project.basedir}/wsdls/src/main/resources. Use -Dmhr.wsdl.codegen.skip=true only when reusing generated sources under target/generated-sources/wsimport.</message>
+                                    <message>This build requires the PCEHR WSDL/XSD tree under mhr.wsdl.resources.root (directory containing wsdl/External and binding/). Resolution order: -Dmhr.wsdl.resources.root, env MHR_WSDL_RESOURCES_ROOT, mhr.wsdl.resources.root from an active Maven user-settings profile, else default ${project.basedir}/wsdls/src/main/resources. Use -Pmhr-wsdl-artifact (depends on au.gov.nehta:mhr-wsdl) or -Dmhr.wsdl.codegen.skip=true when reusing generated sources under target/generated-sources/wsimport.</message>
                                 </requireFilesExist>
                             </rules>
                         </configuration>
@@ -513,6 +516,7 @@
                         <id>wsimport-b2b-document-registry</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <skip>${mhr.wsdl.codegen.skip}</skip>
                             <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-document-registry</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-document-registry</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-document-registry</sourceDestDir>
@@ -530,6 +534,7 @@
                         <id>wsimport-b2b-document-repository</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <skip>${mhr.wsdl.codegen.skip}</skip>
                             <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-document-repository</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-document-repository</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-document-repository</sourceDestDir>
@@ -547,6 +552,7 @@
                         <id>wsimport-b2b-get-audit-view</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <skip>${mhr.wsdl.codegen.skip}</skip>
                             <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-get-audit-view</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-get-audit-view</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-get-audit-view</sourceDestDir>
@@ -564,6 +570,7 @@
                         <id>wsimport-b2b-get-change-history-view</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <skip>${mhr.wsdl.codegen.skip}</skip>
                             <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-get-change-history-view</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-get-change-history-view</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-get-change-history-view</sourceDestDir>
@@ -581,6 +588,7 @@
                         <id>wsimport-b2b-get-individual-details-view</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <skip>${mhr.wsdl.codegen.skip}</skip>
                             <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-get-individual-details-view</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-get-individual-details-view</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-get-individual-details-view</sourceDestDir>
@@ -598,6 +606,7 @@
                         <id>wsimport-b2b-get-representative-list</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <skip>${mhr.wsdl.codegen.skip}</skip>
                             <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-get-representative-list</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-get-representative-list</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-get-representative-list</sourceDestDir>
@@ -615,6 +624,7 @@
                         <id>wsimport-b2b-get-template</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <skip>${mhr.wsdl.codegen.skip}</skip>
                             <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-get-template</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-get-template</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-get-template</sourceDestDir>
@@ -632,6 +642,7 @@
                         <id>wsimport-b2b-get-view</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <skip>${mhr.wsdl.codegen.skip}</skip>
                             <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-get-view</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-get-view</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-get-view</sourceDestDir>
@@ -649,6 +660,7 @@
                         <id>wsimport-b2b-pcehr-profile</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <skip>${mhr.wsdl.codegen.skip}</skip>
                             <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-pcehr-profile</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-pcehr-profile</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-pcehr-profile</sourceDestDir>
@@ -666,6 +678,7 @@
                         <id>wsimport-b2b-register-pcehr</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <skip>${mhr.wsdl.codegen.skip}</skip>
                             <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-register-pcehr</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-register-pcehr</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-register-pcehr</sourceDestDir>
@@ -683,6 +696,7 @@
                         <id>wsimport-b2b-remove-document</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <skip>${mhr.wsdl.codegen.skip}</skip>
                             <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-remove-document</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-remove-document</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-remove-document</sourceDestDir>
@@ -700,6 +714,7 @@
                         <id>wsimport-b2b-search-template</id>
                         <goals><goal>wsimport</goal></goals>
                         <configuration>
+                            <skip>${mhr.wsdl.codegen.skip}</skip>
                             <destDir>${project.build.directory}/jaxws/dest/wsimport-b2b-search-template</destDir>
                             <staleFile>${project.build.directory}/jaxws/stale-wsimport-b2b-search-template</staleFile>
                             <sourceDestDir>${project.build.directory}/generated-sources/wsimport-parts/wsimport-b2b-search-template</sourceDestDir>
@@ -828,6 +843,52 @@
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                                     </transformers>
                                 </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <!-- Optional: use pre-generated types from mhr-wsdl-java (install au.gov.nehta:mhr-wsdl first) -->
+        <profile>
+            <id>mhr-wsdl-artifact</id>
+            <properties>
+                <mhr.wsdl.codegen.skip>true</mhr.wsdl.codegen.skip>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>au.gov.nehta</groupId>
+                    <artifactId>mhr-wsdl</artifactId>
+                    <version>${mhr.wsdl.version}</version>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.sun.xml.ws</groupId>
+                        <artifactId>jaxws-maven-plugin</artifactId>
+                        <executions>
+                            <execution><id>wsimport-b2b-document-registry</id><phase>none</phase></execution>
+                            <execution><id>wsimport-b2b-document-repository</id><phase>none</phase></execution>
+                            <execution><id>wsimport-b2b-get-audit-view</id><phase>none</phase></execution>
+                            <execution><id>wsimport-b2b-get-change-history-view</id><phase>none</phase></execution>
+                            <execution><id>wsimport-b2b-get-individual-details-view</id><phase>none</phase></execution>
+                            <execution><id>wsimport-b2b-get-representative-list</id><phase>none</phase></execution>
+                            <execution><id>wsimport-b2b-get-template</id><phase>none</phase></execution>
+                            <execution><id>wsimport-b2b-get-view</id><phase>none</phase></execution>
+                            <execution><id>wsimport-b2b-pcehr-profile</id><phase>none</phase></execution>
+                            <execution><id>wsimport-b2b-register-pcehr</id><phase>none</phase></execution>
+                            <execution><id>wsimport-b2b-remove-document</id><phase>none</phase></execution>
+                            <execution><id>wsimport-b2b-search-template</id><phase>none</phase></execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>add-wsimport-source</id>
+                                <phase>none</phase>
                             </execution>
                         </executions>
                     </plugin>
