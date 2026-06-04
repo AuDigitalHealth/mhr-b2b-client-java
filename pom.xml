@@ -69,7 +69,7 @@
         <jaxws.rt.version>4.0.4</jaxws.rt.version>
         <jaxws.maven.plugin.version>4.0.2</jaxws.maven.plugin.version>
         <jaxb.xjc.version>4.0.7</jaxb.xjc.version>
-        <!-- GMavenPlus build scripts only (`groovy` on the plugin classpath; not compile deps of the published JAR). -->
+        <!-- GMavenPlus build scripts only (`groovy` + `groovy-ant` on the plugin classpath; not compile deps of the published JAR). -->
         <groovy.version>4.0.32</groovy.version>
         <!-- Set -Dmhr.wsdl.codegen.skip=true to skip JAX-WS wsimport (faster when generated tree is unused). Skips maven-enforcer-plugin WSDL presence check; compile still needs generated sources under target/. -->
         <mhr.wsdl.codegen.skip>false</mhr.wsdl.codegen.skip>
@@ -449,6 +449,12 @@
                     <dependency>
                         <groupId>org.apache.groovy</groupId>
                         <artifactId>groovy</artifactId>
+                        <version>${groovy.version}</version>
+                        <scope>runtime</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.apache.groovy</groupId>
+                        <artifactId>groovy-ant</artifactId>
                         <version>${groovy.version}</version>
                         <scope>runtime</scope>
                     </dependency>
