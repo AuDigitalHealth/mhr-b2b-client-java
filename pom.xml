@@ -71,17 +71,15 @@
         <jaxb.xjc.version>4.0.7</jaxb.xjc.version>
         <!-- GMavenPlus build scripts only (`groovy` + `groovy-ant` on the plugin classpath; not compile deps of the published JAR). -->
         <groovy.version>4.0.32</groovy.version>
-        <!-- Set -Dmhr.wsdl.codegen.skip=true to skip JAX-WS wsimport (faster when generated tree is unused). Skips maven-enforcer-plugin WSDL presence check; compile still needs generated sources under target/. -->
+        <!-- Default: in-repo wsimport (12 B2B services under wsdls/src/main/resources). Alternative: -Pmhr-wsdl-artifact (mhr-wsdl-java 1.7). -->
         <mhr.wsdl.codegen.skip>false</mhr.wsdl.codegen.skip>
-        <!-- Set -Dmhr.wsdl.codegen.clean=true to delete wsimport output before codegen (use when wsimport reports "Can't delete previous version"). -->
-        <mhr.wsdl.codegen.clean>false</mhr.wsdl.codegen.clean>
-        <!-- Build-time only: mhr.wsdl.resources.root is set in initialize (GMavenPlus): -Dmhr.wsdl.resources.root, env MHR_WSDL_RESOURCES_ROOT, active settings.xml profile property mhr.wsdl.resources.root, else wsdls/src/main/resources. -->
+        <!-- Build-time WSDL root: override with -Dmhr.wsdl.resources.root or env MHR_WSDL_RESOURCES_ROOT (GMavenPlus initialize resolves settings.xml too). -->
         <mhr.wsdl.resources.root>${project.basedir}/wsdls/src/main/resources</mhr.wsdl.resources.root>
         <mhr.wsdl.dir>${mhr.wsdl.resources.root}/wsdl/External</mhr.wsdl.dir>
         <mhr.binding.dir>${mhr.wsdl.resources.root}/binding</mhr.binding.dir>
-        <!-- Align with mhr-wsdl-java release line when using -Pmhr-wsdl-artifact -->
+        <!-- mhr-wsdl-java 1.7 line (Java 11 / Jakarta); used by -Pmhr-wsdl-artifact -->
         <mhr.wsdl.version>${project.version}</mhr.wsdl.version>
-        <maven.shade.plugin.version>3.6.0</maven.shade.plugin.version>
+        <maven.shade.plugin.version>3.6.2</maven.shade.plugin.version>
     </properties>
 
     <!-- Compile/runtime for the published JAR: smi-xsp, jaxws-rt (Jakarta XML-WS RI), commons helpers. JUnit and integration fixtures are test-scoped only. -->
@@ -167,6 +165,51 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.6.2</version>
+                <executions>
+                    <execution>
+                        <id>enforce-build-tooling</id>
+                        <phase>validate</phase>
+                        <goals><goal>enforce</goal></goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>[3.6.3,)</version>
+                                </requireMavenVersion>
+                                <bannedDependencies>
+                                    <excludes>
+                                        <exclude>com.sun.xml.ws:webservices-rt</exclude>
+                                        <exclude>com.sun.xml.ws:webservices-api</exclude>
+                                        <exclude>com.sun.xml.ws:webservices-extra</exclude>
+                                        <exclude>com.sun.xml.ws:webservices-extra-api</exclude>
+                                        <exclude>javax.xml.ws:*</exclude>
+                                    </excludes>
+                                    <message>Use Eclipse EE4J jaxws-rt, not legacy Metro / javax JAX-WS.</message>
+                                </bannedDependencies>
+                            </rules>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>require-pcehr-wsdl-tree</id>
+                        <phase>initialize</phase>
+                        <goals><goal>enforce</goal></goals>
+                        <configuration>
+                            <skip>${mhr.wsdl.codegen.skip}</skip>
+                            <rules>
+                                <requireFilesExist>
+                                    <files>
+                                        <file>${mhr.wsdl.dir}/B2B_PCEHRProfile.wsdl</file>
+                                    </files>
+                                    <message>This build requires the PCEHR WSDL/XSD tree under mhr.wsdl.resources.root (directory containing wsdl/External and binding/). Resolution order: -Dmhr.wsdl.resources.root, env MHR_WSDL_RESOURCES_ROOT, mhr.wsdl.resources.root from an active Maven user-settings profile, else default ${project.basedir}/wsdls/src/main/resources. Use -Pmhr-wsdl-artifact to skip wsimport and use mhr-wsdl-java instead.</message>
+                                </requireFilesExist>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>3.2.8</version>
                 <configuration>
@@ -188,6 +231,7 @@
                 <version>3.12.0</version>
                 <configuration>
                     <doclint>none</doclint>
+                    <detectOfflineLinks>false</detectOfflineLinks>
                     <encoding>${encoding}</encoding>
                 </configuration>
                 <executions>
@@ -207,7 +251,7 @@
                     <execution>
                         <id>attach-sources</id>
                         <goals>
-                            <goal>jar</goal>
+                            <goal>jar-no-fork</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -271,6 +315,7 @@
                 <configuration>
                     <release>${maven.compiler.release}</release>
                     <encoding>${project.build.sourceEncoding}</encoding>
+                    <proc>none</proc>
                     <debug>true</debug>
                     <debuglevel>lines,vars,source</debuglevel>
                     <showDeprecation>true</showDeprecation>
@@ -293,6 +338,25 @@
                 <artifactId>gmavenplus-plugin</artifactId>
                 <version>4.3.1</version>
                 <executions>
+                    <execution>
+                        <id>purge-wsimport-when-artifact</id>
+                        <phase>initialize</phase>
+                        <goals><goal>execute</goal></goals>
+                        <configuration>
+                            <scripts>
+                                <script><![CDATA[
+                                    if (!'true'.equalsIgnoreCase(project.properties.getProperty('mhr.wsdl.codegen.skip', 'false').trim())) {
+                                        return
+                                    }
+                                    def bd = project.build.directory as File
+                                    ['generated-sources/wsimport', 'generated-sources/wsimport-parts', 'jaxws'].each { rel ->
+                                        def d = new File(bd, rel)
+                                        if (d.exists()) d.deleteDir()
+                                    }
+                                ]]></script>
+                            </scripts>
+                        </configuration>
+                    </execution>
                     <execution>
                         <id>configure-mhr-wsdl-resources-root</id>
                         <phase>initialize</phase>
@@ -365,40 +429,6 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>clean-wsimport-codegen</id>
-                        <phase>generate-sources</phase>
-                        <goals><goal>execute</goal></goals>
-                        <configuration>
-                            <skipScriptExecution>${mhr.wsdl.codegen.skip}</skipScriptExecution>
-                            <scripts>
-                                <script><![CDATA[
-                                    def clean = project.properties.getProperty('mhr.wsdl.codegen.clean', 'false')
-                                    if (!'true'.equalsIgnoreCase(clean.trim())) {
-                                        return
-                                    }
-                                    def bd = project.build.directory as File
-                                    def partsBase = new File(bd, 'generated-sources/wsimport-parts')
-                                    if (partsBase.isDirectory()) {
-                                        partsBase.eachDir { File sub -> sub.deleteDir() }
-                                        partsBase.deleteDir()
-                                    }
-                                    def destBase = new File(bd, 'jaxws/dest')
-                                    if (destBase.isDirectory()) {
-                                        destBase.eachDir { File sub -> sub.deleteDir() }
-                                    }
-                                    def merged = new File(bd, 'generated-sources/wsimport')
-                                    if (merged.isDirectory()) {
-                                        merged.deleteDir()
-                                    }
-                                    def jaxwsDir = new File(bd, 'jaxws')
-                                    if (jaxwsDir.isDirectory()) {
-                                        jaxwsDir.deleteDir()
-                                    }
-                                ]]></script>
-                            </scripts>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>merge-and-strip-wsimport</id>
                         <phase>process-sources</phase>
                         <goals><goal>execute</goal></goals>
@@ -459,31 +489,6 @@
                         <scope>runtime</scope>
                     </dependency>
                 </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.5.0</version>
-                <executions>
-                    <execution>
-                        <id>require-pcehr-wsdl-tree</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${mhr.wsdl.codegen.skip}</skip>
-                            <rules>
-                                <requireFilesExist>
-                                    <files>
-                                        <file>${mhr.wsdl.dir}/B2B_PCEHRProfile.wsdl</file>
-                                    </files>
-                                    <message>This build requires the PCEHR WSDL/XSD tree under mhr.wsdl.resources.root (directory containing wsdl/External and binding/). Resolution order: -Dmhr.wsdl.resources.root, env MHR_WSDL_RESOURCES_ROOT, mhr.wsdl.resources.root from an active Maven user-settings profile, else default ${project.basedir}/wsdls/src/main/resources. Use -Pmhr-wsdl-artifact (depends on au.gov.nehta:mhr-wsdl) or -Dmhr.wsdl.codegen.skip=true when reusing generated sources under target/generated-sources/wsimport.</message>
-                                </requireFilesExist>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>com.sun.xml.ws</groupId>
@@ -759,6 +764,12 @@
 
     <profiles>
         <profile>
+            <id>dev-javadoc-off</id>
+            <properties>
+                <maven.javadoc.skip>true</maven.javadoc.skip>
+            </properties>
+        </profile>
+        <profile>
             <id>integration</id>
             <build>
                 <plugins>
@@ -855,7 +866,7 @@
                 </plugins>
             </build>
         </profile>
-        <!-- Optional: use pre-generated types from mhr-wsdl-java (install au.gov.nehta:mhr-wsdl first) -->
+        <!-- Optional: pre-generated types from mhr-wsdl-java. jaxws-maven-plugin 4.0.2 ignores global skip; phase none per execution is required. -->
         <profile>
             <id>mhr-wsdl-artifact</id>
             <properties>
