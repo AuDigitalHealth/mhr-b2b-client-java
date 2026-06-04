@@ -93,6 +93,10 @@ mvn -B -Psample "-DskipTests=true" clean compile
 Do not commit certificates, private keys, keystores, passwords, or endpoint secrets.
 See `SECURITY.md` for reporting and repository security policy.
 
+## ADHA third-party scope
+
+Supported `getView` types: **`ADHA-THIRD-PARTY-SCOPE.md`**. WSDL-to-facade mapping: **`WSDL-CLIENT-PURPOSES.md`** (also in `myhr-b2b-client-java` for the three-client view).
+
 ## License
 
 Apache License 2.0. See `LICENSE.txt`.

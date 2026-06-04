@@ -95,6 +95,8 @@ GainPCEHRAccess authorisation accessType is a String enum value ("AccessCode",
 PCEHRHeader may carry an IHI resolved via the HI client in integrator applications; this
 repo does not embed HI WSDL.
 
+**GetView:** seven view types (see **`ADHA-THIRD-PARTY-SCOPE.md`**). Use HRO `versionNumber` `"1.1"` in samples and tests.
+
 ### 3.3 Runtime requirements (integrator view)
 
 Every call expects:

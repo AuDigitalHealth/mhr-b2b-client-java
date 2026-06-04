@@ -181,7 +181,7 @@ public class GetViewSample {
         //Health Record Overview
         HealthRecordOverView hroView = new HealthRecordOverView();
         hroView.setClinicalSynopsisLength(1000);
-        hroView.setVersionNumber("1.0");
+        hroView.setVersionNumber("1.1");
 
         TypedViewResponse<HealthRecordOverviewResponse> hroRsponse = client.getView(commonHeader, hroView);
         HealthRecordOverviewResponse hroResponse = hroRsponse.getResponseObject();

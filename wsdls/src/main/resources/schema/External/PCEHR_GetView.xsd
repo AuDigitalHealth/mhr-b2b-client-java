@@ -10,12 +10,14 @@
 	to trigger the Java build process to creating JAXB Bindings for those files 
 	
 	the entries are: xmlns:xxx, for example
-		xmlns:adv="http://ns.electronichealth.net.au/pcehr/xsd/interfaces/AchievementDiaryView/1.0" 
+		xmlns:hro="http://ns.electronichealth.net.au/pcehr/xsd/interfaces/HealthRecordOverview/1.0" 
 	
 	and the associated import, for example:
-		<xs:import namespace="http://ns.electronichealth.net.au/pcehr/xsd/interfaces/AchievementDiaryView/1.0" schemaLocation="view/PCEHR_AchievementDiaryView.xsd"/> 
+		<xs:import namespace="http://ns.electronichealth.net.au/pcehr/xsd/interfaces/HealthRecordOverview/1.0" schemaLocation="view/PCEHR_HealthRecordOverview.xsd"/> 
 
 	modifications also exist in the view/PCEHR_XXXView.xsd 
+
+	Supported third-party view types are listed in ADHA-THIRD-PARTY-SCOPE.md at the repo root.
 
 -->
 
@@ -76,4 +78,4 @@ xmlns:prv="http://ns.electronichealth.net.au/pcehr/xsd/interfaces/PathologyRepor
 		</xs:complexType>
 	</xs:element>
 </xs:schema>
-
+
