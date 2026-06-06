@@ -174,7 +174,7 @@ public class GetViewClient extends Client<GetViewPortType> {
      *
      * @param commonHeader         populated {@link PCEHRHeader} request object (Mandatory).
      * @param getViewRequestObject a PathologyReportView object for request
-     * @return response (type {@link TypedViewResponse<PathologyReportViewResponse> }
+     * @return response (type {@code TypedViewResponse<PathologyReportViewResponse>})
      * @throws StandardErrorMsg Thrown in the event that the operation fails.
      */
     public final TypedViewResponse<PathologyReportViewResponse> getView(PCEHRHeader commonHeader, PathologyReportView getViewRequestObject) throws StandardErrorMsg {
@@ -188,7 +188,7 @@ public class GetViewClient extends Client<GetViewPortType> {
      *
      * @param commonHeader         populated {@link PCEHRHeader} request object (Mandatory).
      * @param getViewRequestObject a DiagnosticImagingReportView object for request
-     * @return response (type {@link TypedViewResponse<DiagnosticImagingReportViewResponse>})
+     * @return response (type {@code TypedViewResponse<DiagnosticImagingReportViewResponse>})
      * @throws StandardErrorMsg Thrown in the event that the operation fails.
      */
     public final TypedViewResponse<DiagnosticImagingReportViewResponse> getView(PCEHRHeader commonHeader, DiagnosticImagingReportView getViewRequestObject) throws StandardErrorMsg {
@@ -201,7 +201,7 @@ public class GetViewClient extends Client<GetViewPortType> {
      *
      * @param commonHeader         populated {@link PCEHRHeader} request object (Mandatory).
      * @param getViewRequestObject a HealthRecordOverView object for request
-     * @return response (type {@link  TypedViewResponse<HealthRecordOverviewResponse>})
+     * @return response (type {@code TypedViewResponse<HealthRecordOverviewResponse>})
      * @throws StandardErrorMsg Thrown in the event that the operation fails.
      */
     public final TypedViewResponse<HealthRecordOverviewResponse> getView(PCEHRHeader commonHeader, HealthRecordOverView getViewRequestObject) throws StandardErrorMsg {

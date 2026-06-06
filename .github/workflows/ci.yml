@@ -1,0 +1,32 @@
+# Runs default offline unit tests + Javadoc/sources (verify), then compiles sample sources.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: AuDigitalHealth/pcehr-compiled-wsdl-java
+          ref: java-8-javax
+          path: pcehr-compiled-wsdl-java
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "8"
+          cache: maven
+      - name: Install pcehr-compiled-wsdl (java-8-javax)
+        working-directory: pcehr-compiled-wsdl-java
+        run: mvn -B -Dgpg.skip=true clean install -DskipTests
+      - name: Maven verify
+        run: mvn -B -Dgpg.skip=true clean verify
+      - name: Compile sample sources (sample profile)
+        run: mvn -B -Psample -Dgpg.skip=true -DskipTests=true clean compile

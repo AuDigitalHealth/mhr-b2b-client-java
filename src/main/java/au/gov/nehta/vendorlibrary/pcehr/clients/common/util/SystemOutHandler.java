@@ -121,8 +121,8 @@ public class SystemOutHandler implements MessageHandler<MessageHandlerContext> {
      */
     private XMLStreamWriter createIndenter(XMLStreamWriter writer) {
         try {
-            Class clazz = getClass().getClassLoader().loadClass("javanet.staxutils.IndentingXMLStreamWriter");
-            Constructor c = clazz.getConstructor(XMLStreamWriter.class);
+            Class<?> clazz = getClass().getClassLoader().loadClass("javanet.staxutils.IndentingXMLStreamWriter");
+            Constructor<?> c = clazz.getConstructor(XMLStreamWriter.class);
             writer = (XMLStreamWriter) c.newInstance(writer);
         } catch (Exception e) {
             // if stax-utils.jar is not in the classpath, this will fail

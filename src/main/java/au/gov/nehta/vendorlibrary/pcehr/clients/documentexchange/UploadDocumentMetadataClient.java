@@ -142,9 +142,9 @@ public final class UploadDocumentMetadataClient extends Client<DocumentRegistryP
             final CodedValue formatCode
     ) throws IOException, SAXException, XPathExpressionException, ParserConfigurationException {
 
-        Validate.notNull(packageContent);
-        Validate.notNull(healthcareFacilityTypeCode);
-        Validate.notNull(practiceSettingTypeCode);
+        Validate.notNull(packageContent, "'packageContent' must be specified.");
+        Validate.notNull(healthcareFacilityTypeCode, "'healthcareFacilityTypeCode' must be specified.");
+        Validate.notNull(practiceSettingTypeCode, "'practiceSettingTypeCode' must be specified.");
 
         byte[] document = FileUtils.getCdaDocument(packageContent);
 

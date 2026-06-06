@@ -14,6 +14,7 @@
 package au.gov.nehta.vendorlibrary.pcehr.clients.common.handler;
 
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.util.UUID;
 
@@ -91,8 +92,8 @@ public class ConfigurableMTOMHandler implements IMTOMHandler {
   *
   * @param requestType the XML element for the Enclosing request. eg: "ProvideAndRegisterDocumentSetRequest" or  "registerPCEHR"
   * @param xmlRequestNamespace the XML name space for the requestType eg: "urn:ihe:iti:xds-b:2007"
-  * @param mtomElement the element containing bas64 content to be XOP included as a binary attachment eg: "Document"
-  * @param the XML name space of the mtomElement eg: "urn:ihe:iti:xds-b:2007"
+  * @param mtomElement the element containing base64 content to be XOP included as a binary attachment eg: "Document"
+  * @param xmlElementNamespace the XML namespace of the mtomElement eg: "urn:ihe:iti:xds-b:2007"
   **/ 
   public ConfigurableMTOMHandler(String requestType, String xmlRequestNamespace, String mtomElement, String xmlElementNamespace){
     this.requestType=requestType;
@@ -106,8 +107,8 @@ public class ConfigurableMTOMHandler implements IMTOMHandler {
    *  where both elements share the same XML name space
    *
    * @param requestType the XML element for the Enclosing request. eg: "ProvideAndRegisterDocumentSetRequest" or  "registerPCEHR"
-   * @param xmlRequestNamespace the XML name space for both supplied element names eg: "urn:ihe:iti:xds-b:2007"
-   * @param mtomElement the element containing bas64 content to be XOP included as a binary attachment eg: "Document"
+   * @param requestNamespace the XML namespace for both supplied element names eg: "urn:ihe:iti:xds-b:2007"
+   * @param mtomElement the element containing base64 content to be XOP included as a binary attachment eg: "Document"
    */
   public ConfigurableMTOMHandler(String requestType, String requestNamespace, String mtomElement ){
     this(requestType,requestNamespace,mtomElement,requestNamespace);
@@ -143,7 +144,7 @@ public class ConfigurableMTOMHandler implements IMTOMHandler {
           UUID referenceId = UUID.randomUUID();
 
           // Convert to an Input Stream, as required to add an attachment.
-          InputStream is = IOUtils.toInputStream(documentContent);
+          InputStream is = IOUtils.toInputStream(documentContent, StandardCharsets.UTF_8);
 
           // Create a new attachment for the document content.
           createDocumentAttachmentPart(context, is, referenceId);

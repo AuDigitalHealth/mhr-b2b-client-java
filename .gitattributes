@@ -1,0 +1,9 @@
+* text=auto eol=lf
+
+*.class binary
+*.jar binary
+*.jks binary
+*.zip binary
+
+*.bat text eol=crlf
+*.cmd text eol=crlf
