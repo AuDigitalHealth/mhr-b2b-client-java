@@ -1,9 +1,10 @@
-# Runs default offline unit tests + Javadoc/sources (verify), then compiles sample sources.
 name: CI
 
 on:
   push:
+    branches: [ master, main, java-11-jakarta ]
   pull_request:
+    branches: [ master, main, java-11-jakarta ]
 
 permissions:
   contents: read
@@ -13,20 +14,40 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/checkout@v4
+      - name: Checkout pcehr-compiled-wsdl-java
+        uses: actions/checkout@v4
         with:
-          repository: AuDigitalHealth/pcehr-compiled-wsdl-java
-          ref: java-8-javax
+          repository: ${{ github.repository_owner }}/pcehr-compiled-wsdl-java
+          ref: java-11-jakarta
           path: pcehr-compiled-wsdl-java
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "8"
+          java-version: "11"
           cache: maven
-      - name: Install pcehr-compiled-wsdl (java-8-javax)
+      - name: Install pcehr-compiled-wsdl
         working-directory: pcehr-compiled-wsdl-java
-        run: mvn -B -Dgpg.skip=true clean install -DskipTests
-      - name: Maven verify
-        run: mvn -B -Dgpg.skip=true clean verify
-      - name: Compile sample sources (sample profile)
-        run: mvn -B -Psample -Dgpg.skip=true -DskipTests=true clean compile
+        run: mvn -B "-Dgpg.skip=true" clean install
+      - name: Maven verify (default)
+        run: mvn -B "-Dgpg.skip=true" clean verify
+
+  wsimport:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout pcehr-compiled-wsdl-java
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/pcehr-compiled-wsdl-java
+          ref: java-11-jakarta
+          path: pcehr-compiled-wsdl-java
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "11"
+          cache: maven
+      - name: Install pcehr-compiled-wsdl
+        working-directory: pcehr-compiled-wsdl-java
+        run: mvn -B "-Dgpg.skip=true" clean install
+      - name: Maven verify (-Pwsimport)
+        run: mvn -B "-Dgpg.skip=true" -Pwsimport clean verify

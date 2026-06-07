@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings jaxb:version="2.0"
+               xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+               xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <jaxb:bindings schemaLocation="../schema/External/XDS.b_DocumentRepository.xsd" node="/xs:schema">
+        <jaxb:bindings node="//xs:complexType[@name='RetrieveDocumentSetRequestType']">
+            <jaxb:class name="RetrieveDocumentSetRequest"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:complexType[@name='RetrieveDocumentSetResponseType']">
+            <jaxb:class name="RetrieveDocumentSetResponse"/>
+        </jaxb:bindings>
+        <jaxb:bindings node="//xs:complexType[@name='ProvideAndRegisterDocumentSetRequestType']">
+            <jaxb:class name="ProvideAndRegisterDocumentSetRequest"/>
+        </jaxb:bindings>
+    </jaxb:bindings>
+</jaxb:bindings>

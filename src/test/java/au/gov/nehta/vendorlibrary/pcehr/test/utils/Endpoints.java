@@ -20,6 +20,7 @@ public final class Endpoints {
     public static final String UPLOAD_DOCUMENT_METADATA = "/uploadDocumentMetadata";
     public static final String REGISTER_PCEHR = "/registerPCEHR";
     public static final String GET_REPRESENTATIVE_LIST = "/getRepresentativeList";
+    public static final String GET_INDIVIDUAL_DETAILS_VIEW = "/getIndividualDetailsView";
 
     public static final String ACCENTURE_NOC_HOST = "https://b2b.ehealthvendortest.health.gov.au";
     public static final String ACCENTURE_DOES_PCEHR_EXIST = ACCENTURE_NOC_HOST + DOES_PCEHR_EXIST;
@@ -37,6 +38,7 @@ public final class Endpoints {
     public static final String ACCENTURE_UPLOAD_DOCUMENT_METADATA = ACCENTURE_NOC_HOST + UPLOAD_DOCUMENT_METADATA;
     public static final String ACCENTURE_REGISTER_PCEHR = ACCENTURE_NOC_HOST + REGISTER_PCEHR;
     public static final String ACCENTURE_GET_REPRESENTATIVE_LIST = ACCENTURE_NOC_HOST + GET_REPRESENTATIVE_LIST;
+    public static final String ACCENTURE_GET_INDIVIDUAL_DETAILS_VIEW = ACCENTURE_NOC_HOST + GET_INDIVIDUAL_DETAILS_VIEW;
 
     public static final String ACCENTURE__VPN__GET_VIEW = "https://10.81.144.51/getView";
     public static final String LOCAL_TCP_MONITOR_INTERCEPTOR_GET_VIEW = "http://localhost:8099/getView";
@@ -56,6 +58,7 @@ public final class Endpoints {
     public static final String PM1_UPLOAD_DOCUMENT_METADATA = PM1_HOST + UPLOAD_DOCUMENT_METADATA;
     public static final String PM1_REGISTER_PCEHR = PM1_HOST + REGISTER_PCEHR;
     public static final String PM1_GET_REPRESENTATIVE_LIST = PM1_HOST + GET_REPRESENTATIVE_LIST;
+    public static final String PM1_GET_INDIVIDUAL_DETAILS_VIEW = PM1_HOST + GET_INDIVIDUAL_DETAILS_VIEW;
 
 
     public static final String PTC_HOST = "https://10.81.150.4";
@@ -73,6 +76,7 @@ public final class Endpoints {
     public static final String PTC_UPLOAD_DOCUMENT_METADATA = PTC_HOST + UPLOAD_DOCUMENT_METADATA;
     public static final String PTC_REGISTER_PCEHR = PTC_HOST + REGISTER_PCEHR;
     public static final String PTC_GET_REPRESENTATIVE_LIST = PTC_HOST + GET_REPRESENTATIVE_LIST;
+    public static final String PTC_GET_INDIVIDUAL_DETAILS_VIEW = PTC_HOST + GET_INDIVIDUAL_DETAILS_VIEW;
 
     public static final String REGRESSION_HOST = "https://144.140.140.218:443";
     public static final String REGRESSION_DOES_PCEHR_EXIST = REGRESSION_HOST + DOES_PCEHR_EXIST;
@@ -89,6 +93,7 @@ public final class Endpoints {
     public static final String REGRESSION_UPLOAD_DOCUMENT_METADATA = REGRESSION_HOST + UPLOAD_DOCUMENT_METADATA;
     public static final String REGRESSION_REGISTER_PCEHR = REGRESSION_HOST + REGISTER_PCEHR;
     public static final String REGRESSION_GET_REPRESENTATIVE_LIST = REGRESSION_HOST + GET_REPRESENTATIVE_LIST;
+    public static final String REGRESSION_GET_INDIVIDUAL_DETAILS_VIEW = REGRESSION_HOST + GET_INDIVIDUAL_DETAILS_VIEW;
 
     public static final String DEV_HOST = "https://10.81.144.5";
     public static final String DEV_UPLOAD_DOCUMENT = DEV_HOST + UPLOAD_DOCUMENT;

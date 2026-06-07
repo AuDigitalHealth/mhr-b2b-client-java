@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.xml.ws.BindingProvider;
-import javax.xml.ws.Service;
-import javax.xml.ws.handler.Handler;
-import javax.xml.ws.soap.SOAPBinding;
+import jakarta.xml.ws.BindingProvider;
+import jakarta.xml.ws.Service;
+import jakarta.xml.ws.handler.Handler;
+import jakarta.xml.ws.soap.SOAPBinding;
 
 import org.apache.commons.lang3.Validate;
 
@@ -63,7 +63,7 @@ public abstract class Client<PortType> {
      * @param portClass           the JAX-WS port class.
      * @param sslSocketFactory    the {@link SSLSocketFactory} to be used when connecting to the web service provider (mandatory).
      * @param x509Certificate     the certificate key to be used for signing (mandatory)
-     * @param certificateVerifier CertificateVerifier implementation (optional).
+     * @param certificateVerifier {@link CertificateValidator} implementation (optional).
      * @param privateKey          the private key to be used for signing (mandatory)
      * @param endpointAddress     the endpoint address of the web service (mandatory).
      * @param setLoggingEnabled   set to <code>true</code> to enable logging (mandatory).
@@ -110,7 +110,7 @@ public abstract class Client<PortType> {
      * @param portClass           the JAX-WS port class.
      * @param sslSocketFactory    the {@link SSLSocketFactory} to be used when connecting to the web service provider (mandatory).
      * @param x509Certificate     the certificate key to be used for signing (mandatory)
-     * @param certificateVerifier CertificateVerifier implementation (optional).
+     * @param certificateVerifier {@link CertificateValidator} implementation (optional).
      * @param privateKey          the private key to be used for signing (mandatory)
      * @param endpointAddress     the endpoint address of the web service (mandatory).
      * @param setLoggingEnabled   set to <code>true</code> to enable logging (mandatory).

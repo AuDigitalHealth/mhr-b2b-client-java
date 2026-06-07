@@ -7,11 +7,10 @@
 local.properties
 /settings.xml
 settings.xml
+cp.txt
+/libs/
 
 mhr-b2b-client-java.code-workspace
-
-# Stale sync output (use wsdls/lib/provided instead)
-wsdls/local-lib/
 
 # Editor / OS noise
 .DS_Store
@@ -28,9 +27,10 @@ dependency-reduced-pom.xml
 src/test/resources/**/*.jks
 src/sample/resources/**/*.jks
 
-# Ant wsimport build output under wsdls/ (tooling JARs live in wsdls/lib/provided — tracked in Git)
+# Ant wsimport build output under wsdls/ (tooling JARs may live in wsdls/lib/provided)
 wsdls/tmp/
 wsdls/target/
 wsdls/dist/
 wsdls/build/
 wsdls/extern/
+wsdls/local-lib/

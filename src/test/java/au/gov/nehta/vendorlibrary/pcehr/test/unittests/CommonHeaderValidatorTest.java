@@ -18,7 +18,7 @@ public class CommonHeaderValidatorTest {
         CommonHeaderValidator.validate(header, false);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void validate_rejectsMissingIhiWhenRequired() {
         PCEHRHeader header = validHeader();
         header.setIhiNumber(null);
@@ -32,7 +32,7 @@ public class CommonHeaderValidatorTest {
         CommonHeaderValidator.validate(header, true);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void validate_rejectsRoleMissingWhenAuditRoleEnabled() {
         PCEHRHeader header = validHeader();
         header.getUser().setUseRoleForAudit(true);
@@ -40,7 +40,7 @@ public class CommonHeaderValidatorTest {
         CommonHeaderValidator.validate(header, false);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void validate_rejectsOrganisationIdWhenOrganisationPresent() {
         PCEHRHeader header = validHeader();
         header.getAccessingOrganisation().setOrganisationID(null);

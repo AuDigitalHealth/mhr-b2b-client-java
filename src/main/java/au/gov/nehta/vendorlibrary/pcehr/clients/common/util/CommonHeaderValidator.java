@@ -42,43 +42,49 @@ public final class CommonHeaderValidator {
         Validate.notNull(commonHeader, "'commonHeader' cannot be null.");
 
         if (requireIHINumber) {
-            Validate.notEmpty(commonHeader.getIhiNumber(), "'commonHeader.IHINumber' cannot be null nor empty.");
+            requireNonEmpty(commonHeader.getIhiNumber(), "'commonHeader.IHINumber' cannot be null nor empty.");
             validateIhi(commonHeader.getIhiNumber());
         }
 
         Validate.notNull(commonHeader.getUser(), "'commonHeader.user' cannot be null.");
         Validate.notNull(commonHeader.getUser().getIDType(), "'commonHeader.user.idType' cannot be null.");
-        Validate.notEmpty(commonHeader.getUser().getID(), "'commonHeader.user.id' cannot be null nor empty.");
-        Validate.notEmpty(commonHeader.getUser().getUserName(), "'commonHeader.user.userName' cannot be null nor empty.");
+        requireNonEmpty(commonHeader.getUser().getID(), "'commonHeader.user.id' cannot be null nor empty.");
+        requireNonEmpty(commonHeader.getUser().getUserName(), "'commonHeader.user.userName' cannot be null nor empty.");
         if (commonHeader.getUser().isUseRoleForAudit()) {
-            Validate.notEmpty(
+            requireNonEmpty(
                     commonHeader.getUser().getRole(),
                     "'commonHeader.user.role' must be specified as 'commonHeader.user.userRoleForAudit' is true."
             );
         }
 
         Validate.notNull(commonHeader.getProductType(), "'commonHeader.productType' cannot be null.");
-        Validate.notEmpty(commonHeader.getProductType().getVendor(), "'commonHeader.productType.vendor' cannot be null nor empty.");
-        Validate.notEmpty(commonHeader.getProductType().getProductName(), "'commonHeader.productType.productName' cannot be null nor empty.");
-        Validate.notEmpty(commonHeader.getProductType().getProductVersion(), "'commonHeader.productType.productVersion' cannot be null nor empty.");
-        Validate.notEmpty(commonHeader.getProductType().getPlatform(), "'commonHeader.productType.platform' cannot be null nor empty.");
+        requireNonEmpty(commonHeader.getProductType().getVendor(), "'commonHeader.productType.vendor' cannot be null nor empty.");
+        requireNonEmpty(commonHeader.getProductType().getProductName(), "'commonHeader.productType.productName' cannot be null nor empty.");
+        requireNonEmpty(commonHeader.getProductType().getProductVersion(), "'commonHeader.productType.productVersion' cannot be null nor empty.");
+        requireNonEmpty(commonHeader.getProductType().getPlatform(), "'commonHeader.productType.platform' cannot be null nor empty.");
 
         Validate.notNull(commonHeader.getClientSystemType(), "'commonHeader.clientSystemType' cannot be null.");
 
         if (commonHeader.getAccessingOrganisation() != null) {
-            Validate.notEmpty(
+            requireNonEmpty(
                     commonHeader.getAccessingOrganisation().getOrganisationID(),
                     "'commonHeader.accessingOrganisation.organisationId' cannot be null nor empty."
             );
-            Validate.notEmpty(
+            requireNonEmpty(
                     commonHeader.getAccessingOrganisation().getOrganisationName(),
                     "'commonHeader.accessingOrganisation.organisationName' cannot be null nor empty."
             );
         }
     }
 
+    private static void requireNonEmpty(String value, String message) {
+        if (value == null || value.isEmpty()) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
     private static void validateIhi(final String ihi) {
-        Validate.notEmpty(ihi, "'ihi' must not be null nor empty.");
+        requireNonEmpty(ihi, "'ihi' must not be null nor empty.");
 
         // check length.
         if (ihi.length() != EXPECTED_IHI_LENGTH) {

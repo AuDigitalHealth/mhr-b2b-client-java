@@ -13,21 +13,21 @@
  */
 package au.gov.nehta.vendorlibrary.pcehr.clients.common.handler;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.util.UUID;
 
 import javax.xml.namespace.QName;
-import javax.xml.soap.AttachmentPart;
-import javax.xml.soap.SOAPBody;
-import javax.xml.soap.SOAPBodyElement;
-import javax.xml.soap.SOAPEnvelope;
-import javax.xml.soap.SOAPException;
-import javax.xml.ws.handler.MessageContext;
-import javax.xml.ws.handler.soap.SOAPMessageContext;
+import jakarta.xml.soap.AttachmentPart;
+import jakarta.xml.soap.SOAPBody;
+import jakarta.xml.soap.SOAPBodyElement;
+import jakarta.xml.soap.SOAPEnvelope;
+import jakarta.xml.soap.SOAPException;
+import jakarta.xml.ws.handler.MessageContext;
+import jakarta.xml.ws.handler.soap.SOAPMessageContext;
 
-import org.apache.commons.io.IOUtils;
+import java.nio.charset.StandardCharsets;
 import org.w3c.dom.NodeList;
 
 import au.gov.nehta.vendorlibrary.pcehr.clients.common.constant.XMLNamespaces;
@@ -119,7 +119,7 @@ public class ConfigurableMTOMHandler implements IMTOMHandler {
    *
    * @param context the incoming / outgoing soap message context
    * @return true Always returns true.
-   * @see javax.xml.ws.handler.Handler#handleMessage(javax.xml.ws.handler.MessageContext)
+   * @see jakarta.xml.ws.handler.Handler#handleMessage(jakarta.xml.ws.handler.MessageContext)
    */
   @Override
   public final boolean handleMessage(SOAPMessageContext context) {
@@ -144,7 +144,7 @@ public class ConfigurableMTOMHandler implements IMTOMHandler {
           UUID referenceId = UUID.randomUUID();
 
           // Convert to an Input Stream, as required to add an attachment.
-          InputStream is = IOUtils.toInputStream(documentContent, StandardCharsets.UTF_8);
+          InputStream is = new ByteArrayInputStream(documentContent.getBytes(StandardCharsets.UTF_8));
 
           // Create a new attachment for the document content.
           createDocumentAttachmentPart(context, is, referenceId);
@@ -217,7 +217,7 @@ public class ConfigurableMTOMHandler implements IMTOMHandler {
    *
    * @param context the incoming / outgoing soap message context
    * @return true if the handle signature check is successful.
-   * @see javax.xml.ws.handler.Handler#handleFault(javax.xml.ws.handler.MessageContext)
+   * @see jakarta.xml.ws.handler.Handler#handleFault(jakarta.xml.ws.handler.MessageContext)
    */
   @Override
   public final boolean handleFault(SOAPMessageContext context) {
@@ -230,7 +230,8 @@ public class ConfigurableMTOMHandler implements IMTOMHandler {
    * Does nothing <br>
    * Not utilised for dumping SOAP message.
    *
-   * @param context @see javax.xml.ws.handler.Handler#close(javax.xml.ws.handler.MessageContext)
+   * @param context the message context
+   * @see jakarta.xml.ws.handler.Handler#close(jakarta.xml.ws.handler.MessageContext)
    */
   @Override
   public void close(MessageContext context) {
@@ -242,7 +243,8 @@ public class ConfigurableMTOMHandler implements IMTOMHandler {
    * Ignore processing of SOAP header as the primary intention is just to
    * 'Dump' the SOAP message
    *
-   * @return @see javax.xml.ws.handler.soap.SOAPHandler#getHeaders()
+   * @return header QNames processed by this handler, or {@code null} if none
+   * @see jakarta.xml.ws.handler.soap.SOAPHandler#getHeaders()
    */
   public final Set<QName> getHeaders() {
     return null;

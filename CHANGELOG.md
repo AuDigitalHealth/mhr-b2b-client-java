@@ -1,11 +1,12 @@
 # Change Log/Revision History
 
-= 1.6.3-SNAPSHOT =
+= 1.6.5-SNAPSHOT =
 ==================
-- Java 8 / javax public-release line: EE4J jaxws-rt 2.3.7, pcehr-compiled-wsdl at ${project.version}, modernized Maven build and CI.
-- Optional Ant wsimport under wsdls/: EE4J tooling in lib/provided (not Metro webservices-*); sync-lib + ant generate-src; WsdlsCodegenToolingTest guards layout.
-- Removed stale resources.zip duplicate; dropped optional codegen wrapper scripts.
-- Documentation: README, CONTRIBUTING, MAINTAINERS, SECURITY; offline Surefire default; -Pintegration for mutual-TLS tests.
+- Java 11 / Jakarta: EE4J jaxws-rt 4.0.4, compile against pcehr-compiled-wsdl 1.6.5-SNAPSHOT.
+- Default build uses pcehr-compiled-wsdl (main dependency); optional -Pwsimport profile validates in-repo wsimport (12 B2B services); offline and integration tests aligned to JAXB simple type names.
+- Six view facades documented in ADHA-THIRD-PARTY-SCOPE.md; ViewClientsSmokeTest (offline) and integration view tests including GetIndividualDetailsViewClientTest.
+- Removed javax JAXB test dependency; enforcer bans legacy Metro and javax JAX-WS/JAXB/SOAP API coordinates.
+- Documentation, dual-path CI (default + -Pwsimport), settings.xml.example, and Javadoc fixes.
 
 = 1.1.7 =
 =========

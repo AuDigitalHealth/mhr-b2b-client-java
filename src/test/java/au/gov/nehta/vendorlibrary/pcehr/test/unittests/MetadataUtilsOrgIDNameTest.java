@@ -32,8 +32,8 @@ public class MetadataUtilsOrgIDNameTest {
 
     @Test
     public void test_Organisation_CUSTODIAN_NameId() throws XPathExpressionException, ParserConfigurationException, IOException, SAXException {
-        String doc = IOUtils.read(new File("src/test/resources/TestFiles/metadataTest/CUSTODIAN_ORG_NAME_TEST.xml"));
-        DocumentMetadata documentMetadata = MetadataUtils.toDocumentMetadata(exampleHeader, doc.getBytes());
+        byte[] doc = IOUtils.readBytes(new File("src/test/resources/TestFiles/metadataTest/CUSTODIAN_ORG_NAME_TEST.xml"));
+        DocumentMetadata documentMetadata = MetadataUtils.toDocumentMetadata(exampleHeader, doc);
 
         Assert.assertEquals("General Practice Clinic", documentMetadata.getAuthorInstitution().getOrganisationName());
         Assert.assertEquals("1.2.36.1.2001.1003.0.8003620833333789", documentMetadata.getAuthorInstitution().getOrganisationIdentifier());
@@ -43,8 +43,8 @@ public class MetadataUtilsOrgIDNameTest {
 
     @Test
     public void test_Organisation_HCF_NameId() throws XPathExpressionException, ParserConfigurationException, IOException, SAXException {
-        String doc = IOUtils.read(new File("src/test/resources/TestFiles/metadataTest/HCF_ORG_NAME_TEST.xml"));
-        DocumentMetadata documentMetadata = MetadataUtils.toDocumentMetadata(exampleHeader, doc.getBytes());
+        byte[] doc = IOUtils.readBytes(new File("src/test/resources/TestFiles/metadataTest/HCF_ORG_NAME_TEST.xml"));
+        DocumentMetadata documentMetadata = MetadataUtils.toDocumentMetadata(exampleHeader, doc);
 
         Assert.assertEquals("West End Healthiness", documentMetadata.getAuthorInstitution().getOrganisationName());
         Assert.assertEquals("1.2.36.1.2001.1003.0.8003620833333782", documentMetadata.getAuthorInstitution().getOrganisationIdentifier());
@@ -52,8 +52,8 @@ public class MetadataUtilsOrgIDNameTest {
 
     @Test
     public void test_Organisation_AUTHOR_NameId() throws XPathExpressionException, ParserConfigurationException, IOException, SAXException {
-        String doc = IOUtils.read(new File("src/test/resources/TestFiles/metadataTest/Author_ORG_NAME_TEST.xml"));
-        DocumentMetadata documentMetadata = MetadataUtils.toDocumentMetadata(exampleHeader, doc.getBytes());
+        byte[] doc = IOUtils.readBytes(new File("src/test/resources/TestFiles/metadataTest/Author_ORG_NAME_TEST.xml"));
+        DocumentMetadata documentMetadata = MetadataUtils.toDocumentMetadata(exampleHeader, doc);
 
         Assert.assertEquals("Author Good Hospital", documentMetadata.getAuthorInstitution().getOrganisationName());
         Assert.assertEquals("1.2.36.1.2001.1003.0.8013620833333787", documentMetadata.getAuthorInstitution().getOrganisationIdentifier());

@@ -1,12 +1,17 @@
 # MHR B2B Client
 
-Maven library for Australia's **My Health Record (PCEHR) B2B** SOAP APIs over **JAX-WS**.
+Maven library for Australia's **My Health Record (PCEHR) B2B** SOAP APIs over **Jakarta XML Web Services** (branch **`java-11-jakarta`**, version **`1.6.5-SNAPSHOT`**).
 
 **Audience:** applications that depend on **`au.gov.nehta:mhr-b2b-client`**, supply mutual-TLS credentials and ADHA-registered product metadata, and call PCEHR record access, document exchange, views, and templates. To **build or change this repository**, see **`CONTRIBUTING.md`**, **`MAINTAINERS.md`**, and **`SECURITY.md`**.
 
-Traffic uses **HTTPS with mutual TLS** and **signed** SOAP. You need ADHA registration, test or production **certificates**, and **endpoint URLs** before live calls succeed.
+It provides typed client facades for:
+- record access
+- registration
+- document exchange (including MTOM)
+- views
+- templates
 
----
+All service traffic uses HTTPS mutual TLS and SOAP message signing.
 
 ## Dependency
 
@@ -18,98 +23,99 @@ Traffic uses **HTTPS with mutual TLS** and **signed** SOAP. You need ADHA regist
 </dependency>
 ```
 
-**Runtime:** JDK **8+** (see **`maven.compiler.release`** in **`pom.xml`**). Maven pulls EE4J **`jaxws-rt`** **2.3.x** and SOAP types from **`au.gov.nehta:pcehr-compiled-wsdl`** at **`pcehr.wsdl.version`** = **`${project.version}`**.
+Use the published version from [Maven Central](https://central.sonatype.com/).
 
-Application code uses **`javax.xml.ws`**, **`javax.xml.bind`**, and related **`javax`** APIs on this branch.
+## Runtime requirements
+
+- **JDK 11+** (see **`maven.compiler.release`** in **`pom.xml`**)
+- Maven pulls **Eclipse EE4J `jaxws-rt` 4.x**; application code uses **`jakarta.xml.ws`**, **`jakarta.xml.bind`**, and related **`jakarta.*`** APIs — not legacy **`javax.xml.ws`** / JAXB EE APIs
+- Valid endpoint URL(s), client certificate and private key for mutual TLS, truststore, and populated **`PCEHRHeader`**
 
 ### Local development (SNAPSHOT)
 
-When both repositories are unpublished, install the types JAR **first**:
+Install **`pcehr-compiled-wsdl-java`** (**`1.6.5-SNAPSHOT`**) before building this client:
 
 ```text
-# 1) pcehr-compiled-wsdl-java (java-8-javax)
+cd ../pcehr-compiled-wsdl-java
+git checkout java-11-jakarta
 mvn -B "-Dgpg.skip=true" clean install
 
-# 2) mhr-b2b-client-java (java-8-javax)
+cd ../mhr-b2b-client-java
 mvn -B "-Dgpg.skip=true" clean verify
 ```
 
-If Maven warns that a **GA** POM is missing, remove stale entries under **`~/.m2/repository/au/gov/nehta/pcehr-compiled-wsdl/`** and reinstall the SNAPSHOT. **`mvn clean`** does not clear the local Maven cache.
+## WSDL/XSD and build profiles
 
----
+SOAP/JAXB types for compilation always come from **`au.gov.nehta:pcehr-compiled-wsdl`** (built from sibling **`pcehr-compiled-wsdl-java`**). WSDL/XSD sources are tracked under **`wsdls/src/main/resources/`**; see **`wsdls/readme.txt`**.
 
-## WSDL/XSD
+| Build | Command | What runs |
+| ----- | ------- | --------- |
+| **Default** (WSDL JAR) | `mvn clean verify` | Compiles against **`pcehr-compiled-wsdl`** only |
+| **wsimport validation** | `mvn -Pwsimport clean verify` | Same compile classpath **plus** in-repo **12**-service wsimport (output under **`target/generated-sources/wsimport`**, not compiled) |
 
-PCEHR B2B WSDL and XSD are committed under **`wsdls/src/main/resources/`**. They are **not** separate ADHA-licensed artefacts (contrast with **hi-b2b-client-java** HI contracts). The published facade JAR uses generated types from **`pcehr-compiled-wsdl`**; the in-repo tree is the canonical contract reference. See **`wsdls/readme.txt`**.
+Both require **`pcehr-compiled-wsdl-java`** installed at **`${project.version}`** before building (see **Local development** above). Details: **`MAINTAINERS.md`** §4.
 
-### Optional: regenerate types with Ant (maintainers)
+## Available clients
 
-To run **`wsimport`** locally from the in-repo WSDL tree (not required for normal **`mvn verify`**):
+Package base: `au.gov.nehta.vendorlibrary.pcehr.clients`
 
-```text
-cd wsdls
-./sync-lib.ps1                         # refresh lib/provided if ee4j.jaxws.version changes
-ant -f build.xml generate-src          # requires Apache Ant on PATH
-```
+- `recordaccess`: `DoesPCEHRExistClient`, `GainPCEHRAccessClient`
+- `registration`: `RegisterPCEHRClient`
+- `documentexchange`: `UploadDocumentClient`, `GetDocumentClient`, `UploadDocumentMetadataClient`, `RemoveDocumentClient`
+- `view` (six facades; see **`ADHA-THIRD-PARTY-SCOPE.md`**):
+  - `GetViewClient` — seven third-party `getView` types (`B2B_GetView`)
+  - `GetIndividualDetailsViewClient`, `GetRepresentativeListClient`, `GetAuditViewClient`, `GetChangeHistoryViewClient`
+  - `GetDocumentListClient` — document metadata via `B2B_DocumentRegistry`
+- `template`: `GetTemplateClient`, `SearchTemplateClient`
 
-Tooling under **`wsdls/lib/provided/`** is **Eclipse EE4J** (**`jaxws-tools`**, **`jaxws-rt`**) — not legacy Metro **`webservices-*`**. Offline test **`WsdlsCodegenToolingTest`** guards this layout in CI.
-
----
-
-## What you configure in your application
-
-Construct a facade client (for example **`DoesPCEHRExistClient`**) with:
-
-| Item | Purpose |
-| ---- | ------- |
-| **`SSLSocketFactory`** | Mutual TLS to the PCEHR endpoint. |
-| Private key + certificate | TLS and SOAP signing. |
-| Endpoint URL | SOAP service URL from your registration. |
-| Product / vendor / user qualified IDs | Values issued for your software product. |
-
-Load keystores, truststores, and identifiers from your platform. Do not commit credentials to source control (**`SECURITY.md`**).
-
----
-
-## Client classes
-
-Package base: **`au.gov.nehta.vendorlibrary.pcehr.clients`**.
-
-| Area | Examples |
-| ---- | -------- |
-| Record access | `DoesPCEHRExistClient`, `GainPCEHRAccessClient` |
-| Document exchange | `UploadDocumentClient`, `GetDocumentClient`, `RemoveDocumentClient` |
-| Views | `GetViewClient`, `GetDocumentListClient`, `GetAuditViewClient` |
-| Templates | `GetTemplateClient`, `SearchTemplateClient` |
-
----
-
-## Build and test
-
-From the repository root:
+## Build from source
 
 ```text
 mvn -B "-Dgpg.skip=true" clean verify
 ```
 
-- Default Surefire: **offline** unit tests only.
-- Full mutual-TLS integration suite: **`mvn -B -Pintegration -Dgpg.skip=true clean test`** with local keystores and endpoints configured.
-- Sample sources: **`mvn -B -Psample -Dgpg.skip=true -DskipTests=true clean compile`**
-- Shaded JAR (classifier **`all`**): **`mvn -B -Pfat-jar -Dgpg.skip=true clean verify`**
+Or use root **`build.ps1`** / **`build.sh`** / **`build.bat`**. Options:
 
-Optional: **`./build.sh`**, **`build.ps1`**.
+| Wrapper argument | Maven profile |
+| ---------------- | ------------- |
+| *(none)* | default |
+| **`wsimport`** / **`-Wsimport`** | **`-Pwsimport`** |
+| **`shaded`** / **`-Shaded`** | **`-Pfat-jar`** (uber JAR) |
 
----
+Compile dependency: **`pcehr-compiled-wsdl`** at **`${project.version}`** (**`1.6.5-SNAPSHOT`** during development).
 
-## Publishing and public hosting
+## Tests
 
-This repository is intended for public Git hosting. Do not commit secrets, real keystores, or production endpoint credentials. **`local.properties`** is gitignored.
+Default Surefire run (offline unit tests only, including **`ViewClientsSmokeTest`** for view SOAP types):
 
----
+```text
+mvn -B "-Dgpg.skip=true" test
+```
 
-## Related repositories
+Full mutual-TLS integration suite (view client tests under `src/test/java/.../tests/view/` and **`TestGetView`**):
 
-| Repository | Role |
-| ---------- | ---- |
-| [pcehr-compiled-wsdl-java](https://github.com/AuDigitalHealth/pcehr-compiled-wsdl-java) | Generated PCEHR SOAP types (`java-8-javax`) |
-| [hi-b2b-client-java](https://github.com/AuDigitalHealth/hi-b2b-client-java) | Healthcare Identifiers client (separate domain) |
+```text
+mvn -B "-Dgpg.skip=true" -Pintegration test
+```
+
+## Samples
+
+Sample usage classes are under `src/sample/java`.
+
+To compile samples from a source checkout:
+
+```text
+mvn -B -Psample "-DskipTests=true" clean compile
+```
+
+## Security and public hosting
+
+Do not commit secrets, real keystores, or production endpoint credentials. **`local.properties`** is gitignored. See **`SECURITY.md`**.
+
+## ADHA third-party scope
+
+Supported third-party `getView` types: **`ADHA-THIRD-PARTY-SCOPE.md`**.
+
+## License
+
+Apache License 2.0. See `LICENSE.txt`.
