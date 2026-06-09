@@ -13,14 +13,14 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Checkout pcehr-compiled-wsdl-java
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: ${{ github.repository_owner }}/pcehr-compiled-wsdl-java
           ref: java-11-jakarta
           path: pcehr-compiled-wsdl-java
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "11"
@@ -34,14 +34,14 @@ jobs:
   wsimport:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Checkout pcehr-compiled-wsdl-java
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: ${{ github.repository_owner }}/pcehr-compiled-wsdl-java
           ref: java-11-jakarta
           path: pcehr-compiled-wsdl-java
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "11"
