@@ -17,8 +17,8 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.xml.bind.JAXBException;
-import javax.xml.ws.Holder;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.ws.Holder;
 
 import org.apache.commons.lang3.Validate;
 
@@ -110,26 +110,6 @@ public class GetViewClient extends Client<GetViewPortType> {
         setMTOMEnabled();
     }
 
-    /*
-     * Invokes the web service operation that returns a list of representatives associated with a particular individual's PCEHR.
-     *
-     * @param commonHeader populated {@link PCEHRHeader} request object (Mandatory).
-     * @param getViewRequestObject an AchievementDiaryView object for request
-     * @return response (type {@link GetRepresentativeListResponse})
-     * @throws StandardErrorMsg Thrown in the event that the operation fails.
-     */
-  /*
-   * NOT YET SUPPORTED
-   *
-  public final GetViewResponse getView(PCEHRHeader commonHeader, AchievementDiaryView getViewRequestObject) throws StandardErrorMsg {
-
-    return getView( commonHeader, (Object) getViewRequestObject );
-
-    return responseHolder.value;
-  }
-  */
-
-
     /**
      * Invokes the web service operation that returns a list of representatives associated with a particular individual's PCEHR.
      *
@@ -208,7 +188,6 @@ public class GetViewClient extends Client<GetViewPortType> {
         GetViewResponse viewResponse = getView(commonHeader, (Object) getViewRequestObject);
         return TypedViewResponse.unmarshall(HealthRecordOverviewResponse.class, viewResponse);
     }
-
 
     /**
      * Invokes the web service operation that returns a list of representatives associated with a particular individual's PCEHR.

@@ -16,9 +16,9 @@ package au.gov.nehta.vendorlibrary.pcehr.clients.common.util;
 
 import org.apache.commons.io.IOUtils;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -82,7 +82,7 @@ public final class FileUtils {
    * @param clazz class to attempt to marshal to.
    * @param <T>   type unmarshalled from the XML file.
    * @return the Java object unmarshalled from the contents of the XML file.
-   * @throws javax.xml.bind.JAXBException thrown in the event the file contents cannot be unmarshalled.
+   * @throws jakarta.xml.bind.JAXBException thrown in the event the file contents cannot be unmarshalled.
    */
   @SuppressWarnings("unchecked")
   public static <T> T loadXml(File file, Class<? extends T> clazz) throws JAXBException {

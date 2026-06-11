@@ -55,7 +55,7 @@ public class GetIndividualDetailsViewSample {
                 sslSocketFactory,
                 SecurityUtil.getCertificate(),
                 SecurityUtil.getPrivateKey(),
-                SampleEndpoints.GET_REPRESENTATIVE_LIST,
+                SampleEndpoints.GET_INDIVIDUAL_DETAILS_VIEW,
                 true);
 
         //allow SSL connections to be set on a per client basis

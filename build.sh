@@ -1,22 +1,32 @@
 #!/usr/bin/env bash
+# Install pcehr-compiled-wsdl-java at ${project.version} before first build; see README.md.
+# Optional: MVN_SETTINGS=/path/to/settings.xml
 set -euo pipefail
 cd "$(dirname "$0")"
-SHADED=0
-for a in "$@"; do
-  case "$a" in
-    -Shaded|shaded|-shaded|--shaded) SHADED=1 ;;
-    *) echo "Unknown argument: $a" >&2; echo "Optional: -Shaded | shaded | -shaded | --shaded" >&2; exit 2 ;;
-  esac
-done
-MVN_ARGS=(-B)
+extra=()
+wsimport_mode=false
+case "${1:-}" in
+    '') ;;
+    shaded|-shaded|--shaded) extra=(-Pfat-jar) ;;
+    wsimport|-wsimport|--wsimport) wsimport_mode=true ;;
+    *)
+        echo "Unknown argument: $1" >&2
+        echo "Optional: shaded | wsimport (validate WSDL codegen)" >&2
+        exit 2
+        ;;
+esac
+settings_args=()
 if [[ -n "${MVN_SETTINGS:-}" ]]; then
-  MVN_ARGS+=(-s "$MVN_SETTINGS")
+    settings_args=(-s "$MVN_SETTINGS")
 fi
-if [[ "$SHADED" -eq 1 ]]; then
-  echo 'Building mhr-b2b-client FAT/UBER JAR'
-  MVN_ARGS+=(-Pfat-jar)
+if [ "$wsimport_mode" = true ]; then
+    extra=(-Pwsimport "${extra[@]}")
+fi
+if [ "${#extra[@]}" -eq 0 ]; then
+    echo 'Building mhr-b2b-client JAR'
+elif [ "$wsimport_mode" = true ]; then
+    echo 'Building mhr-b2b-client JAR (with in-repo wsimport validation)'
 else
-  echo 'Building mhr-b2b-client JAR'
+    echo 'Building mhr-b2b-client FAT/UBER JAR'
 fi
-MVN_ARGS+=(-Dgpg.skip=true clean verify)
-exec mvn "${MVN_ARGS[@]}"
+exec mvn -B "${settings_args[@]}" "${extra[@]}" -Dgpg.skip=true clean verify

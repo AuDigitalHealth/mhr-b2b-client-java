@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Optional Maven user settings fragment. Copy sections into your Maven user settings file
-  or pass with: mvn -s path/to/settings.xml
-  Do not commit a settings.xml that contains server passwords or tokens.
+  OPTIONAL Maven user settings fragment.
+
+  Default build resolves dependencies from Maven Central plus locally installed
+  au.gov.nehta:pcehr-compiled-wsdl (install pcehr-compiled-wsdl-java first for SNAPSHOT).
+
+  Copyright 2021-2026 ADHA. SPDX-License-Identifier: Apache-2.0 (same as the project).
 -->
 <settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 https://maven.apache.org/xsd/settings-1.2.0.xsd">
-    <servers>
-        <server>
-            <id>nexus-snapshots</id>
-            <!-- username / password from Sonatype — set locally, not in Git -->
-        </server>
-        <server>
-            <id>nexus-releases</id>
-        </server>
-    </servers>
 </settings>

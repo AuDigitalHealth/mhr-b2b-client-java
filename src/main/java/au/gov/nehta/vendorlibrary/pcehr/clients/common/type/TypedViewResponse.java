@@ -2,10 +2,10 @@ package au.gov.nehta.vendorlibrary.pcehr.clients.common.type;
 
 import java.io.StringReader;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 
 import au.gov.nehta.vendorlibrary.pcehr.clients.common.exception.ViewUnmarshallException;
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.getview._1.GetViewResponse;

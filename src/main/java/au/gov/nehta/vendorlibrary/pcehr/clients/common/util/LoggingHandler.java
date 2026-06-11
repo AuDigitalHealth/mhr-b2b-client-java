@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import javax.xml.ws.handler.MessageContext;
+import jakarta.xml.ws.handler.MessageContext;
 
 import com.sun.xml.ws.api.handler.MessageHandler;
 import com.sun.xml.ws.api.handler.MessageHandlerContext;
@@ -97,7 +97,7 @@ public final class LoggingHandler implements MessageHandler<MessageHandlerContex
      * @param context The SOAP Message context.
      * @return {@link Boolean}.TRUE handle message is successful else return
      * FALSE
-     * @see javax.xml.ws.handler.Handler#handleMessage(javax.xml.ws.handler.MessageContext)
+     * @see jakarta.xml.ws.handler.Handler#handleMessage(jakarta.xml.ws.handler.MessageContext)
      */
     public boolean handleMessage(final MessageHandlerContext context) {
         // log to SOAP message to console
@@ -112,7 +112,7 @@ public final class LoggingHandler implements MessageHandler<MessageHandlerContex
      *                response
      * @return {@link Boolean}.TRUE if handleFault is successful, else returns
      * {@link Boolean}.FALSE
-     * @see javax.xml.ws.handler.Handler#handleFault(javax.xml.ws.handler.MessageContext)
+     * @see jakarta.xml.ws.handler.Handler#handleFault(jakarta.xml.ws.handler.MessageContext)
      */
     public boolean handleFault(final MessageHandlerContext context) {
         // log to SOAP message to console
@@ -167,7 +167,7 @@ public final class LoggingHandler implements MessageHandler<MessageHandlerContex
      * 'Dump' the SOAP message.
      *
      * @return SOAP header names processed by this handler
-     * @see javax.xml.ws.handler.soap.SOAPHandler#getHeaders()
+     * @see jakarta.xml.ws.handler.soap.SOAPHandler#getHeaders()
      */
     public Set<QName> getHeaders() {
         return null;
@@ -178,7 +178,7 @@ public final class LoggingHandler implements MessageHandler<MessageHandlerContex
      * Not utilised for dumping SOAP message.
      *
      * @param context the SOAP Message context
-     * @see javax.xml.ws.handler.Handler#close(javax.xml.ws.handler.MessageContext)
+     * @see jakarta.xml.ws.handler.Handler#close(jakarta.xml.ws.handler.MessageContext)
      */
     public void close(final MessageContext context) {
     }

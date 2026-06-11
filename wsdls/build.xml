@@ -4,35 +4,17 @@
          xmlns:ac="antlib:net.sf.antcontrib">
     <property file="build.properties"/>
 
-    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
-        <classpath>
-            <fileset dir="${lib.dir}" includes="**/ant-contrib*.jar"/>
-        </classpath>
-    </taskdef>
-
-    <!-- Classpath for compilation / wsimport -->
+    <!-- Classpath for compilation -->
     <path id="compile.path">
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
     </path>
 
+    <!-- Classpath for compilation -->
     <path id="wsimport.path">
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
     </path>
-
-    <target name="ensure-ant-lib"
-            description="Fails fast when EE4J JAX-WS JARs are missing from lib/provided">
-        <available file="${lib.provided.dir}" type="dir" property="lib.provided.present"/>
-        <fail unless="lib.provided.present"
-              message="Missing ${lib.provided.dir}. Run: mvn -B -f ee4j-jaxws-lib-pom.xml package or ./sync-lib.ps1 (from wsdls/)"/>
-        <resourcecount property="jaxws.jar.count">
-            <fileset dir="${lib.provided.dir}" includes="**/*.jar"/>
-        </resourcecount>
-        <condition property="jaxws.jars.missing">
-            <equals arg1="${jaxws.jar.count}" arg2="0"/>
-        </condition>
-        <fail if="jaxws.jars.missing"
-              message="No JARs in ${lib.provided.dir}. Run: mvn -B -f ee4j-jaxws-lib-pom.xml package or ./sync-lib.ps1 (from wsdls/)"/>
-    </target>
+	
+	
 
     <!-- wsimport task definition -->
     <taskdef name="wsimport" classname="com.sun.tools.ws.ant.WsImport">
@@ -68,7 +50,6 @@
         <mkdir dir="${dist.dir}"/>
         <mkdir dir="${doc.dir}"/>
         <mkdir dir="${extern.dir}"/>
-        <mkdir dir="${lib.provided.dir}"/>
     </target>
 
 
@@ -94,30 +75,34 @@
                       xadditionalHeaders="true"
                       xendorsed="true"
                       verbose="true"
+            		
                       fork="true">
                 <arg value="-B-XautoNameResolution"/>
-                <arg value="-Xnocompile"/>
-                <binding dir="${binding.dir}"
-                         includes="@{binding.files}"/>
+            	
+            
+                 <binding dir="${binding.dir}"
+                         includes="@{binding.files}"/> 
             </wsimport>
         </sequential>
     </macrodef>
 
     <!-- generate-src: Generate Java classes from each WSDL -->
     <target name="generate-src"
-            depends="ensure-ant-lib, prepare"
+            depends="prepare"
             description="Generates classes from the WSDL definition">
 
-        <!-- DateAdapter must be compiled before wsimport compiles generated sources -->
-        <copy file="src/main/java/au/gov/nehta/schema/DateAdapter.java"
-              todir="${src.dir}/au/gov/nehta/schema/"/>
-        <javac srcdir="${src.dir}"
-               destdir="${classes.dir}"
-               includeantruntime="false"
-               fork="true">
-            <classpath refid="compile.path"/>
-            <include name="au/gov/nehta/schema/DateAdapter.java"/>
-        </javac>
+    	    	<copy file="src/main/java/au/gov/nehta/schema/DateAdapter.java" todir="build/src/main/java/au/gov/nehta/schema/"/>
+    			
+    	
+    	
+    	    	<javac srcdir="${src.dir}"
+    	        	   destdir="${build.dir}/classes"
+    	    		   includeantruntime="false"     	   />
+    	<jar jarfile="/lib/provided/adapter.jar"
+    	     basedir="build/classes"
+    	     includes="au/gov/**" >
+    	</jar>
+    
         <ac:for param="absolute.wsdl.file">
             <ac:path>
                 <fileset dir="${wsdl.dir}">
@@ -132,11 +117,7 @@
                                           binding.files="GlobalBindings.jxb, PCEHR_CommonTypes.xsd.jxb, ${relative.wsdl.file}.jxb"/>
             </ac:sequential>
         </ac:for>
-
-        <jar jarfile="${lib.provided.dir}/adapter.jar"
-             basedir="${classes.dir}"
-             includes="au/gov/**"/>
-
+    	
     	<!-- also generate the extra external views for getView
     	<xjc  destdir="${src.dir}" >
 			    	<binding dir="${binding.dir}">
@@ -154,12 +135,12 @@
         classpathref="compile.classpath"
    		       	           includeAntRuntime="no"
    		       	           updatedproperty="compiled.src"-->
-        <javac destdir="${classes.dir}"
-               srcdir="${src.dir}"
-               includeantruntime="false"
-               fork="true">
-            <classpath refid="compile.path"/>
-        </javac>
+		 <javac destdir="${classes.dir}"
+		       	           srcdir="${src.dir}"
+		       	          
+		       	           fork="true"
+		       	      
+    						/>
     </target>
 	
 	

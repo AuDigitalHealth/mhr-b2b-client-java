@@ -19,13 +19,13 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.xml.namespace.QName;
-import javax.xml.soap.AttachmentPart;
-import javax.xml.soap.SOAPBody;
-import javax.xml.soap.SOAPBodyElement;
-import javax.xml.soap.SOAPEnvelope;
-import javax.xml.soap.SOAPException;
-import javax.xml.ws.handler.MessageContext;
-import javax.xml.ws.handler.soap.SOAPMessageContext;
+import jakarta.xml.soap.AttachmentPart;
+import jakarta.xml.soap.SOAPBody;
+import jakarta.xml.soap.SOAPBodyElement;
+import jakarta.xml.soap.SOAPEnvelope;
+import jakarta.xml.soap.SOAPException;
+import jakarta.xml.ws.handler.MessageContext;
+import jakarta.xml.ws.handler.soap.SOAPMessageContext;
 
 import org.apache.commons.io.IOUtils;
 import org.w3c.dom.NodeList;
@@ -119,7 +119,7 @@ public class ConfigurableMTOMHandler implements IMTOMHandler {
    *
    * @param context the incoming / outgoing soap message context
    * @return true Always returns true.
-   * @see javax.xml.ws.handler.Handler#handleMessage(javax.xml.ws.handler.MessageContext)
+   * @see jakarta.xml.ws.handler.Handler#handleMessage(jakarta.xml.ws.handler.MessageContext)
    */
   @Override
   public final boolean handleMessage(SOAPMessageContext context) {
@@ -217,7 +217,7 @@ public class ConfigurableMTOMHandler implements IMTOMHandler {
    *
    * @param context the incoming / outgoing soap message context
    * @return true if the handle signature check is successful.
-   * @see javax.xml.ws.handler.Handler#handleFault(javax.xml.ws.handler.MessageContext)
+   * @see jakarta.xml.ws.handler.Handler#handleFault(jakarta.xml.ws.handler.MessageContext)
    */
   @Override
   public final boolean handleFault(SOAPMessageContext context) {

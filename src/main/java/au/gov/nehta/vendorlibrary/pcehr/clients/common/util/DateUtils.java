@@ -21,7 +21,7 @@ import org.apache.commons.lang3.Validate;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -130,7 +130,7 @@ public final class DateUtils {
                 if (dateTime.contains("-")) {
                     operator = "-";
                 } else {
-                    operator = "";
+                    operator = "+";
                 }
 
                 Holder<Boolean> halfHour = new Holder<>();
@@ -158,8 +158,8 @@ public final class DateUtils {
      */
     private static ZoneId findTimeZonePatternByLength(final String operator, final String timeZone, final Holder<Boolean> halfHour) {
 
-        Validate.notEmpty("'operator' must be specified.");
-        Validate.notEmpty("'timeZone' must be specified.");
+        Validate.notEmpty(operator, "'operator' must be specified.");
+        Validate.notEmpty(timeZone, "'timeZone' must be specified.");
 
         halfHour.value = false;
 

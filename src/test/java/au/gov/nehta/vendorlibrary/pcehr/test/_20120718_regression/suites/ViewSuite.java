@@ -6,6 +6,7 @@ import org.junit.runners.Suite;
 import au.gov.nehta.vendorlibrary.pcehr.test._20120718_regression.tests.view.GetAuditViewClientTest;
 import au.gov.nehta.vendorlibrary.pcehr.test._20120718_regression.tests.view.GetChangeHistoryViewClientTest;
 import au.gov.nehta.vendorlibrary.pcehr.test._20120718_regression.tests.view.GetDocumentListClientTest;
+import au.gov.nehta.vendorlibrary.pcehr.test._20120718_regression.tests.view.GetIndividualDetailsViewClientTest;
 import au.gov.nehta.vendorlibrary.pcehr.test._20120718_regression.tests.view.GetRepresentativeListClientTest;
 
 @RunWith(Suite.class)
@@ -13,6 +14,7 @@ import au.gov.nehta.vendorlibrary.pcehr.test._20120718_regression.tests.view.Get
         GetDocumentListClientTest.class,
         GetAuditViewClientTest.class,
         GetChangeHistoryViewClientTest.class,
+        GetIndividualDetailsViewClientTest.class,
         GetRepresentativeListClientTest.class
 })
 

@@ -1,9 +1,9 @@
 ---
-description: MHR B2B client scope, WSDL policy, Java 8 javax build
+description: MHR B2B client scope, WSDL policy, Java 11 Jakarta build
 alwaysApply: true
 ---
 
-# mhr-b2b-client-java (Java 8 / javax)
+# mhr-b2b-client-java (Java 11 / Jakarta)
 
 My Health Record **PCEHR B2B** client — **not** Healthcare Identifiers (HI). Do **not** reference **`myhr-b2b-client-java`** or other aggregator/unified client projects in docs or comments. End-user docs: **`README.md`**, **`ADHA-THIRD-PARTY-SCOPE.md`**, **`MAINTAINERS.md`**. Agent WSDL/facade matrix: **`.cursor/WSDL-CLIENT-PURPOSES.md`** (gitignored).
 
@@ -11,19 +11,20 @@ My Health Record **PCEHR B2B** client — **not** Healthcare Identifiers (HI). D
 
 | Version | Java | APIs | Facades |
 | ---- | ---- | ---- | ---- |
-| **1.6.3** | 8 | javax | **15** (12 WSDLs; three WSDLs each used by two facades) |
+| **1.7.0** | 11 | Jakarta | **26** (full WSDL line) |
 
-**This checkout:** **`1.6.3-SNAPSHOT`** — **`au.gov.nehta:pcehr-compiled-wsdl`** at **`${project.version}`**; Java **8** / **`javax.*`**.
+**This checkout:** **`1.7.0-SNAPSHOT`** — **`au.gov.nehta:pcehr-compiled-wsdl`** at **`${project.version}`**; Java **11** / **`jakarta.*`** XML APIs.
 
 ## WSDL/XSD (committed in Git)
 
-PCEHR B2B WSDL/XSD under `wsdls/src/main/resources/` are **not** separate ADHA-licensed artefacts (unlike HI in hi-b2b-client-java). **Keep them in Git** for reference and for **`pcehr-compiled-wsdl-java`**. Compile against **`au.gov.nehta:pcehr-compiled-wsdl`** at **`pcehr.wsdl.version`** = **`${project.version}`** — install matching **`pcehr-compiled-wsdl-java`** first. **Six** view facades under `clients.view`; seven **`getView`** types — **`ADHA-THIRD-PARTY-SCOPE.md`**. Optional Ant **`wsimport`** under **`wsdls/`** (not part of default **`mvn verify`**).
+PCEHR B2B WSDL/XSD under `wsdls/src/main/resources/` are **not** separate ADHA-licensed artefacts (unlike HI in hi-b2b-client-java). **Keep them in Git** for reference and for **`pcehr-compiled-wsdl-java`**. Compile against **`au.gov.nehta:pcehr-compiled-wsdl`** at **`pcehr.wsdl.version`** = **`${project.version}`** — install matching **`pcehr-compiled-wsdl-java`** first. **Six** view facades under `clients.view`; seven **`getView`** types — **`ADHA-THIRD-PARTY-SCOPE.md`**. Optional **`-Pwsimport`**: in-repo wsimport validation.
 
 ## Build
 
-- JDK **8**: install sibling **`pcehr-compiled-wsdl-java`** at the same version, then `mvn -B "-Dgpg.skip=true" clean verify`
-- JAX-WS: **`com.sun.xml.ws:jaxws-rt` 2.3.7** — not legacy Metro **`webservices-*`**
-- Enforcer bans Metro **`webservices-*`** (application code uses **`javax.*`** only)
+- JDK **11**: install sibling **`pcehr-compiled-wsdl-java`** at the same version, then `mvn -B "-Dgpg.skip=true" clean verify`
+- WSDL validation: `mvn -B "-Dgpg.skip=true" -Pwsimport clean verify`
+- JAX-WS: **`com.sun.xml.ws:jaxws-rt` 4.0.4** — not legacy Metro **`webservices-*`**
+- Enforcer bans Metro **`webservices-*`** and **`javax.*`** XML API coordinates (test-scoped **`jaxb-api`** excepted for legacy NEHTA fixtures)
 - Default Surefire: offline tests; **`-Pintegration`** for mutual-TLS suite
 - Strict Javadoc: **`doclint=all`**, **`failOnWarnings=true`**
 

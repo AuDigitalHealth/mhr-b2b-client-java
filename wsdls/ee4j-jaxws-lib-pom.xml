@@ -13,7 +13,7 @@
 
     <properties>
         <!-- Keep in sync with ee4j.jaxws.version in ../pom.xml -->
-        <ee4j.jaxws.version>2.3.7</ee4j.jaxws.version>
+        <ee4j.jaxws.version>4.0.4</ee4j.jaxws.version>
         <ant.contrib.version>1.0b3</ant.contrib.version>
         <encoding>UTF-8</encoding>
         <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>

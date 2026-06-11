@@ -19,15 +19,14 @@ import au.gov.nehta.xsp.XspException;
 
 import java.security.cert.X509Certificate;
 
-
 /**
  * Certificate verifier implementation that performs some basic verification of the certificate.
  * The sample is provided for illustrative purposes only and should be implemented in production.
  */
 public class MinimalCertificateVerifier implements CertificateValidator {
 
-    @Override
-    public void validate(X509Certificate certificate) throws CertificateValidationException, XspException {
-        // null impl.
-    }
+  @Override
+  public void validate(X509Certificate certificate) throws CertificateValidationException, XspException {
+    // no-op
+  }
 }

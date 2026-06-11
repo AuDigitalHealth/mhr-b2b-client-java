@@ -60,6 +60,16 @@ public final class SampleEndpoints {
   public static final String GET_AUDIT_VIEW = "https://exampleendpoint.com/getAuditView";
 
   /**
+   * Sample Get View service endpoint ({@code B2B_GetView}).
+   */
+  public static final String GET_VIEW = "https://exampleendpoint.com/getView";
+
+  /**
+   * Sample Get Individual Details View service endpoint.
+   */
+  public static final String GET_INDIVIDUAL_DETAILS_VIEW = "https://exampleendpoint.com/getIndividualDetailsView";
+
+  /**
    * Sample Get Consolidated View service endpoint.
    */
   public static final String GET_CONSOLIDATED_VIEW = "https://exampleendpoint.com/getConsolidatedView";

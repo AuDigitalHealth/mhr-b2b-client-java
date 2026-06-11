@@ -2,7 +2,7 @@ package au.gov.nehta.vendorlibrary.pcehr.test.unittests;
 
 import static org.junit.Assert.assertTrue;
 
-import javax.xml.ws.Service;
+import jakarta.xml.ws.Service;
 import org.junit.Test;
 
 /**

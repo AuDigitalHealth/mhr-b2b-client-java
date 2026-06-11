@@ -68,7 +68,7 @@ public class GetViewSample {
                 sslSocketFactory,
                 SecurityUtil.getCertificate(),
                 SecurityUtil.getPrivateKey(),
-                SampleEndpoints.GET_REPRESENTATIVE_LIST,
+                SampleEndpoints.GET_VIEW,
                 true);
 
         //allow SSL connections to be set on a per client basis

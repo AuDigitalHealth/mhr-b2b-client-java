@@ -17,7 +17,7 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 
 import org.apache.commons.lang3.Validate;
 
@@ -71,7 +71,7 @@ public class GainPCEHRAccessClient extends Client<PCEHRProfilePortType> {
      *
      * @param sslSocketFactory    the {@link SSLSocketFactory} to be used when connecting to the web service provider (mandatory).
      * @param x509Certificate     the certificate key to be used for signing (mandatory)
-     * @param certificateVerifier CertificateVerifier implementation (optional).
+     * @param certificateVerifier {@link CertificateValidator} implementation (optional).
      * @param privateKey          the private key to be used for signing (mandatory)
      * @param endpointAddress     the endpoint address of the web service (mandatory).
      * @param setLoggingEnabled   set to <code>true</code> to enable logging (mandatory).
@@ -114,7 +114,7 @@ public class GainPCEHRAccessClient extends Client<PCEHRProfilePortType> {
         CommonHeaderValidator.validate(commonHeader, true); // IHINumber is required.
 
         if (pcehrRecord.getAuthorisationDetails() != null) {
-            if (pcehrRecord.getAuthorisationDetails().getAccessType() == GainPCEHRAccess.PCEHRRecord.AuthorisationDetails.AccessType.ACCESS_CODE) {
+            if ("AccessCode".equals(pcehrRecord.getAuthorisationDetails().getAccessType())) {
                 Validate.notEmpty(pcehrRecord.getAuthorisationDetails().getAccessCode(), "'pcehrRecord.authorisationDetails.accessCode' must be specified.");
             }
         }

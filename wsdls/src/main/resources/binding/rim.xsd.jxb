@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Align Jakarta XJC list accessors and class names with pcehr-compiled-wsdl-java (JAXB 2.x style). -->
+<jaxb:bindings jaxb:version="2.0"
+               xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+               xmlns:xs="http://www.w3.org/2001/XMLSchema"
+               xmlns:tns="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0">
+
+    <jaxb:bindings schemaLocation="../schema/External/rim.xsd" node="/xs:schema">
+
+        <jaxb:bindings node="//xs:complexType[@name='SlotType1']">
+            <jaxb:class name="Slot"/>
+        </jaxb:bindings>
+
+        <jaxb:bindings node="//xs:complexType[@name='RegistryObjectListType']">
+            <jaxb:class name="RegistryObjectList"/>
+        </jaxb:bindings>
+
+        <jaxb:bindings node="//xs:complexType[@name='IdentifiableType']//xs:element[@ref='tns:Slot']">
+            <jaxb:property name="slots"/>
+        </jaxb:bindings>
+
+        <jaxb:bindings node="//xs:complexType[@name='RegistryObjectType']//xs:element[@ref='tns:Classification']">
+            <jaxb:property name="classifications"/>
+        </jaxb:bindings>
+
+        <jaxb:bindings node="//xs:complexType[@name='RegistryObjectType']//xs:element[@ref='tns:ExternalIdentifier']">
+            <jaxb:property name="externalIdentifiers"/>
+        </jaxb:bindings>
+
+        <jaxb:bindings node="//xs:complexType[@name='RegistryObjectListType']//xs:element[@ref='tns:ExtrinsicObject']">
+            <jaxb:property name="extrinsicObjects"/>
+        </jaxb:bindings>
+
+        <jaxb:bindings node="//xs:complexType[@name='RegistryObjectListType']//xs:element[@ref='tns:RegistryPackage']">
+            <jaxb:property name="registryPackages"/>
+        </jaxb:bindings>
+
+        <jaxb:bindings node="//xs:complexType[@name='RegistryObjectListType']//xs:element[@ref='tns:Classification']">
+            <jaxb:property name="classifications"/>
+        </jaxb:bindings>
+
+        <jaxb:bindings node="//xs:complexType[@name='RegistryObjectListType']//xs:element[@ref='tns:Association']">
+            <jaxb:property name="associations"/>
+        </jaxb:bindings>
+
+        <jaxb:bindings node="//xs:complexType[@name='RegistryObjectListType']//xs:element[@ref='tns:Identifiable']">
+            <jaxb:property name="identifiables"/>
+        </jaxb:bindings>
+
+    </jaxb:bindings>
+</jaxb:bindings>

@@ -24,7 +24,7 @@ import java.util.Date;
 
 import javax.net.ssl.SSLSocketFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 import javax.xml.xpath.XPathExpressionException;
 
 import oasis.names.tc.ebxml_regrep.xsd.lcm._3.SubmitObjectsRequest;
@@ -83,7 +83,7 @@ public final class UploadDocumentMetadataClient extends Client<DocumentRegistryP
      *
      * @param sslSocketFactory    the {@link SSLSocketFactory} to be used when connecting to the web service provider (mandatory).
      * @param x509Certificate     the certificate key to be used for signing (mandatory)
-     * @param certificateVerifier CertificateVerifier implementation (optional).
+     * @param certificateVerifier {@link CertificateValidator} implementation (optional).
      * @param privateKey          the private key to be used for signing (mandatory)
      * @param endpointAddress     the endpoint address of the web service (mandatory).
      * @param setLoggingEnabled   set to <code>true</code> to enable logging (mandatory).
