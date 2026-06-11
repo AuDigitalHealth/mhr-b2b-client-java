@@ -1,89 +1,57 @@
 ====================================
-Introduction
+PCEHR B2B WSDL module (wsdls/)
 ====================================
 
-This library provides the required artefacts required to develop, deploy
-and invoke the relevant PCEHR web services.
+Canonical PCEHR B2B WSDL and XSD for this product live under:
+
+  src/main/resources/wsdl/
+  src/main/resources/schema/
+
+They are part of the open-source repository (not separate ADHA-licensed
+artefacts like Healthcare Identifiers contracts in hi-b2b-client-java).
 
 ====================================
-Setup
+Default build (mhr-b2b-client-java)
 ====================================
 
--   To build and test the distributable package, an appropriate Java IDE or
-    build environment must be installed.
+The main Maven build does not run wsimport. SOAP types come from Maven:
 
--   WSDL/XSD source files should be used in conjunction with JAX-WS and wsimport
-    to build the generated Java classes/source files. These WSDL/XSD files can be
-    found at:
-    /src/main/resources/*
+  au.gov.nehta:pcehr-compiled-wsdl  (pcehr.wsdl.version = project version)
 
-    Generated Java source files can be found in:
-    /api/nehta-vendorlibrary-java-pcehr-compiled-wsdl-<version>-sources.jar
-
--   For detailed API documentation, refer to the included Javadoc package.
+See repository README.md and CONTRIBUTING.md.
 
 ====================================
-Solution
+Optional: Ant wsimport (maintainers)
 ====================================
 
-The package consists of these components:
+To regenerate Java types locally from the in-repo WSDL tree:
 
-    -   /api/nehta-vendorlibrary-java-pcehr-compiled-wsdl-<version>.jar
-        Contains the required classes for doesPCEHRExist web service
-        development,deployment and invocation.
+  Prerequisites: JDK 8+, Apache Maven 3.6+, Apache Ant on PATH.
 
-    -   /api/nehta-vendorlibrary-java-pcehr-compiled-wsdl-<version>-docs.jar
-        Contains Javadoc for generated code.
+  1. Refresh tooling (after ee4j.jaxws.version bump):
+       ./sync-lib.ps1
+     or:
+       mvn -B -f ee4j-jaxws-lib-pom.xml package
 
-    -   /api/nehta-vendorlibrary-java-pcehr-compiled-wsdl-<version>-sources.jar
-        Contains artefact Java and WSDL/XSD source files.
+  2. Run wsimport:
+       ant -f build.xml generate-src
 
-    -   /lib/provided/*.jar
-        Contains the provided libraries necessary to generate the web service
-        code from the WSDL/XSD files.
+Tooling JARs: lib/provided/ (Eclipse EE4J jaxws-tools + jaxws-rt +
+ant-contrib — not legacy Metro webservices-*).
 
-====================================
-Pre-Requisites
-====================================
+Keep ee4j.jaxws.version in ee4j-jaxws-lib-pom.xml aligned with
+ee4j.jaxws.version in the repository root pom.xml.
 
-Java Development Kit (JDK)
-------------------------------------
-1.  Download and install JDK 6 Update 27 or later:
-    URL: http://www.oracle.com/technetwork/java/javase/downloads/index.html
+Offline verification (no Ant run): WsdlsCodegenToolingTest in the main
+client test suite.
 
-2.  Unpack the JDK distribution into a directory of your choice.
-
-    This directory will be your <JDK_HOME>and will be used in this document
-    to refer to the root directory of the JDK installation.
-
-    <JRE_HOME> will be used in this document to refer to <JDK_HOME>/jre.
-
-3.  Create a JAVA_HOME environment variable pointing to the <JDK_HOME>
-    directory in Step 2.
-
-4.  Add <JDK_HOME>/bin to the system path.
-
-
-JAX-WS 2.2.5
-------------------------------------
-An open source, third-party library has been used in this project for the
-purposes generating all required classes for web service development,
-deployment and invocation. Further information on this library can be found
-at:
-
-    URL: http://jax-ws.java.net/2.2.5/
+Ant build output (gitignored): build/, tmp/, dist/, extern/.
 
 ====================================
 Licensing
 ====================================
-Copyright 2012 NEHTA
 
-Licensed under the NEHTA Open Source (Apache) License; you may not use this
-file except in compliance with the License. A copy of the License is in the
-'license.txt' file, which should be provided with this work.
+Copyright 2012 NEHTA. Copyright 2021-2026 ADHA.
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-License for the specific language governing permissions and limitations
-under the License.
+Licensed under the Apache License, Version 2.0. See LICENSE.txt at the
+repository root (and license.txt in this directory for legacy Ant packages).

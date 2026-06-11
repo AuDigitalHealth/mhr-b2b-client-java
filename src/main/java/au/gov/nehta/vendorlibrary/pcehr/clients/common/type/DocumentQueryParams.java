@@ -22,7 +22,6 @@ import java.util.Set;
 
 /**
  * Parameters used to query for documents.
- * <p/>
  * The IHINumber of the PCEHR ($XDSDocumentEntryPatientId) is present in the PCEHRHeader.
  */
 public final class DocumentQueryParams {
@@ -128,24 +127,18 @@ public final class DocumentQueryParams {
 
   /**
    * Gets the value of the <code>authorIndividuals</code> property.
-   * <p/>
    * If multiple values are specified than they will be considered to represent
    * 'OR' semantics.
-   * <p/>
    * The value for this parameter is a pattern compatible with the SQL keyword
    * LIKE which allows the use of the following wildcard characters: % to match
    * any (or no) characters and _ to match a single character.
-   * <p/>
    * This accessor method returns a reference to the live list, not a snapshot.
    * This is why there is not a <code>set</code> method for the
    * <code>authorIndividuals</code> property.
-   * <p/>
    * For example, to add a new item, do as follows:
-   * <p/>
    * <pre>
    * getAuthorIndividuals().add(newItem);
    * </pre>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryAuthorPerson</code> query
    * parameter.
    *
@@ -170,20 +163,15 @@ public final class DocumentQueryParams {
 
   /**
    * Gets the value of the <code>documentTypes</code> property.
-   * <p/>
    * If multiple values are specified than they will be considered to represent
    * 'OR' semantics.
-   * <p/>
    * This accessor method returns a reference to the live list, not a snapshot.
    * This is why there is not a <code>set</code> method for the
    * <code>documentTypes</code> property.
-   * <p/>
    * For example, to add a new item, do as follows:
-   * <p/>
    * <pre>
    * getDocumentTypes().add(newItem);
    * </pre>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryTypeCode</code> query parameter.
    *
    * @return value of documentTypes
@@ -207,20 +195,15 @@ public final class DocumentQueryParams {
 
   /**
    * Gets the value of the <code>documentClass</code> property.
-   * <p/>
    * If multiple values are specified than they will be considered to represent
    * 'OR' semantics.
-   * <p/>
    * This accessor method returns a reference to the live list, not a snapshot.
    * This is why there is not a <code>set</code> method for the
    * <code>documentTypes</code> property.
-   * <p/>
    * For example, to add a new item, do as follows:
-   * <p/>
    * <pre>
    * getDocumentTypes().add(newItem);
    * </pre>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryClassCode</code> query parameter.
    *
    * @return value of documentTypes
@@ -244,20 +227,15 @@ public final class DocumentQueryParams {
 
   /**
    * Gets the value of the <code>templateIds</code> property.
-   * <p/>
    * If multiple values are specified than they will be considered to represent
    * 'OR' semantics.
-   * <p/>
    * This accessor method returns a reference to the live list, not a snapshot.
    * This is why there is not a <code>set</code> method for the
    * <code>templateIds</code> property.
-   * <p/>
    * For example, to add a new item, do as follows:
-   * <p/>
    * <pre>
    * getTemplateIds().add(newItem);
    * </pre>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryFormatCode</code> query parameter.
    *
    * @return value of templateIds
@@ -271,7 +249,6 @@ public final class DocumentQueryParams {
 
   /**
    * Returns the lower value of <code>documentCreationTime</code>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryCreationTimeFrom</code> query
    * parameter.
    *
@@ -283,7 +260,6 @@ public final class DocumentQueryParams {
 
   /**
    * Sets the lower value of <code>documentCreationTime</code>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryCreationTimeFrom</code> query
    * parameter.
    *
@@ -295,7 +271,6 @@ public final class DocumentQueryParams {
 
   /**
    * Returns the upper value of <code>documentCreationTime</code>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryCreationTimeTo</code> query
    * parameter.
    *
@@ -307,7 +282,6 @@ public final class DocumentQueryParams {
 
   /**
    * Sets the upper value of <code>documentCreationTime</code>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryCreationTimeTo</code> query
    * parameter.
    *
@@ -319,7 +293,6 @@ public final class DocumentQueryParams {
 
   /**
    * Returns the lower value of <code>serviceStartTime</code>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryServiceStartTimeFrom</code> query
    * parameter.
    *
@@ -331,7 +304,6 @@ public final class DocumentQueryParams {
 
   /**
    * Sets the lower value of <code>serviceStartTime</code>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryServiceStartTimeFrom</code> query
    * parameter.
    *
@@ -343,7 +315,6 @@ public final class DocumentQueryParams {
 
   /**
    * Returns the upper value of <code>serviceStartTime</code>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryServiceStartTimeTo</code> query
    * parameter.
    *
@@ -355,7 +326,6 @@ public final class DocumentQueryParams {
 
   /**
    * Sets the upper value of <code>serviceStartTime</code>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryServiceStartTimeTo</code> query
    * parameter.
    *
@@ -367,7 +337,6 @@ public final class DocumentQueryParams {
 
   /**
    * Returns the lower value of <code>serviceStopTime</code>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryServiceStopTimeFrom</code> query
    * parameter.
    *
@@ -379,7 +348,6 @@ public final class DocumentQueryParams {
 
   /**
    * Sets the lower value of <code>serviceStopTime</code>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryServiceStopTimeFrom</code> query
    * parameter.
    *
@@ -391,7 +359,6 @@ public final class DocumentQueryParams {
 
   /**
    * Returns the upper value of <code>serviceStopTime</code>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryServiceStopTimeTo</code> query
    * parameter.
    *
@@ -403,7 +370,6 @@ public final class DocumentQueryParams {
 
   /**
    * Sets the upper value of <code>serviceStopTime</code>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryServiceStopTimeTo</code> query
    * parameter.
    *
@@ -427,20 +393,15 @@ public final class DocumentQueryParams {
 
   /**
    * Gets the value of the <code>healthcareFacilityTypes</code> property.
-   * <p/>
    * If multiple values are specified than they will be considered to represent
    * 'OR' semantics.
-   * <p/>
    * This accessor method returns a reference to the live list, not a snapshot.
    * This is why there is not a <code>set</code> method for the
    * <code>healthcareFacilityTypes</code> property.
-   * <p/>
    * For example, to add a new item, do as follows:
-   * <p/>
    * <pre>
    * getHealthcareFacilityTypes().add(newItem);
    * </pre>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryHealthcareFacilityTypeCode</code>
    * query parameter.
    *
@@ -465,20 +426,15 @@ public final class DocumentQueryParams {
 
   /**
    * Gets the value of the <code>clinicalSpecialties</code> property.
-   * <p/>
    * If multiple values are specified than they will be considered to represent
    * 'OR' semantics.
-   * <p/>
    * This accessor method returns a reference to the live list, not a snapshot.
    * This is why there is not a <code>set</code> method for the
    * <code>clinicalSpecialties</code> property.
-   * <p/>
    * For example, to add a new item, do as follows:
-   * <p/>
    * <pre>
    * getClinicalSpecialties().add(newItem);
    * </pre>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryPracticeSettingCode</code> query
    * parameter.
    *
@@ -503,20 +459,15 @@ public final class DocumentQueryParams {
 
   /**
    * Gets the value of the <code>keywords</code> property.
-   * <p/>
    * If multiple values are specified than they will be considered to represent
    * 'OR' semantics.
-   * <p/>
    * This accessor method returns a reference to the live list, not a snapshot.
    * This is why there is not a <code>set</code> method for the
    * <code>keywords</code> property.
-   * <p/>
    * For example, to add a new item, do as follows:
-   * <p/>
    * <pre>
    * getKeywords().add(newItem);
    * </pre>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryEventCodeList</code> query
    * parameter.
    *
@@ -541,20 +492,15 @@ public final class DocumentQueryParams {
 
   /**
    * Gets the value of the <code>statuses</code> property.
-   * <p/>
    * If multiple values are specified than they will be considered to represent
    * 'OR' semantics.
-   * <p/>
    * This accessor method returns a reference to the live list, not a snapshot.
    * This is why there is not a <code>set</code> method for the
    * <code>keywords</code> property.
-   * <p/>
    * For example, to add a new item, do as follows:
-   * <p/>
    * <pre>
    * getStatuses().add(newItem);
    * </pre>
-   * <p/>
    * Equivalent to the <code>$XDSDocumentEntryStatus</code> query parameter.
    *
    * @return value of statuses

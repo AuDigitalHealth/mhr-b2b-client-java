@@ -215,7 +215,6 @@ private CodedValue documentClass;
   /**
    * Sets the datetime that the service being performed, which caused the
    * document to be created, stopped.
-   * <p/>
    * The Service Stop Time may be set to the same value as the Service Start
    * Time in order to indicate the datetime of an event.
    *

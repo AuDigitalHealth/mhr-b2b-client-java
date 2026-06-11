@@ -102,7 +102,7 @@ public final class CodedValue implements Comparable<CodedValue> {
      *
      * @param obj Object to compare.
      * @return true/false.
-     * @see java.lang.Comparable#equals(Object)
+     * @see Object#equals(Object)
      */
     @Override
     public boolean equals(Object obj) {

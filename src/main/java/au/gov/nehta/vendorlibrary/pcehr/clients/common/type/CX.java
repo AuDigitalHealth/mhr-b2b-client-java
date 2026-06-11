@@ -111,13 +111,9 @@ public final class CX {
 
   /**
    * Outputs a {@link au.gov.nehta.vendorlibrary.pcehr.clients.common.type.CX} in the following format:
-   * <p/>
    * identifier^^^assigningAuthority^identifierTypeCode
-   * <p/>
    * Variables that are not set are denoted by an empty string.
-   * <p/>
    * Trailing '^' symbols are trimmed. For example:
-   * <p/>
    * 'identifier^^^^' becomes 'identifier'
    *
    * @return Formatted string.

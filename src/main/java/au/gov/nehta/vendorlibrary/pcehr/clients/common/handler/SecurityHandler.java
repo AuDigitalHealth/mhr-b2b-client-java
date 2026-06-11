@@ -208,7 +208,7 @@ public class SecurityHandler implements SOAPHandler<SOAPMessageContext> {
      * Ignore processing of SOAP header as the primary intention is just to
      * 'Dump' the SOAP message
      *
-     * @return @see javax.xml.ws.handler.soap.SOAPHandler#getHeaders()
+     * @return empty set; no SOAP headers are processed.
      */
     public final Set<QName> getHeaders() {
         return null;
@@ -218,7 +218,7 @@ public class SecurityHandler implements SOAPHandler<SOAPMessageContext> {
      * Does nothing <br>
      * Not utilised for dumping SOAP message.
      *
-     * @param context @see javax.xml.ws.handler.Handler#close(javax.xml.ws.handler.MessageContext)
+     * @param context message context passed on handler close; not used.
      */
     public void close(final MessageContext context) {
         //Do nothing
