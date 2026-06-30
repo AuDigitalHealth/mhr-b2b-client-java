@@ -17,7 +17,7 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 
 import org.apache.commons.lang3.Validate;
 
@@ -102,8 +102,9 @@ public class RegisterPCEHRClient extends Client<RegisterPCEHRPortType> {
     /**
      * Invokes the web service operation for registering a PCEHR for an individual or dependent child.
      *
-     * @param commonHeader populated {@link PCEHRHeader} request object (Mandatory).
-     * @return response (type {@link}
+     * @param commonHeader        populated {@link PCEHRHeader} request object (Mandatory).
+     * @param registrationDetails registerPCEHR request payload.
+     * @return response (type {@link RegisterPCEHRResponse})
      * @throws StandardErrorMsg If an error occurs.
      */
     public final RegisterPCEHRResponse registerPCEHR(final PCEHRHeader commonHeader, final RegisterPCEHR registrationDetails) throws StandardErrorMsg {

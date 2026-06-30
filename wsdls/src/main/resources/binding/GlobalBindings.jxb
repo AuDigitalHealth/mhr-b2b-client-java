@@ -8,8 +8,7 @@
 
     <jaxb:bindings>
         <jaxb:globalBindings generateElementProperty="false">
-
-            <xjc:simple/>
+            <!-- No xjc:simple: match pcehr-compiled-wsdl-java (getClassifications(), Slot, RetrieveDocumentSetRequest, etc.). -->
             <!-- wsimport by default uses the XMLGregorianCalendar class to represent an xsd:date. The XMLGregorianCalendar class
   is very user unfriendly. Use the standard java.util.Calendar class instead. -->
   

@@ -120,13 +120,9 @@ public final class HD {
 
   /**
    * Outputs an {@link au.gov.nehta.vendorlibrary.pcehr.clients.common.type.HD} in the following format:
-   * <p/>
    * namespace^identifier^identifierType
-   * <p/>
    * Variables that are not set are denoted by an empty string.
-   * <p/>
    * Trailing '^' symbols are trimmed. For example:
-   * <p/>
    * 'namespace^^' becomes 'namespace'
    *
    * @return Formatted string.

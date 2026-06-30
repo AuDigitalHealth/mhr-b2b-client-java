@@ -13,8 +13,8 @@
  */
 package au.gov.nehta.vendorlibrary.pcehr.clients.common.handler;
 
-import javax.xml.ws.handler.soap.SOAPHandler;
-import javax.xml.ws.handler.soap.SOAPMessageContext;
+import jakarta.xml.ws.handler.soap.SOAPHandler;
+import jakarta.xml.ws.handler.soap.SOAPMessageContext;
 
 /**
  * A Simple interface to mark MTOM Handler classes 

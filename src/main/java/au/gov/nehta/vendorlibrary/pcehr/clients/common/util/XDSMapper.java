@@ -20,8 +20,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.ws.Holder;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.ws.Holder;
 
 import oasis.names.tc.ebxml_regrep.xsd.lcm._3.SubmitObjectsRequest;
 import oasis.names.tc.ebxml_regrep.xsd.query._3.AdhocQueryRequest;
@@ -146,6 +146,8 @@ public final class XDSMapper {
      * @param commonHeader     the PCEHR common header
      * @param documentMetadata Document metadata
      *                         identifiers.
+     * @param idClCounter      counter for classification identifier generation.
+     * @param idEiCounter      counter for external identifier generation.
      * @return an XDS {@link ExtrinsicObjectType} containing an XDSDocumentEntry.
      */
     public static ExtrinsicObjectType toXDSDocumentEntry(
@@ -377,6 +379,8 @@ public final class XDSMapper {
      * @param submissionMetadata Submission metadata
      * @param documentMetadata   Document metadata
      *                           identifiers.
+     * @param idClCounter        counter for classification identifier generation.
+     * @param idEiCounter        counter for external identifier generation.
      * @return An XDS {@link RegistryPackageType} containing an XDSSubmissionSet.
      */
     public static RegistryPackageType toXDSSubmissionSet(
@@ -476,6 +480,7 @@ public final class XDSMapper {
      * Map a {@link DocumentQueryParams} into an XDS {@link AdhocQueryRequest}.
      *
      * @param commonHeader the PCEHR common header
+     * @param queryId      XDS adhoc query identifier.
      * @param queryParams  additional query parameters.
      * @return The {@link AdhocQueryRequest} containing the {@link DocumentQueryParams}.
      */

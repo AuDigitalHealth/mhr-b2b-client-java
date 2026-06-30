@@ -135,13 +135,9 @@ public final class XCN {
 
   /**
    * Outputs an {@link au.gov.nehta.vendorlibrary.pcehr.clients.common.type.XCN} in the following format:
-   * <p/>
    * identifier^familyName^givenName^middleInitialOrName^^suffix^pefix^^^assigningAuthority
-   * <p/>
    * Variables that are not set are denoted by an empty string.
-   * <p/>
    * Trailing '^' symbols are trimmed. For example:
-   * <p/>
    * 'identifier^familyName^^^^^^^' becomes 'identifier^familyName'
    *
    * @return Formatted string.

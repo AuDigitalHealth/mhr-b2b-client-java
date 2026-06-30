@@ -74,8 +74,7 @@ public final class OIDUtil {
    *             <li>urn:uuid:a7b7c3b7-4639-43a9-8bb1-7cb8c91216c1</li>
    *             <li>a7b7c3b7-4639-43a9-8bb1-7cb8c91216c1</li>
    *             </ul>
-   * @return An OID prepended to the converted UUID. It will be in the format
-   *         <p/>
+   * @return an OID prepended to the converted UUID, in the form
    *         <pre>{OID}.{IntegerUUID}</pre>
    */
   public static String convertUUIDToOIDIntegerPair(final String oid, final String uuid) {

@@ -1,3 +1,40 @@
 /target/
 /.idea/
 *.iml
+
+# Local integration-test secrets (copy from local.properties.example)
+/local.properties
+local.properties
+/settings.xml
+settings.xml
+
+mhr-b2b-client-java.code-workspace
+
+# Stale sync output (use wsdls/lib/provided instead)
+wsdls/local-lib/
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+*.swp
+*.orig
+*~
+
+# Maven
+.flattened-pom.xml
+dependency-reduced-pom.xml
+
+# Test / sample keystores (provide locally for -Pintegration)
+src/test/resources/**/*.jks
+src/sample/resources/**/*.jks
+
+# Ant wsimport build output under wsdls/ (tooling JARs live in wsdls/lib/provided — tracked in Git)
+wsdls/tmp/
+wsdls/target/
+wsdls/dist/
+wsdls/build/
+wsdls/extern/
+
+# Agent-local reference (not for integrators)
+.cursor/local-reference.md
+.cursor/WSDL-CLIENT-PURPOSES.md

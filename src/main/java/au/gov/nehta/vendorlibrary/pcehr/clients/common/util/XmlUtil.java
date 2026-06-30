@@ -17,7 +17,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.xml.soap.SOAPMessage;
+import jakarta.xml.soap.SOAPMessage;
 
 /**
  * A helper class to obtain easy-to-read XML from SOAPMessage objects.

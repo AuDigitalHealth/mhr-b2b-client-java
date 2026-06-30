@@ -20,15 +20,16 @@ import org.apache.commons.io.IOUtils;
 import org.w3c.dom.NodeList;
 
 import javax.xml.namespace.QName;
-import javax.xml.soap.AttachmentPart;
-import javax.xml.soap.SOAPBody;
-import javax.xml.soap.SOAPBodyElement;
-import javax.xml.soap.SOAPEnvelope;
-import javax.xml.soap.SOAPException;
-import javax.xml.ws.handler.MessageContext;
-import javax.xml.ws.handler.soap.SOAPHandler;
-import javax.xml.ws.handler.soap.SOAPMessageContext;
+import jakarta.xml.soap.AttachmentPart;
+import jakarta.xml.soap.SOAPBody;
+import jakarta.xml.soap.SOAPBodyElement;
+import jakarta.xml.soap.SOAPEnvelope;
+import jakarta.xml.soap.SOAPException;
+import jakarta.xml.ws.handler.MessageContext;
+import jakarta.xml.ws.handler.soap.SOAPHandler;
+import jakarta.xml.ws.handler.soap.SOAPMessageContext;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.util.UUID;
 
@@ -41,6 +42,7 @@ import java.util.UUID;
  * 
  * @deprecated prefer {@link ConfigurableMTOMHandler} over this class with an explicitly set  MTOM element.
  */
+@Deprecated
 public class MTOMHandler implements SOAPHandler<SOAPMessageContext> {
 
   /**
@@ -79,7 +81,7 @@ public class MTOMHandler implements SOAPHandler<SOAPMessageContext> {
    *
    * @param context the incoming / outgoing soap message context
    * @return true Always returns true.
-   * @see javax.xml.ws.handler.Handler#handleMessage(javax.xml.ws.handler.MessageContext)
+   * @see jakarta.xml.ws.handler.Handler#handleMessage(jakarta.xml.ws.handler.MessageContext)
    */
   @Override
   public final boolean handleMessage(SOAPMessageContext context) {
@@ -99,7 +101,7 @@ public class MTOMHandler implements SOAPHandler<SOAPMessageContext> {
           String documentContent = HandlerUtils.extractElementContent(body, XMLNamespaces.IHE.getNamespace(), DOCUMENT_ELEM);
 
           // Convert to an Input Stream, as required to add an attachment.
-          InputStream is = IOUtils.toInputStream(documentContent);
+          InputStream is = IOUtils.toInputStream(documentContent, StandardCharsets.UTF_8);
 
           // Create a new attachment for the document content.
           createDocumentAttachmentPart(context, is, referenceId);
@@ -170,7 +172,7 @@ public class MTOMHandler implements SOAPHandler<SOAPMessageContext> {
    *
    * @param context the incoming / outgoing soap message context
    * @return true if the handle signature check is successful.
-   * @see javax.xml.ws.handler.Handler#handleFault(javax.xml.ws.handler.MessageContext)
+   * @see jakarta.xml.ws.handler.Handler#handleFault(jakarta.xml.ws.handler.MessageContext)
    */
   @Override
   public final boolean handleFault(SOAPMessageContext context) {
@@ -183,7 +185,7 @@ public class MTOMHandler implements SOAPHandler<SOAPMessageContext> {
    * Does nothing <br>
    * Not utilised for dumping SOAP message.
    *
-   * @param context @see javax.xml.ws.handler.Handler#close(javax.xml.ws.handler.MessageContext)
+   * @param context message context passed on handler close; not used.
    */
   @Override
   public void close(MessageContext context) {
@@ -195,7 +197,7 @@ public class MTOMHandler implements SOAPHandler<SOAPMessageContext> {
    * Ignore processing of SOAP header as the primary intention is just to
    * 'Dump' the SOAP message
    *
-   * @return @see javax.xml.ws.handler.soap.SOAPHandler#getHeaders()
+   * @return empty set; no SOAP headers are processed.
    */
   public final Set<QName> getHeaders() {
     return null;

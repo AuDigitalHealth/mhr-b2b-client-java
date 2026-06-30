@@ -20,7 +20,6 @@ import javax.xml.namespace.NamespaceContext;
 import java.util.Iterator;
 
 /**
- * {@link au.gov.nehta.vendorlibrary.pcehr.clients.common.util.MetadataNamespaceContext}
  * {@link javax.xml.namespace.NamespaceContext} implementation for packaging namespaces.
  */
 public final class MetadataNamespaceContext implements NamespaceContext {
@@ -54,7 +53,7 @@ public final class MetadataNamespaceContext implements NamespaceContext {
    * @param namespaceUri Namespace URI.
    * @return Iterator.
    */
-  public Iterator getPrefixes(final String namespaceUri) {
+  public Iterator<String> getPrefixes(final String namespaceUri) {
     throw new UnsupportedOperationException();
   }
 }

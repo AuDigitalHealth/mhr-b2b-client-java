@@ -31,8 +31,8 @@ public class MetadataUtilsTimeTest {
 
     @Test
     public void testPrescriptionTime() throws XPathExpressionException, ParserConfigurationException, IOException, SAXException {
-        String doc = IOUtils.read(new File("src/test/resources/TestFiles/metadataTest/PCEHRPrescriptionRecord_3A_Min.xml"));
-        DocumentMetadata documentMetadata = MetadataUtils.toDocumentMetadata(exampleHeader, doc.getBytes());
+        byte[] doc = IOUtils.readBytes(new File("src/test/resources/TestFiles/metadataTest/PCEHRPrescriptionRecord_3A_Min.xml"));
+        DocumentMetadata documentMetadata = MetadataUtils.toDocumentMetadata(exampleHeader, doc);
         // actual time 20130226155637+1000
         Assert.assertEquals("20130226055637", documentMetadata.getServiceStartTime());
         Assert.assertEquals("20130226055637", documentMetadata.getServiceStopTime());
@@ -40,8 +40,8 @@ public class MetadataUtilsTimeTest {
 
     @Test
     public void testDispenseTime() throws XPathExpressionException, ParserConfigurationException, IOException, SAXException {
-        String doc = IOUtils.read(new File("src/test/resources/TestFiles/metadataTest/PCEHRDispenseRecord_3A_Min.xml"));
-        DocumentMetadata documentMetadata = MetadataUtils.toDocumentMetadata(exampleHeader, doc.getBytes());
+        byte[] doc = IOUtils.readBytes(new File("src/test/resources/TestFiles/metadataTest/PCEHRDispenseRecord_3A_Min.xml"));
+        DocumentMetadata documentMetadata = MetadataUtils.toDocumentMetadata(exampleHeader, doc);
 
         /// actual time 20130226115638+1000
         Assert.assertEquals("20130226015638", documentMetadata.getServiceStartTime());

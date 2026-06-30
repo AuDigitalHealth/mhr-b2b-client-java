@@ -1,5 +1,13 @@
 # Change Log/Revision History
 
+= 1.7.0-SNAPSHOT =
+==================
+- Java 11 / Jakarta full-WSDL line: EE4J jaxws-rt 4.0.4, compile against pcehr-compiled-wsdl 1.7.0-SNAPSHOT, 26 client facades.
+- Default build uses pcehr-compiled-wsdl (main dependency); optional -Pwsimport profile validates in-repo wsimport (12 B2B services); offline and integration tests aligned to JAXB simple type names.
+- Six view facades documented in ADHA-THIRD-PARTY-SCOPE.md; ViewClientsSmokeTest (offline) and integration view tests including GetIndividualDetailsViewClientTest.
+- Enforcer bans legacy Metro and javax JAX-WS/JAXB/SOAP API coordinates (test-scoped jaxb-api excepted for legacy NEHTA test fixtures).
+- Documentation, dual-path CI (default + -Pwsimport), settings.xml.example, and strict Javadoc (doclint=all, failOnWarnings=true).
+
 = 1.1.7 =
 =========
 - Converted to Maven

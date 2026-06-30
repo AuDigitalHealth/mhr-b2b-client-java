@@ -10,6 +10,8 @@ public final class Logging {
     public static final boolean GET_DOCUMENT = true;
     public static final boolean GET_CHANGE_HISTORY_VIEW = true;
     public static final boolean GET_AUDIT_VIEW = true;
+    public static final boolean GET_INDIVIDUAL_DETAILS_VIEW = true;
+    public static final boolean GET_VIEW = true;
     public static final boolean GET_CONSOLIDATED_VIEW = true;
     public static final boolean SEARCH_TEMPLATE = true;
     public static final boolean GET_TEMPLATE = false;

@@ -18,7 +18,7 @@ import java.security.cert.X509Certificate;
 import java.util.Date;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 
 import org.apache.commons.lang3.Validate;
 

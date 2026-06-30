@@ -51,7 +51,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -119,12 +119,7 @@ public class LoadTests {
 
     SubmissionSet subset = createPackage(rootDocument, AllTests.getCertificate(), AllTests.getPrivateKey(), "8003619166668209", personNameType);
 
-    // Build ZIP from package.
-//    byte[] packageContent = PackagingUtility.createZip(subset);
-    byte[] packageContent = FileUtils.loadFile(new File("C:\\projects\\java\\PCEHR\\Library\\PCEHRClient\\src\\test\\resources\\TestFiles\\Richard\\large.zip"));
-
-    // Write out to file for debug purposes.
-//    PackagingUtility.writeZip(subset, "./src/test/resources/TestFiles/Generated/out_" + new Date().getTime() + ".zip");
+    byte[] packageContent = PackagingUtility.createZip(subset);
 
     RegistryResponseType uploadDocumentResponse = uploadDocumentClient.uploadDocument(
       AllTests.getDefaultRequest(),

@@ -47,7 +47,7 @@ import com.sun.xml.ws.api.message.Message;
 import com.sun.xml.ws.api.streaming.XMLStreamWriterFactory;
 
 import javax.xml.namespace.QName;
-import javax.xml.ws.handler.MessageContext;
+import jakarta.xml.ws.handler.MessageContext;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.XMLStreamException;
 
@@ -121,8 +121,8 @@ public class SystemOutHandler implements MessageHandler<MessageHandlerContext> {
      */
     private XMLStreamWriter createIndenter(XMLStreamWriter writer) {
         try {
-            Class clazz = getClass().getClassLoader().loadClass("javanet.staxutils.IndentingXMLStreamWriter");
-            Constructor c = clazz.getConstructor(XMLStreamWriter.class);
+            Class<?> clazz = getClass().getClassLoader().loadClass("javanet.staxutils.IndentingXMLStreamWriter");
+            Constructor<?> c = clazz.getConstructor(XMLStreamWriter.class);
             writer = (XMLStreamWriter) c.newInstance(writer);
         } catch (Exception e) {
             // if stax-utils.jar is not in the classpath, this will fail

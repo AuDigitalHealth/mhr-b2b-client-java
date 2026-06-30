@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, main, java-11-jakarta-full-wsdl ]
+  pull_request:
+    branches: [ master, main, java-11-jakarta-full-wsdl ]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Checkout pcehr-compiled-wsdl-java
+        uses: actions/checkout@v5
+        with:
+          repository: ${{ github.repository_owner }}/pcehr-compiled-wsdl-java
+          ref: java-11-jakarta-full-wsdl
+          path: pcehr-compiled-wsdl-java
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "11"
+          cache: maven
+      - name: Install pcehr-compiled-wsdl (1.7.0-SNAPSHOT)
+        working-directory: pcehr-compiled-wsdl-java
+        run: mvn -B "-Dgpg.skip=true" clean install -DskipTests
+      - name: Maven verify (default)
+        run: mvn -B "-Dgpg.skip=true" clean verify
+
+  wsimport:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Checkout pcehr-compiled-wsdl-java
+        uses: actions/checkout@v5
+        with:
+          repository: ${{ github.repository_owner }}/pcehr-compiled-wsdl-java
+          ref: java-11-jakarta-full-wsdl
+          path: pcehr-compiled-wsdl-java
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "11"
+          cache: maven
+      - name: Install pcehr-compiled-wsdl (1.7.0-SNAPSHOT)
+        working-directory: pcehr-compiled-wsdl-java
+        run: mvn -B "-Dgpg.skip=true" clean install -DskipTests
+      - name: Maven verify (-Pwsimport)
+        run: mvn -B "-Dgpg.skip=true" -Pwsimport clean verify

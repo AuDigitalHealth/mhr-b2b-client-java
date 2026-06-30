@@ -17,7 +17,7 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
 import javax.net.ssl.SSLSocketFactory;
-import javax.xml.ws.Holder;
+import jakarta.xml.ws.Holder;
 
 import org.apache.commons.lang3.Validate;
 
@@ -71,7 +71,7 @@ public class GainPCEHRAccessClient extends Client<PCEHRProfilePortType> {
      *
      * @param sslSocketFactory    the {@link SSLSocketFactory} to be used when connecting to the web service provider (mandatory).
      * @param x509Certificate     the certificate key to be used for signing (mandatory)
-     * @param certificateVerifier CertificateVerifier implementation (optional).
+     * @param certificateVerifier {@link CertificateValidator} implementation (optional).
      * @param privateKey          the private key to be used for signing (mandatory)
      * @param endpointAddress     the endpoint address of the web service (mandatory).
      * @param setLoggingEnabled   set to <code>true</code> to enable logging (mandatory).
@@ -99,7 +99,7 @@ public class GainPCEHRAccessClient extends Client<PCEHRProfilePortType> {
     /**
      * Invokes the web service operation which confirms whether or not an individual has a shared, accessible electronic health record.
      *
-     * @param pcehrRecord  populated {@link GainPCEHRAccess.PCEHRRecord} object encapsulating individual and authorisation detail (Mandatory).
+     * @param pcehrRecord  populated {@code GainPCEHRAccess.PCEHRRecord} object encapsulating individual and authorisation detail (Mandatory).
      * @param commonHeader populated {@link PCEHRHeader} request object (Mandatory).
      * @return response (type {@link GainPCEHRAccessResponse}) containing check results.
      * @throws StandardErrorMsg thrown in the event of an operation invocation error.
@@ -110,11 +110,11 @@ public class GainPCEHRAccessClient extends Client<PCEHRProfilePortType> {
     ) throws StandardErrorMsg {
 
         Validate.notNull(commonHeader, "'commonHeader' must be specified.");
-        Validate.notNull(pcehrRecord);
+        Validate.notNull(pcehrRecord, "'pcehrRecord' must be specified.");
         CommonHeaderValidator.validate(commonHeader, true); // IHINumber is required.
 
         if (pcehrRecord.getAuthorisationDetails() != null) {
-            if (pcehrRecord.getAuthorisationDetails().getAccessType() == GainPCEHRAccess.PCEHRRecord.AuthorisationDetails.AccessType.ACCESS_CODE) {
+            if ("AccessCode".equals(pcehrRecord.getAuthorisationDetails().getAccessType())) {
                 Validate.notEmpty(pcehrRecord.getAuthorisationDetails().getAccessCode(), "'pcehrRecord.authorisationDetails.accessCode' must be specified.");
             }
         }
