@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Optional Maven user settings fragment. Copy sections into your Maven user settings file
-  or pass with: mvn -s path/to/settings.xml
-  Do not commit a settings.xml that contains server passwords or tokens.
+  Optional Maven user settings for maintainers (GPG signing, Sonatype Central Portal).
+
+  Copy relevant sections into your Maven user settings file (~/.m2/settings.xml), or copy
+  to settings.xml at the repository root and set MVN_SETTINGS for build scripts.
+  Do not commit a populated settings.xml.
+
+  Server id "central" must match distributionManagement in pom.xml.
+  Generate a user token at https://central.sonatype.com/
+
+  See MAINTAINERS.md (Release) and SECURITY.md.
+
+  Copyright 2021-2026 ADHA. SPDX-License-Identifier: Apache-2.0.
 -->
 <settings xmlns="http://maven.apache.org/SETTINGS/1.2.0"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0 https://maven.apache.org/xsd/settings-1.2.0.xsd">
+    <!--
     <servers>
         <server>
-            <id>nexus-snapshots</id>
-            <!-- username / password from Sonatype — set locally, not in Git -->
-        </server>
-        <server>
-            <id>nexus-releases</id>
+            <id>central</id>
+            <username>YOUR_SONATYPE_TOKEN_USERNAME</username>
+            <password>YOUR_SONATYPE_TOKEN_PASSWORD</password>
         </server>
     </servers>
+    -->
 </settings>
