@@ -40,7 +40,7 @@ builds (not HI-style licensed material) but excluded from the published JAR (mav
 | wsdls/src/main/resources/binding/ | GlobalBindings.jxb, PCEHR_CommonTypes.xsd.jxb, per-WSDL *.jxb |
 | wsdls/src/main/java/ | DateAdapter; **pcehr_override/org/w3/** hand-written xmldsig types (used by **pcehr-compiled-wsdl-java**) |
 | local.properties.example | Template reserved for future integration-test configuration |
-| settings.xml.example | Optional Maven user settings fragment (copy to gitignored **settings.xml**) |
+| settings.xml.example | Optional Maven settings template: commented Central Portal deploy credentials (copy to gitignored **settings.xml**) |
 | build.ps1, build.sh, build.bat | Thin wrappers around **mvn clean verify**; **wsimport** / **shaded** args |
 | .github/workflows/ci.yml | **verify** (default) and **wsimport** jobs; installs **pcehr-compiled-wsdl-java** first |
 
@@ -215,7 +215,9 @@ local.properties overrides test defaults.
 
 ### 5.3 settings.xml
 
-No settings.xml.example in this repo. build.ps1 honours MVN_SETTINGS if set.
+Copy **`settings.xml.example`** to **`settings.xml`** at the repository root (or merge the commented **`<servers>`** block into your Maven user settings file). Server id **`central`** must match **`distributionManagement`** in **`pom.xml`**. Generate a Sonatype user token at https://central.sonatype.com/
+
+**`build.ps1`** / **`build.sh`** honour **`MVN_SETTINGS`** when set. Do not commit populated **`settings.xml`** with tokens.
 
 ### 5.4 Integration test material
 
@@ -299,6 +301,41 @@ Before tagging or publishing to a public Git host:
 6. Published JAR excludes **`*.wsdl`** (maven-jar-plugin); WSDL/XSD remain in Git for reference and **pcehr-compiled-wsdl-java** regeneration.
 
 Integrators consume **`au.gov.nehta:mhr-b2b-client`** from Maven Central; they do **not** need **`-Pwsimport`**.
+
+## Release (Maven Central)
+
+Publishing uses **`central-publishing-maven-plugin`** (Sonatype Central Portal). Copy **`settings.xml.example`** → **`settings.xml`**, server id **`central`**.
+
+**Parallel release lines (maintainers only):** each Git branch publishes a **different Maven version** — integrators choose by coordinate, not branch name.
+
+| Branch | Java | MHR client / WSDL version | Facades |
+| ------ | ---- | ------------------------- | ------- |
+| **`java-8-javax-full-wsdl`** | 8 / javax | **1.6.3** | 15 |
+| **`java-11-jakarta-full-wsdl`** | 11 / Jakarta | **1.7.0** | 26 |
+
+Release **`pcehr-compiled-wsdl`** and **`mhr-b2b-client`** at the **same GA version** on the matching branch pair before integrators upgrade.
+
+### SNAPSHOT or manual GA
+
+1. Update **CHANGELOG.md** (and **`pom.xml`** / SCM **`<tag>`** for manual GA).
+2. **`mvn -B "-Prelease" clean verify`**
+3. **`mvn -B "-Prelease" deploy`**
+
+Git/SCM settings for **`maven-release-plugin`** live in **`pom.xml`** properties (**`scm.repo.url`**, **`release.*`**). Tags default to **`{artifactId}-{version}`** (e.g. **`mhr-b2b-client-1.7.0`**).
+
+### Automated GA (`maven-release-plugin`)
+
+Run on the **target branch** with a **clean** working tree. The plugin commits version bumps, creates the release tag, deploys from the tag checkout, bumps to the next **`-SNAPSHOT`**, and **pushes branch + tag** (**`pushChanges`** / **`remoteTagging`** in **`pom.xml`**). Git remote credentials (SSH or HTTPS) must work non-interactively.
+
+```text
+mvn -B "-Prelease" release:prepare release:perform -DreleaseVersion=1.7.0 -DdevelopmentVersion=1.7.1-SNAPSHOT -Dtag=mhr-b2b-client-1.7.0
+```
+
+Replace versions and **`-Dtag`** for the branch you are on (**`pcehr-compiled-wsdl-1.6.3`**, **`mhr-b2b-client-1.6.3`**, etc.). Omit **`-D…`** only if you accept interactive prompts.
+
+**After success:** confirm the artifact on Central; repeat on the paired types/client repo. No extra Git steps unless push failed (then **`git push origin <branch>`** and **`git push origin <tag>`**).
+
+**`-Dgpg.skip=false`** is equivalent to **`-Prelease`** for signing.
 
 ---
 
