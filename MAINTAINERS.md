@@ -40,7 +40,7 @@ builds (not HI-style licensed material) but excluded from the published JAR (mav
 | wsdls/src/main/resources/binding/ | GlobalBindings.jxb, PCEHR_CommonTypes.xsd.jxb, per-WSDL *.jxb |
 | wsdls/src/main/java/ | DateAdapter; **pcehr_override/org/w3/** hand-written xmldsig types (used by **pcehr-compiled-wsdl-java**) |
 | local.properties.example | Template reserved for future integration-test configuration |
-| settings.xml.example | Optional Maven user settings fragment (copy to gitignored **settings.xml**) |
+| settings.xml.example | Optional Maven settings template: commented Central Portal deploy credentials (copy to gitignored **settings.xml**) |
 | build.ps1, build.sh, build.bat | Thin wrappers around **mvn clean verify**; **wsimport** / **shaded** args |
 | .github/workflows/ci.yml | **verify** (default) and **wsimport** jobs; installs **pcehr-compiled-wsdl-java** first |
 
@@ -215,7 +215,9 @@ local.properties overrides test defaults.
 
 ### 5.3 settings.xml
 
-No settings.xml.example in this repo. build.ps1 honours MVN_SETTINGS if set.
+Copy **`settings.xml.example`** to **`settings.xml`** at the repository root (or merge the commented **`<servers>`** block into your Maven user settings file). Server id **`central`** must match **`distributionManagement`** in **`pom.xml`**. Generate a Sonatype user token at https://central.sonatype.com/
+
+**`build.ps1`** / **`build.sh`** honour **`MVN_SETTINGS`** when set. Do not commit populated **`settings.xml`** with tokens.
 
 ### 5.4 Integration test material
 
@@ -299,6 +301,17 @@ Before tagging or publishing to a public Git host:
 6. Published JAR excludes **`*.wsdl`** (maven-jar-plugin); WSDL/XSD remain in Git for reference and **pcehr-compiled-wsdl-java** regeneration.
 
 Integrators consume **`au.gov.nehta:mhr-b2b-client`** from Maven Central; they do **not** need **`-Pwsimport`**.
+
+## Release (Maven Central)
+
+Publishing uses **`central-publishing-maven-plugin`** (Sonatype Central Portal). Copy **`settings.xml.example`** → **`settings.xml`**, server id **`central`**.
+
+1. Update **CHANGELOG.md** and **`pom.xml`** **`<version>`** / SCM **`<tag>`**.
+2. **`mvn -B "-Prelease" clean verify`** (GPG signing via **`release`** profile).
+3. **`mvn -B "-Prelease" deploy`** — SNAPSHOT while **`<version>`** ends in **`-SNAPSHOT`**; GA when **`<version>`** has no **`-SNAPSHOT`**.
+4. Optional automated GA: **`mvn -B "-Prelease" release:prepare release:perform`**.
+
+**`-Dgpg.skip=false`** is equivalent to **`-Prelease`** for signing.
 
 ---
 
