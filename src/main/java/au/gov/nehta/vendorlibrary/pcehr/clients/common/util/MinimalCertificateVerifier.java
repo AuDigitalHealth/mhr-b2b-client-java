@@ -13,12 +13,10 @@
  */
 package au.gov.nehta.vendorlibrary.pcehr.clients.common.util;
 
-import au.gov.nehta.xsp.CertificateVerificationException;
-import au.gov.nehta.xsp.CertificateVerifier;
+import au.gov.nehta.xsp.CertificateValidationException;
+import au.gov.nehta.xsp.CertificateValidator;
 import au.gov.nehta.xsp.XspException;
 
-import java.security.cert.CertificateExpiredException;
-import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 
 
@@ -26,31 +24,10 @@ import java.security.cert.X509Certificate;
  * Certificate verifier implementation that performs some basic verification of the certificate.
  * The sample is provided for illustrative purposes only and should be implemented in production.
  */
-public class MinimalCertificateVerifier extends CertificateVerifier  {
+public class MinimalCertificateVerifier implements CertificateValidator {
 
-	@Override
-	public void verify(X509Certificate certificate) throws CertificateVerificationException, XspException {
-		//null impl.
-	}/* implements CertificateVerifier {
-
-  /**
-   * Example certificate verification.
-   *
-   * @param certificate Certificate to verify.
-   * @throws CertificateVerificationException
-   *                      Thrown in the event of a verification failure.
-   * @throws XspException Thrown in the event of a verification failure.
-   *//*
-  @Override
-  public final void verify(X509Certificate certificate) throws CertificateVerificationException, XspException {
-    try {
-      // Verification of certificate chain, status on CRLs etc. can be considered. For this example, the certificate is verified in terms of
-      // expiration and that the certificate is currently valid.
-      certificate.checkValidity();
-    } catch (CertificateExpiredException e) {
-      throw new CertificateVerificationException("Certificate verification failed", e);
-    } catch (CertificateNotYetValidException e) {
-      throw new CertificateVerificationException("Certificate verification failed", e);
+    @Override
+    public void validate(X509Certificate certificate) throws CertificateValidationException, XspException {
+        // null impl.
     }
-  }*/
 }

@@ -113,14 +113,10 @@ public final class XON {
 
   /**
    * Outputs an {@link XON} in the following format:
-   * <p/>
    * organisationName^organisationNameTypeCode^idNumber^checkDigit^checkDigitScheme^assigningAuthority^identifierTypeCode^assigningFacilityId
    * ^nameRepresentationCode^organisationIdentifier
-   * <p/>
    * Variables that are not set are denoted by an empty string.
-   * <p/>
    * Trailing separators are trimmed. For example:
-   * <p/>
    * 'organisationName^^^checkDigit^^^^^^' becomes 'organisationName^^^checkDigit'
    *
    * @return Formatted string.

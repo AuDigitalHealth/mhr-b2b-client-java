@@ -161,6 +161,8 @@ public abstract class Client<PortType> {
      * Constructor - no certificate verification performed.
      *
      * @param sslSocketFactory  the {@link SSLSocketFactory} to be used when connecting to the web service provider (mandatory).
+     * @param serviceClass      JAX-WS service class for this client.
+     * @param portClass         JAX-WS port interface for this client.
      * @param x509Certificate   the certificate key to be used for signing (mandatory)
      * @param privateKey        the private key to be used for signing (mandatory)
      * @param endpointAddress   the endpoint address of the web service (mandatory).
@@ -198,10 +200,13 @@ public abstract class Client<PortType> {
      * Constructor - no certificate verification performed.
      *
      * @param sslSocketFactory  the {@link SSLSocketFactory} to be used when connecting to the web service provider (mandatory).
+     * @param serviceClass      JAX-WS service class for this client.
+     * @param portClass         JAX-WS port interface for this client.
      * @param x509Certificate   the certificate key to be used for signing (mandatory)
      * @param privateKey        the private key to be used for signing (mandatory)
      * @param endpointAddress   the endpoint address of the web service (mandatory).
      * @param setLoggingEnabled set to <code>true</code> to enable logging (mandatory).
+     * @param customMtomHandler optional MTOM handler; when null the default handler is used.
      */
     public Client(
             final Class<? extends Service> serviceClass,

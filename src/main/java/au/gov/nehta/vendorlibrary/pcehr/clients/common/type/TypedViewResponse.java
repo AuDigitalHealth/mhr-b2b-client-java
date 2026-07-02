@@ -11,11 +11,9 @@ import au.gov.nehta.vendorlibrary.pcehr.clients.common.exception.ViewUnmarshallE
 import au.net.electronichealth.ns.pcehr.xsd.interfaces.getview._1.GetViewResponse;
 
 /**
- * 
- * This immutable  class holds an unmarshalled response object and the original response view object
- * 
- * @param <T>  The type held in the "data" tag of the view
- * 
+ * Immutable holder for an unmarshalled view payload and the original {@link GetViewResponse}.
+ *
+ * @param <T> type held in the {@code data} element of the view
  */
 public class TypedViewResponse<T> {
 	private final T responseObject;
@@ -29,9 +27,10 @@ public class TypedViewResponse<T> {
 	/**
 	 * Create a typed view response
 	 * 
-	 * @param clazz the Type to unmarshall held in the response object
-	 * @param getViewResponse the full view response; 
-	 * @return a typed holder object,TypedViewResponse<T>
+	 * @param clazz           type to unmarshal from the view {@code data} element
+	 * @param getViewResponse full getView response
+	 * @param <T>             unmarshalled view payload type
+	 * @return typed view holder
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> TypedViewResponse<T> unmarshall(Class<T> clazz, GetViewResponse getViewResponse ){
@@ -53,21 +52,27 @@ public class TypedViewResponse<T> {
 	}
 
 	/**
-	 * Get the typed response object held the the "data" tag
+	 * Get the typed response object held in the {@code data} element.
+	 *
+	 * @return unmarshalled view payload
 	 */
 	public T getResponseObject() {
 		return responseObject;
 	}
 
 	/**
-	 * Get the original GetViewResponse object
+	 * Get the original {@link GetViewResponse}.
+	 *
+	 * @return full getView response
 	 */
 	public GetViewResponse getGetViewResponse() {
 		return getViewResponse;
 	}
 
 	/**
-	 * A convenience accessor to getViewResponse.getResponseStatus().getCode()
+	 * Convenience accessor for {@code getViewResponse.getResponseStatus().getCode()}.
+	 *
+	 * @return response status code
 	 */
 	public String getCode() {
 		return getViewResponse.getResponseStatus().getCode();

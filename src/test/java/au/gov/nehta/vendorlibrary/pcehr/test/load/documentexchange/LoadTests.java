@@ -119,9 +119,7 @@ public class LoadTests {
 
     SubmissionSet subset = createPackage(rootDocument, AllTests.getCertificate(), AllTests.getPrivateKey(), "8003619166668209", personNameType);
 
-    // Build ZIP from package.
-//    byte[] packageContent = PackagingUtility.createZip(subset);
-    byte[] packageContent = FileUtils.loadFile(new File("C:\\projects\\java\\PCEHR\\Library\\PCEHRClient\\src\\test\\resources\\TestFiles\\Richard\\large.zip"));
+    byte[] packageContent = PackagingUtility.createZip(subset);
 
     // Write out to file for debug purposes.
 //    PackagingUtility.writeZip(subset, "./src/test/resources/TestFiles/Generated/out_" + new Date().getTime() + ".zip");

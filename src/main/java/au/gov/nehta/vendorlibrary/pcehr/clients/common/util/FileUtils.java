@@ -80,7 +80,8 @@ public final class FileUtils {
    *
    * @param file  {@link File} object to load.
    * @param clazz class to attempt to marshal to.
-   * @return The Java object unmarshalled from the contents of the XML file.
+   * @param <T>   type unmarshalled from the XML file.
+   * @return the Java object unmarshalled from the contents of the XML file.
    * @throws javax.xml.bind.JAXBException thrown in the event the file contents cannot be unmarshalled.
    */
   @SuppressWarnings("unchecked")

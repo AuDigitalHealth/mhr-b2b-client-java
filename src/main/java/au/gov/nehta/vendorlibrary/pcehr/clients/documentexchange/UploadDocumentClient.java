@@ -190,6 +190,7 @@ public final class UploadDocumentClient extends Client<DocumentRepositoryPortTyp
      * @param commonHeader            PCEHR common header
      * @param packageContent          CDA package byte content
      * @param replacementId           repository $XDSDocumentEntry.EntryUUID for document to be replaced. Can be left null if upload is a new document.
+     * @param repositoryUniqueId      target document repository unique ID; when set, size and hash metadata are included.
      * @param healthcareFacilityType  Healthcare facility type
      * @param practiceSettingTypeCode Practice setting type
      * @param formatCode              document format code

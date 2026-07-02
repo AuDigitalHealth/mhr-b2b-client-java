@@ -1,0 +1,23 @@
+# Copyright 2012 NEHTA; Copyright 2021-2026 ADHA. Apache-2.0 - see LICENSE.txt.
+#
+# Copy to "local.properties" in the project root (next to pom.xml).
+# "local.properties" is gitignored - never commit it.
+#
+# Keys below configure INTEGRATION TESTS (-Pintegration): keystores, passwords,
+# SOAP endpoint URLs, and product/vendor identifiers for PCEHR B2B services.
+# Use forward slashes in filesystem paths.
+
+# --- Keystore (TLS client cert + SOAP signing) ---
+# MHR_KEYSTORE_TYPE=JKS
+# MHR_KEYSTORE_PATH=./config/keystore.jks
+# MHR_KEYSTORE_PASSWORD=changeit
+# MHR_KEY_PASSWORD=changeit
+# MHR_KEY_ALIAS=your-alias
+
+# --- Truststore ---
+# MHR_TRUSTSTORE_TYPE=JKS
+# MHR_TRUSTSTORE_PATH=./config/truststore.jks
+# MHR_TRUSTSTORE_PASSWORD=changeit
+
+# --- Endpoint (example placeholder) ---
+# MHR_ENDPOINT_BASE=https://services.example.digitalhealth.gov.au/

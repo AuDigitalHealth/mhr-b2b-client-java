@@ -29,6 +29,7 @@ import javax.xml.ws.handler.MessageContext;
 import javax.xml.ws.handler.soap.SOAPHandler;
 import javax.xml.ws.handler.soap.SOAPMessageContext;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 import java.util.UUID;
 
@@ -99,7 +100,7 @@ public class MTOMHandler implements SOAPHandler<SOAPMessageContext> {
           String documentContent = HandlerUtils.extractElementContent(body, XMLNamespaces.IHE.getNamespace(), DOCUMENT_ELEM);
 
           // Convert to an Input Stream, as required to add an attachment.
-          InputStream is = IOUtils.toInputStream(documentContent);
+          InputStream is = IOUtils.toInputStream(documentContent, StandardCharsets.UTF_8);
 
           // Create a new attachment for the document content.
           createDocumentAttachmentPart(context, is, referenceId);
@@ -183,7 +184,7 @@ public class MTOMHandler implements SOAPHandler<SOAPMessageContext> {
    * Does nothing <br>
    * Not utilised for dumping SOAP message.
    *
-   * @param context @see javax.xml.ws.handler.Handler#close(javax.xml.ws.handler.MessageContext)
+   * @param context message context passed on handler close; not used.
    */
   @Override
   public void close(MessageContext context) {
@@ -195,7 +196,7 @@ public class MTOMHandler implements SOAPHandler<SOAPMessageContext> {
    * Ignore processing of SOAP header as the primary intention is just to
    * 'Dump' the SOAP message
    *
-   * @return @see javax.xml.ws.handler.soap.SOAPHandler#getHeaders()
+   * @return empty set; no SOAP headers are processed.
    */
   public final Set<QName> getHeaders() {
     return null;

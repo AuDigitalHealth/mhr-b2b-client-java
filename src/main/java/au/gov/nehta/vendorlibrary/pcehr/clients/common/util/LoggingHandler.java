@@ -166,7 +166,7 @@ public final class LoggingHandler implements MessageHandler<MessageHandlerContex
      * Ignore processing of SOAP header as the primary intention is just to
      * 'Dump' the SOAP message.
      *
-     * @return Set<QName> the headers for this handler.
+     * @return SOAP header names processed by this handler
      * @see javax.xml.ws.handler.soap.SOAPHandler#getHeaders()
      */
     public Set<QName> getHeaders() {

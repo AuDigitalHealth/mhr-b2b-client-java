@@ -99,7 +99,7 @@ public class GainPCEHRAccessClient extends Client<PCEHRProfilePortType> {
     /**
      * Invokes the web service operation which confirms whether or not an individual has a shared, accessible electronic health record.
      *
-     * @param pcehrRecord  populated {@link GainPCEHRAccess.PCEHRRecord} object encapsulating individual and authorisation detail (Mandatory).
+     * @param pcehrRecord  populated {@code GainPCEHRAccess.PCEHRRecord} object encapsulating individual and authorisation detail (Mandatory).
      * @param commonHeader populated {@link PCEHRHeader} request object (Mandatory).
      * @return response (type {@link GainPCEHRAccessResponse}) containing check results.
      * @throws StandardErrorMsg thrown in the event of an operation invocation error.
@@ -110,7 +110,7 @@ public class GainPCEHRAccessClient extends Client<PCEHRProfilePortType> {
     ) throws StandardErrorMsg {
 
         Validate.notNull(commonHeader, "'commonHeader' must be specified.");
-        Validate.notNull(pcehrRecord);
+        Validate.notNull(pcehrRecord, "'pcehrRecord' must be specified.");
         CommonHeaderValidator.validate(commonHeader, true); // IHINumber is required.
 
         if (pcehrRecord.getAuthorisationDetails() != null) {

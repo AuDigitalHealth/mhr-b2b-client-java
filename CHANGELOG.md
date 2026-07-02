@@ -1,5 +1,13 @@
 # Change Log/Revision History
 
+= 1.6.3-SNAPSHOT =
+==================
+- Java 8 / javax public-release line: EE4J jaxws-rt 2.3.7, pcehr-compiled-wsdl at ${project.version}, modernized Maven build and CI.
+- Strict Javadoc (doclint=all, failOnWarnings); enforcer bans Metro webservices-*.
+- Optional Ant wsimport under wsdls/: EE4J tooling in lib/provided (not Metro webservices-*); sync-lib + ant generate-src; WsdlsCodegenToolingTest guards layout.
+- Removed stale resources.zip duplicate; dropped optional codegen wrapper scripts.
+- Documentation: README, CONTRIBUTING, MAINTAINERS, SECURITY; offline Surefire default; -Pintegration for mutual-TLS tests.
+
 = 1.1.7 =
 =========
 - Converted to Maven
