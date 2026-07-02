@@ -9,7 +9,7 @@
 
     <groupId>au.gov.nehta</groupId>
     <artifactId>mhr-b2b-client</artifactId>
-    <version>1.6.3-SNAPSHOT</version>
+    <version>1.6.4-SNAPSHOT</version>
     <name>MHR B2B client</name>
     <description>My Health Record B2B client (Java 8 / javax)</description>
     <url>https://github.com/AuDigitalHealth/mhr-b2b-client-java</url>
