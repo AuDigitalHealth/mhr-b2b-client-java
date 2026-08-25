@@ -3,8 +3,8 @@
 <definitions xmlns:pcehr="http://ns.electronichealth.net.au/pcehr/svc/getChangeHistoryView/1.1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:pcehr_b2b="http://ns.electronichealth.net.au/pcehr/xsd/common/CommonCoreElements/1.0" xmlns:ns7="http://ns.electronichealth.net.au/pcehr/xsd/interfaces/GetChangeHistoryView/1.0" xmlns:ns8="http://ns.electronichealth.net.au/wsp/xsd/StandardError/2010" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:ns="http://www.w3.org/2000/09/xmldsig#" xmlns:ns1="urn:oasis:names:tc:ebxml-regrep:xsd:rim:3.0" xmlns:ns2="urn:oasis:names:tc:ebxml-regrep:xsd:rs:3.0" name="getChangeHistoryView" targetNamespace="http://ns.electronichealth.net.au/pcehr/svc/getChangeHistoryView/1.1">
 	<types>
 		<xsd:schema targetNamespace="http://ns.electronichealth.net.au/pcehr/svc/getChangeHistoryView/1.1" elementFormDefault="qualified">
-			<xsd:import namespace="http://ns.electronichealth.net.au/pcehr/xsd/common/CommonCoreElements/1.0" schemaLocation="../../schema/Common/PCEHR_CommonTypes.xsd"/>
-			<xsd:import namespace="http://ns.electronichealth.net.au/pcehr/xsd/interfaces/GetChangeHistoryView/1.0" schemaLocation="../../schema/External/PCEHR_GetChangeHistoryView.xsd"/>
+			<xsd:import namespace="http://ns.electronichealth.net.au/pcehr/xsd/common/CommonCoreElements/1.0" schemaLocation="../../schema/Common/MHR_CommonTypes.xsd"/>
+			<xsd:import namespace="http://ns.electronichealth.net.au/pcehr/xsd/interfaces/GetChangeHistoryView/1.0" schemaLocation="../../schema/External/MHR_GetChangeHistoryView.xsd"/>
 			<xsd:import namespace="http://ns.electronichealth.net.au/wsp/xsd/StandardError/2010" schemaLocation="../../schema/Common/wsp-StandardError-2010.xsd"/>
 		</xsd:schema>
 	</types>

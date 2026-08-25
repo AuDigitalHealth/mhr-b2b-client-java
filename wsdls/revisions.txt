@@ -1,11 +1,11 @@
 2.4.4
 -----
-* modified PCEHR_HealthRecordOverview_Response.xsd new changes for shared health summary (shs)
+* modified MHR_HealthRecordOverview_Response.xsd new changes for shared health summary (shs)
 
 
 2.4.3
 -----
-* modified streeNameType to > streetNameType in PCEHR_View_CommonType.xsd
+* modified streeNameType to > streetNameType in MHR_View_CommonType.xsd
 - removed AdvancedCarePlaning and AchievemnetDiary views
 
 2.4.2

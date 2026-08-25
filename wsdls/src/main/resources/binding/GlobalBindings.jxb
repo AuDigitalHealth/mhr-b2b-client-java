@@ -22,11 +22,6 @@
                     name="java.util.Calendar"
                     xmlType="xsd:date"
                     adapter="au.gov.nehta.schema.DateAdapter" />
-       <!--   <jaxb:javaType
-                    name="java.util.Calendar"
-                    xmlType="xsd:date"
-                    parseMethod="javax.xml.bind.DatatypeConverter.parseDate"
-                    printMethod="javax.xml.bind.DatatypeConverter.printDate"/>      --> 
         </jaxb:globalBindings>
     </jaxb:bindings>
 
