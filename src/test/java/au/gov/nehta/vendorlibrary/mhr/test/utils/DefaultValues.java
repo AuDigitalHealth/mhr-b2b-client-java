@@ -1,0 +1,23 @@
+package au.gov.nehta.vendorlibrary.mhr.test.utils;
+
+import au.net.electronichealth.ns.mhr.xsd.common.commoncoreelements._1.MHRHeader;
+
+public class DefaultValues {
+    /**
+     * Default test values.
+     */
+    public static final MHRHeader.User.IDType ID_TYPE = MHRHeader.User.IDType.HPII;
+    public static final String ID = "8003630000011111";
+    public static final String ROLE = "Default Role";
+    public static final String USER_NAME = "Default User Name";
+    public static final Boolean USE_ROLE_FOR_AUDIT = true;
+    public static final String IHI_NUMBER = "8003600300001119";
+    public static final String VENDOR = "Vendor X";
+    public static final String PRODUCT_NAME = "Product Name";
+    public static final String PRODUCT_VERSION = "Version 11.0.0";
+    public static final String PLATFORM = "Platform X";
+    public static final MHRHeader.ClientSystemType CLIENT_SYSTEM_TYPE = MHRHeader.ClientSystemType.CPP;
+    public static final String ORGANISATION_ID = "8003620000020052";
+    public static final String ORGANISATION_NAME = "Organisation X";
+    public static final String ALTERNATE_ORGANISATION_NAME = "Organisation X-2";
+}

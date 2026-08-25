@@ -3,8 +3,8 @@
 <wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pcehr="http://ns.electronichealth.net.au/pcehr/svc/GetRepresentativeList/1.1" xmlns:ns2="http://ns.electronichealth.net.au/pcehr/xsd/interfaces/GetRepresentativeList/1.1" xmlns:tns="http://ns.electronichealth.net.au/wsp/xsd/StandardError/2010" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:pcehr_b2b="http://ns.electronichealth.net.au/pcehr/xsd/common/CommonCoreElements/1.0" xmlns:ns="http://www.w3.org/2000/09/xmldsig#" name="getRepresentativeList" targetNamespace="http://ns.electronichealth.net.au/pcehr/svc/GetRepresentativeList/1.1">
 	<wsdl:types>
 		<xsd:schema targetNamespace="http://ns.electronichealth.net.au/pcehr/svc/GetRepresentativeList/1.1" elementFormDefault="qualified">
-			<xsd:import namespace="http://ns.electronichealth.net.au/pcehr/xsd/common/CommonCoreElements/1.0" schemaLocation="../../schema/Common/PCEHR_CommonTypes.xsd"/>
-			<xsd:import namespace="http://ns.electronichealth.net.au/pcehr/xsd/interfaces/GetRepresentativeList/1.1" schemaLocation="../../schema/External/PCEHR_GetRepresentativeList.xsd"/>
+			<xsd:import namespace="http://ns.electronichealth.net.au/pcehr/xsd/common/CommonCoreElements/1.0" schemaLocation="../../schema/Common/MHR_CommonTypes.xsd"/>
+			<xsd:import namespace="http://ns.electronichealth.net.au/pcehr/xsd/interfaces/GetRepresentativeList/1.1" schemaLocation="../../schema/External/MHR_GetRepresentativeList.xsd"/>
 			<xsd:import namespace="http://ns.electronichealth.net.au/wsp/xsd/StandardError/2010" schemaLocation="../../schema/Common/wsp-StandardError-2010.xsd"/>
 		</xsd:schema>
 	</wsdl:types>
