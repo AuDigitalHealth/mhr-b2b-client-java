@@ -202,7 +202,7 @@ under the License.
                   failOnError="true">
             <sourcePath path="${src.dir}"/>
             <class location="${jar.dir}/${jar.file}"/>
-            <auxClasspath path="${lib.provided.dir}/nehta-vendorlibrary-java-pcehr-compiled-wsdl-2.4.3.jar"/>
+            <auxClasspath path="${lib.provided.dir}/nehta-vendorlibrary-java-mhr-wsdl-2.4.3.jar"/>
         	<auxClasspath path="${lib.provided.dir}/nehta-smi-xsp-1.2.0.jar"/>
             <auxClasspath path="${lib.provided.dir}/nehta-vendorlibrary-java-common-1.1.0.jar"/>
             <auxClasspath path="${lib.provided.dir}/nehta-smi-common-utils-latest.jar"/>

@@ -1,0 +1,53 @@
+/*
+ * Copyright 2011 NEHTA
+ *
+ * Licensed under the NEHTA Open Source (Apache) License; you may not use this
+ * file except in compliance with the License. A copy of the License is in the
+ * 'LICENSE.txt' file, which should be provided with this work.
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ */
+package au.gov.nehta.vendorlibrary.mhr.test.unittests;
+
+import au.gov.nehta.vendorlibrary.mhr.clients.recordaccess.DoesMHRExistClient;
+import au.gov.nehta.vendorlibrary.mhr.test.utils.Endpoints;
+import au.gov.nehta.vendorlibrary.mhr.test.utils.Logging;
+import au.net.electronichealth.ns.mhr.xsd.interfaces.mhrprofile._1.DoesMHRExistResponse;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+public class ReubenArchitectTest {
+
+    private DoesMHRExistClient client;
+
+    @Before
+    public final void setUp() throws Exception {
+        AllTests_Reuben.setUp();
+        client = new DoesMHRExistClient(
+                AllTests_Reuben.getSslSocketFactory(),
+                AllTests_Reuben.getCertificate(),
+                AllTests_Reuben.getPrivateKey(),
+                Endpoints.ACCENTURE_DOES_PCEHR_EXIST,
+                Logging.DOES_PCEHR_EXIST
+        );
+    }
+
+    @After
+    public final void tearDown() throws Exception {
+        AllTests_Reuben.tearDown();
+        client = null;
+    }
+
+    @Test
+    public void test_030() throws Exception {
+        DoesMHRExistResponse response = client.doesPCEHRExist(AllTests_Reuben.getDefaultRequest());
+        Assert.assertTrue(response.isPCEHRExists());
+        Assert.assertEquals(DoesMHRExistResponse.AccessCodeRequired.ACCESS_GRANTED, response.getAccessCodeRequired());
+    }
+}

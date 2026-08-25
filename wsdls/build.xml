@@ -129,7 +129,7 @@
                 <ac:var name="relative.wsdl.file" unset="true"/>
                 <basename property="relative.wsdl.file" file="@{absolute.wsdl.file}"/>
                 <macro-generate-wsdl-java wsdl.file="${relative.wsdl.file}"
-                                          binding.files="GlobalBindings.jxb, PCEHR_CommonTypes.xsd.jxb, ${relative.wsdl.file}.jxb"/>
+                                          binding.files="GlobalBindings.jxb, MHR_CommonTypes.xsd.jxb, ${relative.wsdl.file}.jxb"/>
             </ac:sequential>
         </ac:for>
 
@@ -141,7 +141,7 @@
     	<xjc  destdir="${src.dir}" >
 			    	<binding dir="${binding.dir}">
 			    	  <include name="GlobalBindings.jxb"/>
-			    		 <include name="PCEHR_CommonTypes.xsd.jxb"/>
+			    		 <include name="MHR_CommonTypes.xsd.jxb"/>
 			    	</binding>
     				<schema dir="${view.schema.dir}"  includes="*.xsd" />
     				<arg value="-nv"/>
