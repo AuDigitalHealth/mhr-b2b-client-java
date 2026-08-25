@@ -2,7 +2,7 @@
                xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
                xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-    <jaxb:bindings schemaLocation="../schema/External/PCEHR_GetAuditView.xsd" node="/xs:schema">
+    <jaxb:bindings schemaLocation="../schema/External/MHR_GetAuditView.xsd" node="/xs:schema">
 
         <!-- Message Log Level -->
         <jaxb:bindings node="//xs:element[@name='getAuditViewResponse']/xs:complexType/xs:sequence/xs:element[@name='auditView']/xs:complexType/xs:sequence/xs:element[@name='eventTrail']/xs:complexType/xs:sequence/xs:element[@name='logEvent']/xs:complexType/xs:sequence/xs:element[@name='messageLogLevel']/xs:simpleType">
