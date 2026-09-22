@@ -19,7 +19,7 @@
 		code generating toolkits to work properly -->
 		<xsd:schema elementFormDefault="qualified" targetNamespace="http://ns.electronichealth.net.au/pcehr/xsd/common/CommonCoreElements/1.0">
 			<!-- Include the message schema -->
-			<xsd:include schemaLocation="../../schema/Common/PCEHR_CommonTypes.xsd"/>
+			<xsd:include schemaLocation="../../schema/Common/MHR_CommonTypes.xsd"/>
 		</xsd:schema>
 	</types>
 	<message name="RegistryStoredQuery_Message">

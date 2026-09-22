@@ -1,8 +1,8 @@
 ====================================
-PCEHR B2B WSDL module (wsdls/)
+MHR B2B WSDL module (wsdls/)
 ====================================
 
-Canonical PCEHR B2B WSDL and XSD for this product live under:
+MHR B2B WSDL and XSD for this product live under:
 
   src/main/resources/wsdl/
   src/main/resources/schema/
@@ -16,7 +16,7 @@ Default build (mhr-b2b-client-java)
 
 The main Maven build does not run wsimport. SOAP types come from Maven:
 
-  au.gov.nehta:pcehr-compiled-wsdl  (pcehr.wsdl.version = project version)
+  au.gov.nehta:mhr-wsdl  (mhr.wsdl.version = project version)
 
 See repository README.md and CONTRIBUTING.md.
 

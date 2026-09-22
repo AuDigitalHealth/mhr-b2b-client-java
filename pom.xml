@@ -9,7 +9,7 @@
 
     <groupId>au.gov.nehta</groupId>
     <artifactId>mhr-b2b-client</artifactId>
-    <version>1.6.4-SNAPSHOT</version>
+    <version>8.0.0-SNAPSHOT</version>
     <name>MHR B2B client</name>
     <description>My Health Record B2B client (Java 8 / javax)</description>
     <url>https://github.com/AuDigitalHealth/mhr-b2b-client-java</url>
@@ -88,8 +88,9 @@
         <junit.version>4.13.2</junit.version>
         <commons.lang3.version>3.17.0</commons.lang3.version>
         <commons.io.version>2.18.0</commons.io.version>
-        <nehta.lib.version>1.2.2</nehta.lib.version>
-		<nehta.xsp.lib.version>1.2.1</nehta.xsp.lib.version>
+        <!-- Same Maven version as this artifact and sibling au.gov.nehta libs (first number = Java SE). -->
+        <nehta.lib.version>${project.version}</nehta.lib.version>
+        <common.library.version>${project.version}</common.library.version>
         <plugin.clean.version>3.5.0</plugin.clean.version>
         <plugin.compiler.version>3.15.0</plugin.compiler.version>
         <plugin.surefire.version>3.5.5</plugin.surefire.version>
@@ -105,7 +106,7 @@
         <jacoco.version>0.8.14</jacoco.version>
         <maven.shade.plugin.version>3.6.2</maven.shade.plugin.version>
         <!-- Same version as this artifact (SNAPSHOT during dev; GA at release). See README local development. -->
-        <pcehr.wsdl.version>${project.version}</pcehr.wsdl.version>
+        <mhr.wsdl.version>${project.version}</mhr.wsdl.version>
         <argLine>-Xmx1024m</argLine>
     </properties>
 
@@ -113,7 +114,7 @@
         <dependency>
             <groupId>au.gov.nehta</groupId>
             <artifactId>common-library</artifactId>
-            <version>${nehta.lib.version}</version>
+            <version>${common.library.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.sun.xml.ws</groupId>
@@ -124,17 +125,35 @@
         <dependency>
             <groupId>au.gov.nehta</groupId>
             <artifactId>smi-xsp</artifactId>
-            <version>${nehta.xsp.lib.version}</version>
+            <version>${nehta.lib.version}</version>
         </dependency>
         <dependency>
             <groupId>au.gov.nehta</groupId>
             <artifactId>smi-common-utils</artifactId>
-            <version>${nehta.xsp.lib.version}</version>
+            <version>${nehta.lib.version}</version>
         </dependency>
         <dependency>
             <groupId>com.sun.xml.ws</groupId>
             <artifactId>jaxws-rt</artifactId>
             <version>${ee4j.jaxws.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>jakarta.xml.bind</groupId>
+                    <artifactId>jakarta.xml.bind-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>jakarta.xml.ws</groupId>
+                    <artifactId>jakarta.xml.ws-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>jakarta.xml.soap</groupId>
+                    <artifactId>jakarta.xml.soap-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>jakarta.jws</groupId>
+                    <artifactId>jakarta.jws-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -148,8 +167,8 @@
         </dependency>
         <dependency>
             <groupId>au.gov.nehta</groupId>
-            <artifactId>pcehr-compiled-wsdl</artifactId>
-            <version>${pcehr.wsdl.version}</version>
+            <artifactId>mhr-wsdl</artifactId>
+            <version>${mhr.wsdl.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -217,8 +236,12 @@
                                         <exclude>com.sun.xml.ws:webservices-api</exclude>
                                         <exclude>com.sun.xml.ws:webservices-extra</exclude>
                                         <exclude>com.sun.xml.ws:webservices-extra-api</exclude>
+                                        <exclude>jakarta.xml.bind:jakarta.xml.bind-api</exclude>
+                                        <exclude>jakarta.xml.ws:jakarta.xml.ws-api</exclude>
+                                        <exclude>jakarta.xml.soap:jakarta.xml.soap-api</exclude>
+                                        <exclude>jakarta.jws:jakarta.jws-api</exclude>
                                     </excludes>
-                                    <message>Use Eclipse EE4J jaxws-rt, not legacy Metro webservices-* bundles.</message>
+                                    <message>Java 8 / javax line: use javax.xml.bind, javax.xml.ws, and javax.jws only, with EE4J jaxws-rt 2.3.x - not Metro webservices-* or Jakarta XML APIs.</message>
                                 </bannedDependencies>
                             </rules>
                         </configuration>
@@ -313,7 +336,7 @@
                         <include>**/MetadataUtilsOrgIDNameTest.java</include>
                         <include>**/MetadataUtilsTimeTest.java</include>
                         <include>**/OIDUtilTest.java</include>
-                        <include>**/PcehrWsdlArtifactSmokeTest.java</include>
+                        <include>**/MhrWsdlArtifactSmokeTest.java</include>
                         <include>**/WsdlsCodegenToolingTest.java</include>
                     </includes>
                 </configuration>

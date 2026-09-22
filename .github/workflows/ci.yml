@@ -1,9 +1,10 @@
-# Runs default offline unit tests + Javadoc/sources (verify), then compiles sample sources.
 name: CI
 
 on:
   push:
+    branches: [ java-8 ]
   pull_request:
+    branches: [ java-8 ]
 
 permissions:
   contents: read
@@ -12,21 +13,21 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7
         with:
-          repository: AuDigitalHealth/pcehr-compiled-wsdl-java
-          ref: java-8-javax-full-wsdl
-          path: pcehr-compiled-wsdl-java
+          repository: AuDigitalHealth/mhr-wsdl-java
+          ref: java-8
+          path: mhr-wsdl-java
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "8"
           cache: maven
-      - name: Install pcehr-compiled-wsdl (1.6.3-SNAPSHOT)
-        working-directory: pcehr-compiled-wsdl-java
-        run: mvn -B -Dgpg.skip=true clean install -DskipTests
+      - name: Install mhr-wsdl (8.0.0-SNAPSHOT)
+        working-directory: mhr-wsdl-java
+        run: mvn -B "-Dgpg.skip=true" clean install -DskipTests
       - name: Maven verify
-        run: mvn -B -Dgpg.skip=true clean verify
+        run: mvn -B "-Dgpg.skip=true" clean verify
       - name: Compile sample sources (sample profile)
-        run: mvn -B -Psample -Dgpg.skip=true -DskipTests=true clean compile
+        run: mvn -B -Psample "-Dgpg.skip=true" -DskipTests=true clean compile

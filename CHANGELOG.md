@@ -1,8 +1,18 @@
 # Change Log/Revision History
 
-= 1.6.3-SNAPSHOT =
-==================
-- Java 8 / javax public-release line: EE4J jaxws-rt 2.3.7, pcehr-compiled-wsdl at ${project.version}, modernized Maven build and CI.
+= 8.0.0 =
+=======
+- Maven **`au.gov.nehta:mhr-b2b-client`** **8.0.0** (Java **8** / **`javax`**, **15** facades). The first number of the Maven version is the targeted Java SE version. Pair with **`au.gov.nehta:mhr-wsdl`** at the same coordinate.
+- Java packages and types use **`mhr`** names (`vendorlibrary.mhr`, **`DoesMHRExistClient`**, **`MHRHeader`**, **`RegisterMHRClient`**). SOAP namespaces and element names remain the B2B **`pcehr`** wire contract (**`PCEHRHeader`**, **`registerPCEHR`**).
+- Runtime: **`com.sun.xml.ws:jaxws-rt` 2.3.7**. **`maven-enforcer-plugin`** bans Metro **`webservices-*`** and **`jakarta.xml.bind-api`**, **`jakarta.xml.ws-api`**, **`jakarta.xml.soap-api`**, **`jakarta.jws-api`**.
+- POM: Sonatype Central Portal (**`central-publishing-maven-plugin`**; server id **`central`**).
+- Offline smoke tests: **`JaxwsRuntimeSmokeTest`**, **`MhrWsdlArtifactSmokeTest`** (loads **`MHRProfileService`**).
+- Documentation: README, CONTRIBUTING, MAINTAINERS, SECURITY.
+
+= 1.6.3 =
+=========
+Historical past release (superseded by **8.0.0** on this line).
+- Java 8 / javax public-release line: EE4J jaxws-rt 2.3.7, mhr-wsdl at ${project.version}, modernized Maven build and CI.
 - Strict Javadoc (doclint=all, failOnWarnings); enforcer bans Metro webservices-*.
 - Optional Ant wsimport under wsdls/: EE4J tooling in lib/provided (not Metro webservices-*); sync-lib + ant generate-src; WsdlsCodegenToolingTest guards layout.
 - Removed stale resources.zip duplicate; dropped optional codegen wrapper scripts.
@@ -36,7 +46,7 @@
 
 = 1.1.1 =
 =========
-- Updated PCEHR wsdl jar to nehta-vendorlibrary-java-pcehr-compiled-wsdl-2.4.1.jar
+- Updated PCEHR wsdl jar to nehta-vendorlibrary-java-mhr-wsdl-2.4.1.jar
 - added new DocumentTypeCodes for Pathology and DI
 - modified XDS Metadata service start stop time for pathology/di
 
@@ -91,7 +101,7 @@
 
 = 0.7.8 (DRAFT) =
 =========
-- Modifications To RegisterPCEHRClient and Client.javato fix a bug with MTOM.
+- Modifications To RegisterMHRClient and Client.javato fix a bug with MTOM.
   NB:this release is backward-compatible with Java 6.
 
 = 0.7.7 (DRAFT) =
@@ -207,7 +217,7 @@ PCEHR client libraries and properties will need to be updated and re-compiled ac
 
 Change History:
 - Enhancement to allow client properties to be set using 'setProperty' method. For instance:
-  DoesPCEHRExistClient client = ... // constructor call
+  DoesMHRExistClient client = ... // constructor call
   client.setProperty(JAXWSProperties.CONNECT_TIMEOUT, 180000); // Timeout of three minutes.
 - Abstraction of client code to improve manageability.
 - Accessor method for 'Client' port.
@@ -270,7 +280,7 @@ Pre-Requisites:
 - SVT 5.11 (or greater) environment required for support of:
     1) CDA document <id> root value of type UUID in document uploads.
     2) Signature verification
-    3) 'GetRepresentativeList' and 'RegisterPCEHR' clients.
+    3) 'GetRepresentativeList' and 'RegisterMHR' clients.
 
 Change History:
 - Fix for 'UploadDocument' submission set metadata association for document replacement.
@@ -291,17 +301,17 @@ Pre-Requisites:
 - SVT 5.11 (or greater) environment required for support of:
     1) CDA document <id> root value of type UUID in document uploads.
     2) Signature verification
-    3) 'GetRepresentativeList' and 'RegisterPCEHR' clients.
+    3) 'GetRepresentativeList' and 'RegisterMHR' clients.
 
 Change History:
-- Modified 'RegisterPCEHR' sample code to provide an correct example for:
+- Modified 'RegisterMHR' sample code to provide an correct example for:
     1) registering a PCEHR with an IHI (child-specific sample code, with parent assertion details)
     2) registering a PCEHR with demographics (individual-specific code)
 - Inclusion of generated code JAR files supporting the deprecation of the 'GetIndividualDetails'
   operation:
-    1) nehta-vendorlibrary-java-pcehr-compiled-wsdl-2.1.0-docs.jar
-    2) nehta-vendorlibrary-java-pcehr-compiled-wsdl-2.1.0-sources.jar
-    3) nehta-vendorlibrary-java-pcehr-compiled-wsdl-2.1.0.jar
+    1) nehta-vendorlibrary-java-mhr-wsdl-2.1.0-docs.jar
+    2) nehta-vendorlibrary-java-mhr-wsdl-2.1.0-sources.jar
+    3) nehta-vendorlibrary-java-mhr-wsdl-2.1.0.jar
 
 = 0.6.0 (DRAFT) =
 =========
@@ -312,12 +322,12 @@ Pre-Requisites:
 - SVT 5.11 (or greater) environment required for support of:
     1) CDA document <id> root value of type UUID in document uploads.
     2) Signature verification
-    3) 'GetRepresentativeList' and 'RegisterPCEHR' clients.
+    3) 'GetRepresentativeList' and 'RegisterMHR' clients.
 
 Change History:
 - Abstraction of some common client behaviour to improve manageability.
 - Updated 'license.txt' with new license text for vendor library usage.
-- Added 'RegisterPCEHR' client and sample code.
+- Added 'RegisterMHR' client and sample code.
 - Added 'GetRepresentativeList' client and sample code.
 - Added response signature verification to 'SecurityHandler', utilising XSP libraries. For further detail
   on the verification process, please see the '/lib/provided/nehta-smi-xsp-1.0.3*.jar' libraries.
